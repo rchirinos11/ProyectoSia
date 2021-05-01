@@ -16,6 +16,7 @@ import pe.edu.pucp.sia.service.impl.PersonServiceImpl;
 @RequestMapping("/person")
 @RestController
 public class PersonController {
+	@Autowired
 	private PersonService personService = new PersonServiceImpl();
 	
 	@GetMapping("/list")
