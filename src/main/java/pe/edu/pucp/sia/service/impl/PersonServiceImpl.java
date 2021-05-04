@@ -19,21 +19,39 @@ public class PersonServiceImpl implements PersonService{
 	}
 
 	@Override
-	public int createPerson(Person p) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String createPerson(Person p) {
+		String response = "";
+		try {
+			personRepository.save(p);
+			response = "Created"; 
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
-	public int deletePerson(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String deletePerson(Integer id) {
+		String response = "";
+		try {
+			personRepository.deleteById(id);
+			response = "Created"; 
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
-	public int updatePerson(Person p) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String updatePerson(Person p) {
+		String response = "";
+		try {
+			personRepository.save(p);
+			response = "Updated"; 
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
 	}
 
 }
