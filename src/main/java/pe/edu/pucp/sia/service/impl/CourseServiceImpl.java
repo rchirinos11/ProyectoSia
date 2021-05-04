@@ -3,50 +3,25 @@ package pe.edu.pucp.sia.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pe.edu.pucp.sia.model.Person;
-import pe.edu.pucp.sia.repository.PersonRepository;
-import pe.edu.pucp.sia.service.PersonService;
+import pe.edu.pucp.sia.model.Course;
+import pe.edu.pucp.sia.repository.CourseRepository;
+import pe.edu.pucp.sia.service.CourseService;
 
 @Service
-public class PersonServiceImpl implements PersonService{
-	
+public class CourseServiceImpl implements CourseService{
 	@Autowired
-	private PersonRepository personRepository;
-	
+	private CourseRepository courseRepository;
+
 	@Override
-	public Iterable<Person> listAll() {
-		return personRepository.findAll();
+	public Iterable<Course> listAll() {
+		return courseRepository.findAll();
 	}
 
 	@Override
-	public String createPerson(Person p) {
+	public String updateCourse(Course c) {
 		String response = "";
 		try {
-			personRepository.save(p);
-			response = "Created"; 
-		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
-		}
-		return response;
-	}
-
-	@Override
-	public String deletePerson(Integer id) {
-		String response = "";
-		try {
-			personRepository.deleteById(id);
-			response = "Created"; 
-		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
-		}
-		return response;
-	}
-
-	@Override
-	public String updatePerson(Person p) {
-		String response = "";
-		try {
-			personRepository.save(p);
+			courseRepository.save(c);
 			response = "Updated"; 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
@@ -54,4 +29,28 @@ public class PersonServiceImpl implements PersonService{
 		return response;
 	}
 
+	@Override
+	public String createCourse(Course c) {
+		String response = "";
+		try {
+			courseRepository.save(c);
+			response = "Created"; 
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public String deleteCourse(Integer id) {
+		String response = "";
+		try {
+			courseRepository.deleteById(id);
+			response = "Deleted";
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
+	}
+	
 }

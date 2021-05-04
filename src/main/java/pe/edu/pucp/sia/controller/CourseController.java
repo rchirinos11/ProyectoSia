@@ -11,33 +11,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import pe.edu.pucp.sia.model.Person;
-import pe.edu.pucp.sia.service.PersonService;
-import pe.edu.pucp.sia.service.impl.PersonServiceImpl;
+import pe.edu.pucp.sia.model.Course;
+import pe.edu.pucp.sia.service.CourseService;
+import pe.edu.pucp.sia.service.impl.CourseServiceImpl;
 
-@RequestMapping("/person")
+@RequestMapping("/course")
 @RestController
-public class PersonController {
+public class CourseController {
 	@Autowired
-	private PersonService personService = new PersonServiceImpl();
+	CourseService courseService = new CourseServiceImpl();
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listPerson(){
-		return ResponseEntity.status(HttpStatus.OK).body(personService.listAll());
+	public ResponseEntity<Object> listCourse(){
+		return ResponseEntity.status(HttpStatus.OK).body(courseService.listAll());
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createPerson(@RequestBody Person p){
-		return ResponseEntity.status(HttpStatus.CREATED).body(personService.createPerson(p));
+	public ResponseEntity<Object> createPerson(@RequestBody Course c){
+		return ResponseEntity.status(HttpStatus.CREATED).body(courseService.createCourse(c));
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updatePerson(@RequestBody Person p){
-		return ResponseEntity.status(HttpStatus.OK).body(personService.updatePerson(p));
+	public ResponseEntity<Object> updatePerson(@RequestBody Course c){
+		return ResponseEntity.status(HttpStatus.CREATED).body(courseService.updateCourse(c));
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Object> deletePerson(@PathVariable Integer id){
-		return ResponseEntity.status(HttpStatus.OK).body(personService.deletePerson(id));
+		return ResponseEntity.status(HttpStatus.CREATED).body(courseService.deleteCourse(id));
 	}
 }

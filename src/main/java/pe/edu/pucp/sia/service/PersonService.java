@@ -4,7 +4,7 @@ import pe.edu.pucp.sia.model.Person;
 
 public interface PersonService {
 	public Iterable<Person> listAll();
-	public int createPerson(Person p);
-	public int deletePerson(Integer id);
-	public int updatePerson(Person p);
+	public String createPerson(Person p);
+	public String deletePerson(Integer id);
+	public String updatePerson(Person p);
 }
