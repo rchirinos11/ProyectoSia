@@ -22,7 +22,7 @@ public class CourseServiceImpl implements CourseService{
 		String response = "";
 		try {
 			courseRepository.save(c);
-			response = "Created"; 
+			response = "Updated"; 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
