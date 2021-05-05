@@ -35,7 +35,7 @@ public class PersonServiceImpl implements PersonService{
 		String response = "";
 		try {
 			personRepository.deleteById(id);
-			response = "Created"; 
+			response = "Deleted"; 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
