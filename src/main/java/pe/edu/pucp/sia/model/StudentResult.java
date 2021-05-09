@@ -13,18 +13,17 @@ public class StudentResult {
 	@Id @Column(name="id_student_result") @GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	@ManyToOne
-	@JoinColumn(name="id_student_result")
+	@JoinColumn(name="id_speciality")
 	private Speciality speciality;
 	@ManyToOne
 	@JoinColumn(name="id_educational_objective")
 	private EducationalObjective educationalObjective;
-	/*
 	@ManyToOne
 	@JoinColumn(name="id_semester_start")
 	private Semester semesterStart;
 	@ManyToOne
 	@JoinColumn(name="id_semester_end")
 	private Semester semesterEnd;
-	*/
+	
 	private String description;
 }
