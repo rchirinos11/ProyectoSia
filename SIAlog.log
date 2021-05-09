@@ -567,3 +567,64 @@
 2021-05-09 15:47:13.363  INFO 3252 --- [http-nio-8080-exec-4] e.p.s.c.ImprovementOpportunityController : Entered method listImprovementOpportunity()
 2021-05-09 15:47:56.486  INFO 3252 --- [http-nio-8080-exec-5] e.p.s.c.ImprovementOpportunityController : Entered method createImprovementOpportunity()
 2021-05-09 15:47:59.244  INFO 3252 --- [http-nio-8080-exec-6] e.p.s.c.ImprovementOpportunityController : Entered method listImprovementOpportunity()
+2021-05-09 16:03:10.074  INFO 9552 --- [main] pe.edu.pucp.sia.SiaApplication           : Starting SiaApplication using Java 15.0.2 on DESKTOP-LJ55RPR with PID 9552 (D:\GitHubRepositories\ProyectoSia\target\classes started by Joseph in D:\GitHubRepositories\ProyectoSia)
+2021-05-09 16:03:10.077  INFO 9552 --- [main] pe.edu.pucp.sia.SiaApplication           : No active profile set, falling back to default profiles: default
+2021-05-09 16:03:10.686  INFO 9552 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-05-09 16:03:10.755  INFO 9552 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61 ms. Found 9 JPA repository interfaces.
+2021-05-09 16:03:11.297  INFO 9552 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-05-09 16:03:11.308  INFO 9552 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-05-09 16:03:11.309  INFO 9552 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.45]
+2021-05-09 16:03:11.420  INFO 9552 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-05-09 16:03:11.420  INFO 9552 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1299 ms
+2021-05-09 16:03:11.624  INFO 9552 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-05-09 16:03:11.677  INFO 9552 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.30.Final
+2021-05-09 16:03:11.824  INFO 9552 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-05-09 16:03:11.956  INFO 9552 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-05-09 16:03:13.916  INFO 9552 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-05-09 16:03:13.957  INFO 9552 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2021-05-09 16:03:17.287  INFO 9552 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-05-09 16:03:17.296  INFO 9552 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-05-09 16:03:17.610  WARN 9552 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-05-09 16:03:17.973  INFO 9552 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-05-09 16:03:17.981  INFO 9552 --- [main] pe.edu.pucp.sia.SiaApplication           : Started SiaApplication in 8.321 seconds (JVM running for 9.17)
+2021-05-09 16:56:29.103  WARN 9552 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=32m14s834ms420µs200ns).
+2021-05-09 17:32:27.804  INFO 9552 --- [RMI TCP Connection(69)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2021-05-09 17:32:27.866  INFO 9552 --- [RMI TCP Connection(69)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-05-09 17:32:27.871  INFO 9552 --- [RMI TCP Connection(69)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-05-09 17:32:29.007  INFO 9552 --- [RMI TCP Connection(69)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-05-09 17:32:37.600  INFO 5512 --- [main] pe.edu.pucp.sia.SiaApplication           : Starting SiaApplication using Java 15.0.2 on DESKTOP-LJ55RPR with PID 5512 (D:\GitHubRepositories\ProyectoSia\target\classes started by Joseph in D:\GitHubRepositories\ProyectoSia)
+2021-05-09 17:32:37.603  INFO 5512 --- [main] pe.edu.pucp.sia.SiaApplication           : No active profile set, falling back to default profiles: default
+2021-05-09 17:32:38.476  INFO 5512 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-05-09 17:32:38.551  INFO 5512 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 67 ms. Found 10 JPA repository interfaces.
+2021-05-09 17:32:39.133  INFO 5512 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-05-09 17:32:39.148  INFO 5512 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-05-09 17:32:39.149  INFO 5512 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.45]
+2021-05-09 17:32:39.299  INFO 5512 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-05-09 17:32:39.299  INFO 5512 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1650 ms
+2021-05-09 17:32:39.681  INFO 5512 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-05-09 17:32:39.813  INFO 5512 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.30.Final
+2021-05-09 17:32:40.080  INFO 5512 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-05-09 17:32:40.211  INFO 5512 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-05-09 17:32:42.377  INFO 5512 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-05-09 17:32:42.426  INFO 5512 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2021-05-09 17:32:47.231  INFO 5512 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-05-09 17:32:47.250  INFO 5512 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-05-09 17:32:47.583  WARN 5512 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-05-09 17:32:47.983  INFO 5512 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-05-09 17:32:47.991  INFO 5512 --- [main] pe.edu.pucp.sia.SiaApplication           : Started SiaApplication in 10.878 seconds (JVM running for 11.983)
+2021-05-09 17:38:54.653  INFO 5512 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-05-09 17:38:54.654  INFO 5512 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-05-09 17:38:54.655  INFO 5512 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2021-05-09 17:38:54.684  INFO 5512 --- [http-nio-8080-exec-1] p.e.p.s.c.ImprovementProposalController  : Entered method listImprovementProposal()
+2021-05-09 17:42:41.821  WARN 5512 --- [http-nio-8080-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot construct instance of `pe.edu.pucp.sia.model.ImprovementOpportunity` (although at least one Creator exists): no int/Int-argument constructor/factory method to deserialize from Number value (21); nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot construct instance of `pe.edu.pucp.sia.model.ImprovementOpportunity` (although at least one Creator exists): no int/Int-argument constructor/factory method to deserialize from Number value (21)
+ at [Source: (PushbackInputStream); line: 2, column: 27] (through reference chain: pe.edu.pucp.sia.model.ImprovementProposal["improvementOpportunity"])]
+2021-05-09 17:47:33.798  INFO 5512 --- [http-nio-8080-exec-4] p.e.p.s.c.ImprovementProposalController  : Entered method createImprovementProposal()
+2021-05-09 17:48:49.127  INFO 5512 --- [http-nio-8080-exec-6] p.e.p.s.c.ImprovementProposalController  : Entered method updateImprovementProposal()
+2021-05-09 17:49:13.224  INFO 5512 --- [http-nio-8080-exec-7] p.e.p.s.c.ImprovementProposalController  : Entered method updateImprovementProposal()
+2021-05-09 17:49:30.069  INFO 5512 --- [http-nio-8080-exec-8] p.e.p.s.c.ImprovementProposalController  : Entered method deleteImprovementProposal()
+2021-05-09 17:49:39.267  INFO 5512 --- [http-nio-8080-exec-9] p.e.p.s.c.ImprovementProposalController  : Entered method createImprovementProposal()
+2021-05-09 17:49:42.433  INFO 5512 --- [http-nio-8080-exec-10] p.e.p.s.c.ImprovementProposalController  : Entered method listImprovementProposal()
+2021-05-09 17:50:14.879  INFO 5512 --- [RMI TCP Connection(27)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2021-05-09 17:50:14.920  INFO 5512 --- [RMI TCP Connection(27)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-05-09 17:50:14.923  INFO 5512 --- [RMI TCP Connection(27)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-05-09 17:50:16.052  INFO 5512 --- [RMI TCP Connection(27)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
