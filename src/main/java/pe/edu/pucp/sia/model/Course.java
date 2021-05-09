@@ -10,13 +10,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity @Getter @Setter
-public class Person {
+public class Course {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_person")
+	@Column(name="id_course")
 	private Integer id;
 	private String code;
 	private String name;
-	private String pLastName;
-	private String mLastName;
-	private String email;
 }
