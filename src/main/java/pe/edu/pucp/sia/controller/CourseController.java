@@ -27,17 +27,17 @@ public class CourseController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createPerson(@RequestBody Course c){
+	public ResponseEntity<Object> createCourse(@RequestBody Course c){
 		return ResponseEntity.status(HttpStatus.CREATED).body(courseService.createCourse(c));
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updatePerson(@RequestBody Course c){
+	public ResponseEntity<Object> updateCourse(@RequestBody Course c){
 		return ResponseEntity.status(HttpStatus.CREATED).body(courseService.updateCourse(c));
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deletePerson(@PathVariable Integer id){
+	public ResponseEntity<Object> deleteCourse(@PathVariable Integer id){
 		return ResponseEntity.status(HttpStatus.CREATED).body(courseService.deleteCourse(id));
 	}
 }
