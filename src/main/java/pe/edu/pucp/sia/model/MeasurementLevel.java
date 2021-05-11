@@ -20,7 +20,7 @@ public class MeasurementLevel {
 	private Speciality speciality;*/
 	private Integer order;
 	private String name;	
-	@Column(name="succes_rate")
+	//@Column(name="succes_rate")
 	private Float successRate;	
 	private Boolean active;	
 }

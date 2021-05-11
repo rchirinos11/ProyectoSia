@@ -33,7 +33,7 @@ public class ResultsPerCard {
 	
 	private Float average;
 	private Float percentage;
-	@Column(name="total_students")
+	//@Column(name="total_students")
 	private Integer totalStudents;	
 	private Boolean active;	
 	

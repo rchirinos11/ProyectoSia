@@ -19,7 +19,7 @@ public class LevelDetail {
 	
 	@JoinColumn(name="id_measurement_level", referencedColumnName = "id_measurement_level")
 	@ManyToOne
-	private MeasurementLevel idMeasurementLevel;
+	private MeasurementLevel measurementLevel;
 	private String description;	
 	private Boolean active;	
 }
