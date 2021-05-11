@@ -1,6 +1,7 @@
 package pe.edu.pucp.sia.model;
 
 import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +12,7 @@ import javax.persistence.ManyToOne;
 import lombok.Setter;
 import lombok.Getter;
 
+@Entity @Getter @Setter
 public class ResultsPerCard {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_results_per_card")

@@ -15,7 +15,9 @@ public class MeasurementLevel {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_measurement_level")
 	private Integer idMeasurementLevel;
-	//private @ManyToOne Speciality speciality;	
+	/*@JoinColumn(name="id_speciality", referencedColumnName = "id_speciality")
+	@ManyToOne
+	private Speciality speciality;*/
 	private Integer order;
 	private String name;	
 	@Column(name="succes_rate")

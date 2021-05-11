@@ -1,6 +1,6 @@
 package pe.edu.pucp.sia.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import lombok.Setter;
 import lombok.Getter;
 
+@Entity @Getter @Setter
 public class MeasurementCard {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_measurement_card")
