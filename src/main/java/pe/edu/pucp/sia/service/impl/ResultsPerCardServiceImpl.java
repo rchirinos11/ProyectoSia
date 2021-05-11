@@ -1,11 +1,13 @@
 package pe.edu.pucp.sia.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.service.ResultsPerCardService;
 
+@Service
 public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	@Autowired
 	private ResultsPerCardRepository resultsPerCardRepository;

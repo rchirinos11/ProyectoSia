@@ -1,11 +1,12 @@
 package pe.edu.pucp.sia.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.Measurement;
 import pe.edu.pucp.sia.repository.MeasurementRepository;
 import pe.edu.pucp.sia.service.MeasurementService;
-
+@Service
 public class MeasurementServiceImpl implements MeasurementService {
 	@Autowired
 	private MeasurementRepository measurementRepository;

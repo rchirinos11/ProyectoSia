@@ -1,11 +1,12 @@
 package pe.edu.pucp.sia.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.MeasurementCard;
 import pe.edu.pucp.sia.repository.MeasurementCardRepository;
 import pe.edu.pucp.sia.service.MeasurementCardService;
-
+@Service
 public class MeasurementCardServiceImpl implements MeasurementCardService{
 	@Autowired
 	private MeasurementCardRepository measurementCardRepository;
