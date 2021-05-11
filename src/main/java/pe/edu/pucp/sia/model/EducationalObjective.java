@@ -16,4 +16,25 @@ public class EducationalObjective {
 	@JoinColumn(name="id_speciality")
 	private Speciality speciality;
 	private String description;
+	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public Speciality getSpeciality() {
+		return speciality;
+	}
+	public void setSpeciality(Speciality speciality) {
+		this.speciality = speciality;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	
 }

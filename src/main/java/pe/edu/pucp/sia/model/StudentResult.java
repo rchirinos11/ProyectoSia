@@ -24,6 +24,43 @@ public class StudentResult {
 	@ManyToOne
 	@JoinColumn(name="id_semester_end")
 	private Semester semesterEnd;
-	
 	private String description;
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public Speciality getSpeciality() {
+		return speciality;
+	}
+	public void setSpeciality(Speciality speciality) {
+		this.speciality = speciality;
+	}
+	public EducationalObjective getEducationalObjective() {
+		return educationalObjective;
+	}
+	public void setEducationalObjective(EducationalObjective educationalObjective) {
+		this.educationalObjective = educationalObjective;
+	}
+	public Semester getSemesterStart() {
+		return semesterStart;
+	}
+	public void setSemesterStart(Semester semesterStart) {
+		this.semesterStart = semesterStart;
+	}
+	public Semester getSemesterEnd() {
+		return semesterEnd;
+	}
+	public void setSemesterEnd(Semester semesterEnd) {
+		this.semesterEnd = semesterEnd;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	
 }
