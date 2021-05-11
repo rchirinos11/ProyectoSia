@@ -18,7 +18,7 @@ public class MeasurementLevel {
 	/*@JoinColumn(name="id_speciality", referencedColumnName = "id_speciality")
 	@ManyToOne
 	private Speciality speciality;*/
-	private Integer order;
+	private Integer orden;
 	private String name;	
 	//@Column(name="succes_rate")
 	private Float successRate;	
