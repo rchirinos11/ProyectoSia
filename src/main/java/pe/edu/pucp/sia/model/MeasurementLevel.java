@@ -20,7 +20,38 @@ public class MeasurementLevel {
 	private Speciality speciality;*/
 	private Integer orden;
 	private String name;	
-	//@Column(name="succes_rate")
+	//@Column(name="success_rate")
 	private Float successRate;	
-	private Boolean active;	
+	private Boolean active;
+	public Integer getIdMeasurementLevel() {
+		return idMeasurementLevel;
+	}
+	public void setIdMeasurementLevel(Integer idMeasurementLevel) {
+		this.idMeasurementLevel = idMeasurementLevel;
+	}
+	public Integer getOrden() {
+		return orden;
+	}
+	public void setOrden(Integer orden) {
+		this.orden = orden;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Float getSuccessRate() {
+		return successRate;
+	}
+	public void setSuccessRate(Float successRate) {
+		this.successRate = successRate;
+	}
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
+	}	
+	
 }

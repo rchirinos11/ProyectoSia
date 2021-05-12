@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import lombok.Setter;
 import lombok.Getter;
 
-@Entity @Getter @Setter
+@Entity
 public class LevelDetail {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_level_detail")
@@ -21,5 +21,31 @@ public class LevelDetail {
 	@ManyToOne
 	private MeasurementLevel measurementLevel;
 	private String description;	
-	private Boolean active;	
+	private Boolean active;
+	public Integer getIdLevelDetail() {
+		return idLevelDetail;
+	}
+	public void setIdLevelDetail(Integer idLevelDetail) {
+		this.idLevelDetail = idLevelDetail;
+	}
+	public MeasurementLevel getMeasurementLevel() {
+		return measurementLevel;
+	}
+	public void setMeasurementLevel(MeasurementLevel measurementLevel) {
+		this.measurementLevel = measurementLevel;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
+	}	
+	
+	
 }
