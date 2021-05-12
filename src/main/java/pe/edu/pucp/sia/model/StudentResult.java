@@ -24,7 +24,15 @@ public class StudentResult {
 	@ManyToOne
 	@JoinColumn(name="id_semester_end")
 	private Semester semesterEnd;
+	private int orderNumber;
 	private String description;
+	
+	public int getOrderNumber() {
+		return orderNumber;
+	}
+	public void setOrderNumber(int orderNumber) {
+		this.orderNumber = orderNumber;
+	}
 	public Integer getId() {
 		return id;
 	}
