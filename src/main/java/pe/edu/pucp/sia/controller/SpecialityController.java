@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Speciality;
 import pe.edu.pucp.sia.service.SpecialityService;
 import pe.edu.pucp.sia.service.impl.SpecialityServiceImp;
@@ -30,6 +31,12 @@ public class SpecialityController {
 	public ResponseEntity<Object> listSpeciality(){
 		logger.info("Entered method listSpeciality()");
 		return ResponseEntity.status(HttpStatus.OK).body(specialityService.listAll());
+	}
+	
+	@GetMapping("/listbyfaculty/{id}")
+	public ResponseEntity<Object> listByFaculty(@PathVariable Integer id){
+		logger.info("Entered method listByFaculty()");
+		return ResponseEntity.status(HttpStatus.OK).body(specialityService.listByFaculty(id));
 	}
 	
 	@PostMapping("/create")
