@@ -7,4 +7,5 @@ public interface MeasurementPlanLineService {
 	public String createMeasurementPlanLine(MeasurementPlanLine m);
 	public String updateMeasurementPlanLine(MeasurementPlanLine m);
 	public String deleteMeasurementPlanLine(Integer id);
+	public Iterable<MeasurementPlanLine> listByCourse(Integer idFaculty);
 }

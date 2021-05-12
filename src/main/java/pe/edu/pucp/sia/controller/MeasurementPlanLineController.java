@@ -41,4 +41,9 @@ public class MeasurementPlanLineController {
 	public ResponseEntity<Object> deleteMeasurementPlanLine(@PathVariable Integer id){
 		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.deleteMeasurementPlanLine(id));
 	}
+	
+	@GetMapping("/listByCourse/{id}")
+	public ResponseEntity<Object> listByCourse(@PathVariable Integer id){
+		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listByCourse(id));
+	}
 }
