@@ -18,11 +18,10 @@ public class SemesterServiceImpl implements SemesterService{
 	}
 
 	@Override
-	public String createSemester(Semester s) {
-		String response = "";
+	public Integer createSemester(Semester s) {
+		Integer response = 0;
 		try {
-			semesterRepository.save(s);
-			response = "Created"; 
+			response = semesterRepository.save(s).getId(); 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -30,11 +29,10 @@ public class SemesterServiceImpl implements SemesterService{
 	}
 
 	@Override
-	public String updateSemester(Semester s) {
-		String response = "";
+	public Integer updateSemester(Semester s) {
+		Integer response = 0;
 		try {
-			semesterRepository.save(s);
-			response = "Updated";
+			response = semesterRepository.save(s).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
