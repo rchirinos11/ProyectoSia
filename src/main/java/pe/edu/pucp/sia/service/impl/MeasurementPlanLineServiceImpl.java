@@ -53,5 +53,8 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 		return response;
 	}
 	
+	public Iterable<MeasurementPlanLine> listByCourse(Integer idFaculty){
+		return mPlanLineRepository.findByCourseId(idFaculty);
+	}
 	
 }
