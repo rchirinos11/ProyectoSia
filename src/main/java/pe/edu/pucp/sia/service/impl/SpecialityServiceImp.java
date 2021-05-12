@@ -3,6 +3,7 @@ package pe.edu.pucp.sia.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Speciality;
 import pe.edu.pucp.sia.repository.SpecialityRepository;
 import pe.edu.pucp.sia.service.SpecialityService;
@@ -51,5 +52,10 @@ public class SpecialityServiceImp implements SpecialityService{
 			System.out.println(ex.getMessage());
 		}
 		return response;
+	}
+
+	@Override
+	public Iterable<Speciality> listByFaculty(Integer id) {
+		return specialityRepository.findByFacultyId(id);
 	}
 }

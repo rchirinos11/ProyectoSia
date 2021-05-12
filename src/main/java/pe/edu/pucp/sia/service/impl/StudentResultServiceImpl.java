@@ -53,4 +53,9 @@ public class StudentResultServiceImpl implements StudentResultService{
 		return response;
 	}
 
+	@Override
+	public Iterable<StudentResult> listBySpeciality(Integer id) {
+		return studentResultRepository.findBySpecialityId(id);
+	}
+
 }

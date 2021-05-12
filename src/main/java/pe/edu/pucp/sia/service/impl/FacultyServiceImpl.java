@@ -19,12 +19,11 @@ public class FacultyServiceImpl implements FacultyService{
 	}
 
 	@Override
-	public Integer createFaculty(Faculty f) {
-		Integer response = 0;
-		Faculty faculty = null;
+	public String createFaculty(Faculty f) {
+		String response = "";
 		try {
-			faculty = facultyRepository.save(f);
-			response = faculty.getId(); 
+			facultyRepository.save(f);
+			response = "Created"; 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
