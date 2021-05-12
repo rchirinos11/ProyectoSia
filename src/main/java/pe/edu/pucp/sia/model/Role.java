@@ -16,8 +16,8 @@ public class Role {
     private Integer id;
     private String description;
     @ManyToOne						
-	@JoinColumn(name="id_person")		
-	private Person person;
+	@JoinColumn(name="id_faculty")		
+	private Faculty faculty;
     
     @ManyToOne
     @JoinColumn(name="id_activity")
@@ -41,11 +41,11 @@ public class Role {
     public void setActivity(Activity activity){
         this.activity=activity;
     }
-    public Person getPerson(){
-        return this.person;
+    public Faculty getFaculty(){
+        return this.faculty;
     }
-    public void setPerson(Person person){
-        this.person=person;
+    public void setFaculty(Faculty faculty){
+        this.faculty=faculty;
     }
 
 }
