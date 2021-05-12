@@ -7,10 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import lombok.Getter;
-import lombok.Setter;
+// import lombok.Getter;
+// import lombok.Setter;
 
-@Entity @Getter @Setter
+@Entity
 public class Role {
     @Id @Column(name="id_role") @GeneratedValue(strategy =GenerationType.AUTO)
     private Integer id;
@@ -22,4 +22,30 @@ public class Role {
     @ManyToOne
     @JoinColumn(name="id_activity")
     private Activity activity;
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public Integer getId(){
+        return this.id;
+    }
+    public void setId(Integer id){
+        this.id=id;
+    }
+    public Activity getActivity(){
+        return this.activity;
+    }
+    public void setActivity(Activity activity){
+        this.activity=activity;
+    }
+    public Person getPerson(){
+        return this.person;
+    }
+    public void setPerson(Person person){
+        this.person=person;
+    }
+
 }
