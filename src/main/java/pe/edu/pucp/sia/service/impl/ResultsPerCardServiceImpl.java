@@ -18,24 +18,22 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	}
 
 	@Override
-	public String createResultsPerCard(ResultsPerCard r) {
-		String response = "";
+	public Integer createResultsPerCard(ResultsPerCard r) {
+		Integer response =0;
 		try {
-			resultsPerCardRepository.save(r);
-			response = "Created"; 
-		} catch(Exception ex) {
+			response=resultsPerCardRepository.save(r).getIdResultsPerCard();
+					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String updateResultsPerCard(ResultsPerCard r) {
-		String response = "";
+	public Integer updateResultsPerCard(ResultsPerCard r) {
+		Integer response =0;
 		try {
-			resultsPerCardRepository.save(r);
-			response = "Updated"; 
-		} catch(Exception ex) {
+			response=resultsPerCardRepository.save(r).getIdResultsPerCard();
+					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;

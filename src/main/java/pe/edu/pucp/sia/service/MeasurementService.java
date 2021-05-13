@@ -4,8 +4,8 @@ import pe.edu.pucp.sia.model.Measurement;
 
 public interface MeasurementService {
 	public Iterable<Measurement>  listAll();
-	public String createMeasurement(Measurement m);
-	public String updateMeasurement(Measurement m);
+	public Integer createMeasurement(Measurement m);
+	public Integer updateMeasurement(Measurement m);
 	public String deleteMeasurement(Integer id);
 
 }

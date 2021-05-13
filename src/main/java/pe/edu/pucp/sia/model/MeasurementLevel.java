@@ -17,43 +17,12 @@ public class MeasurementLevel {
 	@Column(name="id_measurement_level")
 	private Integer idMeasurementLevel;
 	
-	@JoinColumn(name="id_speciality", referencedColumnName = "id_speciality")
+	@JoinColumn(name="id_specialty", referencedColumnName = "id_specialty")
 	@ManyToOne
-	private Speciality speciality;
+	private Specialty specialty;
 	private Integer orden;
 	private String name;	
 	//@Column(name="success_rate")
 	private Float successRate;	
 	private Boolean active;
-	public Integer getIdMeasurementLevel() {
-		return idMeasurementLevel;
-	}
-	public void setIdMeasurementLevel(Integer idMeasurementLevel) {
-		this.idMeasurementLevel = idMeasurementLevel;
-	}
-	public Integer getOrden() {
-		return orden;
-	}
-	public void setOrden(Integer orden) {
-		this.orden = orden;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public Float getSuccessRate() {
-		return successRate;
-	}
-	public void setSuccessRate(Float successRate) {
-		this.successRate = successRate;
-	}
-	public Boolean getActive() {
-		return active;
-	}
-	public void setActive(Boolean active) {
-		this.active = active;
-	}	
-	
 }

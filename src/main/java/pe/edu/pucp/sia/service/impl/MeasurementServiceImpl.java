@@ -17,24 +17,22 @@ public class MeasurementServiceImpl implements MeasurementService {
 	}
 
 	@Override
-	public String createMeasurement(Measurement m) {
-		String response = "";
+	public Integer createMeasurement(Measurement m) {
+		Integer response =0;
 		try {
-			measurementRepository.save(m);
-			response = "Created"; 
-		} catch(Exception ex) {
+			response=measurementRepository.save(m).getIdMeasurement();
+					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String updateMeasurement(Measurement m) {
-		String response = "";
+	public Integer updateMeasurement(Measurement m) {
+		Integer response =0;
 		try {
-			measurementRepository.save(m);
-			response = "Updated"; 
-		} catch(Exception ex) {
+			response=measurementRepository.save(m).getIdMeasurement();
+					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;

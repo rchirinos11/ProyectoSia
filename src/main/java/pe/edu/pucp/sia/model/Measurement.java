@@ -33,51 +33,5 @@ public class Measurement {
 	
 	private Integer orden;
 	private String name;	
-	private Boolean active;
-	public Integer getIdMeasurement() {
-		return idMeasurement;
-	}
-	public void setIdMeasurement(Integer idMeasurement) {
-		this.idMeasurement = idMeasurement;
-	}
-	public ResultsPerCard getResultsPerCard() {
-		return resultsPerCard;
-	}
-	public void setResultsPerCard(ResultsPerCard resultsPerCard) {
-		this.resultsPerCard = resultsPerCard;
-	}
-	public MeasurementLevel getMeasurementLevel() {
-		return measurementLevel;
-	}
-	public void setMeasurementLevel(MeasurementLevel measurementLevel) {
-		this.measurementLevel = measurementLevel;
-	}
-	public Integer getOrden() {
-		return orden;
-	}
-	public void setOrden(Integer orden) {
-		this.orden = orden;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public Boolean getActive() {
-		return active;
-	}
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-	public Person getPerson() {
-		return person;
-	}
-	public void setPerson(Person person) {
-		this.person = person;
-	}	
-
-	
-	
-	
+	private Boolean active;	
 }

@@ -18,24 +18,22 @@ public class LevelDetailServiceImpl implements LevelDetailService{
 	}
 
 	@Override
-	public String createLevelDetail(LevelDetail ld) {
-		String response = "";
+	public Integer createLevelDetail(LevelDetail ld) {
+		Integer response =0;
 		try {
-			levelDetailRepository.save(ld);
-			response = "Created"; 
-		} catch(Exception ex) {
+			response=levelDetailRepository.save(ld).getIdLevelDetail();
+					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String updateLevelDetail(LevelDetail ld) {
-		String response = "";
+	public Integer updateLevelDetail(LevelDetail ld) {
+		Integer response =0;
 		try {
-			levelDetailRepository.save(ld);
-			response = "Updated"; 
-		} catch(Exception ex) {
+			response=levelDetailRepository.save(ld).getIdLevelDetail();
+					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;

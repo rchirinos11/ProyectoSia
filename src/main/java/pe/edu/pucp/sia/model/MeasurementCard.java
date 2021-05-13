@@ -33,37 +33,4 @@ public class MeasurementCard {
 	
 	private LocalDate date;	
 	private Boolean active;
-	public Integer getIdMeasurementCard() {
-		return idMeasurementCard;
-	}
-	public void setIdMeasurementCard(Integer idMeasurementCard) {
-		this.idMeasurementCard = idMeasurementCard;
-	}
-	public LocalDate getDate() {
-		return date;
-	}
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-	public Boolean getActive() {
-		return active;
-	}
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-	public Person getPerson() {
-		return person;
-	}
-	public void setPerson(Person person) {
-		this.person = person;
-	}
-	public Course getCourse() {
-		return course;
-	}
-	public void setCourse(Course course) {
-		this.course = course;
-	}	
-	
-	
-	
 }

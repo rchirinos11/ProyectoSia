@@ -17,24 +17,22 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 	}
 
 	@Override
-	public String createMeasurementLevel(MeasurementLevel ml) {
-		String response = "";
+	public Integer createMeasurementLevel(MeasurementLevel ml) {
+		Integer response =0;
 		try {
-			measurementLevelRepository.save(ml);
-			response = "Created"; 
-		} catch(Exception ex) {
+			response=measurementLevelRepository.save(ml).getIdMeasurementLevel();
+					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String updateMeasurementLevel(MeasurementLevel ml) {
-		String response = "";
+	public Integer updateMeasurementLevel(MeasurementLevel ml) {
+		Integer response =0;
 		try {
-			measurementLevelRepository.save(ml);
-			response = "Updated"; 
-		} catch(Exception ex) {
+			response=measurementLevelRepository.save(ml).getIdMeasurementLevel();
+					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
@@ -50,6 +48,15 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 			System.out.println(ex.getMessage());
 		}
 		return response;
+	}
+
+	@Override
+	public Iterable<MeasurementLevel> listBySpecialty(Integer id) {
+		Iterable<MeasurementLevel> lista = measurementLevelRepository.findBySpecialtyId(id);
+		for (MeasurementLevel ml : lista) {
+			ml.setSpecialty(null);
+		}
+		return lista;
 	}
 
 }

@@ -17,23 +17,21 @@ public class MeasurementCardServiceImpl implements MeasurementCardService{
 	}
 
 	@Override
-	public String createMeasurementCard(MeasurementCard mc) {
-		String response = "";
+	public Integer createMeasurementCard(MeasurementCard mc) {
+		Integer response =0;
 		try {
-			measurementCardRepository.save(mc);
-			response = "Created"; 
-		} catch(Exception ex) {
+			response=measurementCardRepository.save(mc).getIdMeasurementCard();
+					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String updateMeasurementCard(MeasurementCard mc) {
-		String response = "";
+	public Integer updateMeasurementCard(MeasurementCard mc) {
+		Integer response =0;
 		try {
-			measurementCardRepository.save(mc);
-			response = "Updated"; 
+			response=measurementCardRepository.save(mc).getIdMeasurementCard();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}

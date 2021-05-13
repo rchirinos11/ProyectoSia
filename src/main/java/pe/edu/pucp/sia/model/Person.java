@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+@Entity @Getter @Setter
 public class Person {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_person")
@@ -24,42 +24,5 @@ public class Person {
 	//@ManyToOne						//Esto lo agregan para sus FK
 	//@JoinColumn(name="id_person")		//Esto lo agregan para sus FK
 	//private ClasePadre clasePadre;	//Esto lo agregan para sus FK
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getpLastName() {
-		return pLastName;
-	}
-	public void setpLastName(String pLastName) {
-		this.pLastName = pLastName;
-	}
-	public String getmLastName() {
-		return mLastName;
-	}
-	public void setmLastName(String mLastName) {
-		this.mLastName = mLastName;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
 	
 }
