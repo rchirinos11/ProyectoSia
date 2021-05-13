@@ -13,7 +13,7 @@ import lombok.Setter;
 public class ModelStudentResult {
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_model_student_result")
-    private Integer idModelStudentResult;
+    private Integer id;
     private String description;
     private boolean active;
 }

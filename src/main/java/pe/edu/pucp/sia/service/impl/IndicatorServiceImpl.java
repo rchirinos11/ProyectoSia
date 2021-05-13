@@ -19,23 +19,21 @@ public class IndicatorServiceImpl implements IndicatorService {
     }
 
     @Override
-    public String createIndicator(Indicator i) {
-        String response = "";
+	public Integer createIndicator(Indicator i) {
+		Integer response = 0;
 		try {
-			indicatorRepository.save(i);
-			response = "Created"; 
+			response = indicatorRepository.save(i).getId(); 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
-    }
+	}
 
     @Override
-    public String updateIndicator(Indicator i) {
-        String response = "";
+    public Integer updateIndicator(Indicator i) {
+        Integer response = 0;
 		try {
-			indicatorRepository.save(i);
-			response = "Updated";
+			response = indicatorRepository.save(i).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}

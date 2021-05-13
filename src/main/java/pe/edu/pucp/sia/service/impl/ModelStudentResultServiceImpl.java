@@ -19,28 +19,26 @@ public class ModelStudentResultServiceImpl implements ModelStudentResultService 
     }
 
     @Override
-    public String createModelStudentResult(ModelStudentResult m) {
-        String response = "";
+	public Integer createModelStudentResult(ModelStudentResult m) {
+		Integer response = 0;
 		try {
-			modelStudentResultRepository.save(m);
-			response = "Created"; 
+			response = modelStudentResultRepository.save(m).getId(); 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
-    }
+	}
 
     @Override
-    public String updateModelStudentResult(ModelStudentResult m) {
-        String response = "";
+	public Integer updateModelStudentResult(ModelStudentResult m) {
+		Integer response = 0;
 		try {
-			modelStudentResultRepository.save(m);
-			response = "Updated";
+			response = modelStudentResultRepository.save(m).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
-    }
+	}
 
     @Override
     public String deleteModelStudentResult(Integer id) {

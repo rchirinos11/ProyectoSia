@@ -19,28 +19,26 @@ public class AcreditationModelServiceImpl implements AcreditationModelService {
     }
 
     @Override
-    public String createAcreditationModel(AcreditationModel a) {
-        String response = "";
+	public Integer createAcreditationModel(AcreditationModel a) {
+		Integer response = 0;
 		try {
-			acreditationModelRepository.save(a);
-			response = "Created"; 
+			response = acreditationModelRepository.save(a).getId(); 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
-    }
+	}
 
     @Override
-    public String updateAcreditationModel(AcreditationModel a) {
-        String response = "";
+	public Integer updateAcreditationModel(AcreditationModel a) {
+		Integer response = 0;
 		try {
-			acreditationModelRepository.save(a);
-			response = "Updated";
+			response = acreditationModelRepository.save(a).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
-    }
+	}
 
     @Override
     public String deleteAcreditationModel(Integer id) {

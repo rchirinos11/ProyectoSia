@@ -16,7 +16,7 @@ import lombok.Setter;
 public class AcreditationModel {
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_acreditation_model")
-    private Integer idAcreditatioModel;
+    private Integer id;
     private String acronym;
     @Column(name="complete_name")
     private String completeName;

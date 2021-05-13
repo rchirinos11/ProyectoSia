@@ -14,7 +14,7 @@ import lombok.Setter;
 public class Program {
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_program")
-    private Integer idProgram;
+    private Integer id;
     private String name;
     private Boolean active;
 
