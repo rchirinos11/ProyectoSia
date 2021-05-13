@@ -11,12 +11,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity @Getter @Setter
-public class MeasurementLevel {
-    @Id @Column(name="id_measurement_level") @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
-    private int order;
-    private String name;
-    private float successRate;
+public class User {
+    @Id @Column(name="id_user") @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer id;   
+    private String username;    
+    private String password;    
     private boolean active;    
 
     //@ForeignKey(name="id_specialty);
