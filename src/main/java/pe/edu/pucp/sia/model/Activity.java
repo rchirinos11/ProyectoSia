@@ -10,7 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity @Getter @Setter
 public class Activity {
 	@Id @Column(name="id_activity") 
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -24,7 +27,8 @@ public class Activity {
 	private String description;
 	private LocalDate yearStart;
 	private LocalDate yearEnd;
-	
+	private String responsible;
+	/*
 	public Integer getId() {
 		return id;
 	}
@@ -66,4 +70,5 @@ public class Activity {
 	public void setYearEnd(LocalDate yearEnd) {
 		this.yearEnd = yearEnd;
 	}
+	*/
 }
