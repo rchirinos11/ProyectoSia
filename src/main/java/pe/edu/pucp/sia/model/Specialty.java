@@ -12,12 +12,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity @Getter @Setter
-public class EducationalObjective {
-	@Id @Column(name="id_educational_objective") @GeneratedValue(strategy=GenerationType.AUTO)
+public class Specialty {
+	@Id @Column(name="id_specialty") @GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	@ManyToOne
-	@JoinColumn(name="id_specialty")
-	private Specialty specialty;
-	private String description;
+	@JoinColumn(name="id_faculty")
+	private Faculty faculty;
+	private String name;
 	
 }
