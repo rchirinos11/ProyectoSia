@@ -18,11 +18,10 @@ public class ImprovementOpportunityServiceImpl implements ImprovementOpportunity
 	}
 
 	@Override
-	public String createImprovementOpportunity(ImprovementOpportunity i) {
-		String response = "";
+	public Integer createImprovementOpportunity(ImprovementOpportunity i) {
+		Integer response = 0;
 		try {
-			improvementOpportunityRepository.save(i);
-			response = "Created"; 
+			response = improvementOpportunityRepository.save(i).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -30,11 +29,10 @@ public class ImprovementOpportunityServiceImpl implements ImprovementOpportunity
 	}
 
 	@Override
-	public String updateImprovementOpportunity(ImprovementOpportunity i) {
-		String response = "";
+	public Integer updateImprovementOpportunity(ImprovementOpportunity i) {
+		Integer response = 0;
 		try {
-			improvementOpportunityRepository.save(i);
-			response = "Updated";
+			response = improvementOpportunityRepository.save(i).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}

@@ -18,11 +18,10 @@ public class StateServiceImpl implements StateService{
 	}
 
 	@Override
-	public String createState(State s) {
-		String response = "";
+	public Integer createState(State s) {
+		Integer response = 0;
 		try {
-			stateRepository.save(s);
-			response = "Created"; 
+			response = stateRepository.save(s).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -30,11 +29,10 @@ public class StateServiceImpl implements StateService{
 	}
 
 	@Override
-	public String updateState(State s) {
-		String response = "";
+	public Integer updateState(State s) {
+		Integer response = 0;
 		try {
-			stateRepository.save(s);
-			response = "Updated";
+			response = stateRepository.save(s).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
