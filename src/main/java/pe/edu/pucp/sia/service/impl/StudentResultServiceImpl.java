@@ -18,11 +18,10 @@ public class StudentResultServiceImpl implements StudentResultService{
 	}
 
 	@Override
-	public String createStudentResult(StudentResult sr) {
-		String response = "";
+	public Integer createStudentResult(StudentResult sr) {
+		Integer response = 0;
 		try {
-			studentResultRepository.save(sr);
-			response = "Created"; 
+			response = studentResultRepository.save(sr).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -30,11 +29,10 @@ public class StudentResultServiceImpl implements StudentResultService{
 	}
 
 	@Override
-	public String updateStudentResult(StudentResult sr) {
-		String response = "";
+	public Integer updateStudentResult(StudentResult sr) {
+		Integer response = 0;
 		try {
-			studentResultRepository.save(sr);
-			response = "Updated"; 
+			response = studentResultRepository.save(sr).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -54,8 +52,12 @@ public class StudentResultServiceImpl implements StudentResultService{
 	}
 
 	@Override
-	public Iterable<StudentResult> listBySpeciality(Integer id) {
-		return studentResultRepository.findBySpecialityId(id);
+	public Iterable<StudentResult> listBySpecialty(Integer id) {
+		Iterable<StudentResult> lista = studentResultRepository.findBySpecialtyId(id);
+		for (StudentResult studentResult : lista) {
+			studentResult.setSpecialty(null);
+		}
+		return lista;
 	}
 
 }

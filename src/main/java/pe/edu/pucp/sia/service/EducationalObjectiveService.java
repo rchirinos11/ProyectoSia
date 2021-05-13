@@ -4,7 +4,7 @@ import pe.edu.pucp.sia.model.EducationalObjective;
 
 public interface EducationalObjectiveService {
 	public Iterable<EducationalObjective> listAll();
-	public String createEducationalObjective(EducationalObjective eo);
-	public String updateEducationalObjective(EducationalObjective eo);
+	public Integer createEducationalObjective(EducationalObjective eo);
+	public Integer updateEducationalObjective(EducationalObjective eo);
 	public String deleteEducationalObjective(Integer id);
 }
