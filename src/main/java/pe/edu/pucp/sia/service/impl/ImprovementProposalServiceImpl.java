@@ -18,11 +18,10 @@ public class ImprovementProposalServiceImpl implements ImprovementProposalServic
 	}
 
 	@Override
-	public String createImprovementProposal(ImprovementProposal i) {
-		String response = "";
+	public Integer createImprovementProposal(ImprovementProposal i) {
+		Integer response = 0;
 		try {
-			improvementProposalRepository.save(i);
-			response = "Created"; 
+			response = improvementProposalRepository.save(i).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -30,11 +29,10 @@ public class ImprovementProposalServiceImpl implements ImprovementProposalServic
 	}
 
 	@Override
-	public String updateImprovementProposal(ImprovementProposal i) {
-		String response = "";
+	public Integer updateImprovementProposal(ImprovementProposal i) {
+		Integer response = 0;
 		try {
-			improvementProposalRepository.save(i);
-			response = "Updated";
+			response = improvementProposalRepository.save(i).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}

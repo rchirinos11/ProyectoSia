@@ -17,11 +17,10 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public String createRole(Role r) {
-        String response="";
+    public Integer createRole(Role r) {
+        Integer response = 0;
         try{
-            roleRepository.save(r);
-            response="Created";
+            response = roleRepository.save(r).getId();
         }
         catch(Exception ex){
             System.out.println(ex.getMessage());
@@ -30,11 +29,10 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public String updateRole(Role r) {
-        String response = "";
+    public Integer updateRole(Role r) {
+        Integer response = 0;
 		try {
-			roleRepository.save(r);
-			response = "Updated";
+			response= roleRepository.save(r).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}

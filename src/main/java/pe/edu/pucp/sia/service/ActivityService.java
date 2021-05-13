@@ -4,7 +4,7 @@ import pe.edu.pucp.sia.model.Activity;
 
 public interface ActivityService {
 	public Iterable<Activity>  listAll();
-	public String createActivity(Activity a);
-	public String updateActivity(Activity a);
+	public Integer createActivity(Activity a);
+	public Integer updateActivity(Activity a);
 	public String deleteActivity(Integer id);
 }
