@@ -21,8 +21,4 @@ public class Person {
 	private String pLastName;
 	private String mLastName;
 	private String email;
-	//@ManyToOne						//Esto lo agregan para sus FK
-	//@JoinColumn(name="id_person")		//Esto lo agregan para sus FK
-	//private ClasePadre clasePadre;	//Esto lo agregan para sus FK
-	
 }

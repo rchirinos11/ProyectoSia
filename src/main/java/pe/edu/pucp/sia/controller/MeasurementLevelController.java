@@ -31,6 +31,13 @@ public class MeasurementLevelController {
 		return ResponseEntity.status(HttpStatus.OK).body(measurementLevelService.listAll());
 	}
 	
+	@GetMapping("/listbyspecialty/{id}")
+	public ResponseEntity<Object> listByFaculty(@PathVariable Integer id){
+		logger.info("Entered method listBySpecialty()");
+		return ResponseEntity.status(HttpStatus.OK).body(measurementLevelService.listBySpecialty(id));
+	}
+	
+	
 	@PostMapping("/create")
 	public ResponseEntity<Object> createMeasurementLevel(@RequestBody MeasurementLevel ml){
 		logger.info("Entered method createMeasurementLevel()");

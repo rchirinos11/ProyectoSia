@@ -19,9 +19,9 @@ public class ResultsPerCard {
 	private Integer idResultsPerCard;
 	
 	
-	/*@JoinColumn(name="id_indicator", referencedColumnName = "id_indicator")
+	@JoinColumn(name="id_indicator", referencedColumnName = "id_indicator")
 	@ManyToOne
-	private Indicator indicator;*/
+	private Indicator indicator;
 	
 	@JoinColumn(name="id_measurement_card", referencedColumnName = "id_measurement_card")
 	@ManyToOne
