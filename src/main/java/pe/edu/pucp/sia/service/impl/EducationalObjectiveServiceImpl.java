@@ -18,11 +18,10 @@ public class EducationalObjectiveServiceImpl implements EducationalObjectiveServ
 	}
 
 	@Override
-	public String createEducationalObjective(EducationalObjective eo) {
-		String response = "";
+	public Integer createEducationalObjective(EducationalObjective eo) {
+		Integer response = 0;
 		try {
-			educationalObjectiveRepository.save(eo);
-			response = "Created"; 
+			response = educationalObjectiveRepository.save(eo).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -30,11 +29,10 @@ public class EducationalObjectiveServiceImpl implements EducationalObjectiveServ
 	}
 
 	@Override
-	public String updateEducationalObjective(EducationalObjective eo) {
-		String response = "";
+	public Integer updateEducationalObjective(EducationalObjective eo) {
+		Integer response = 0;
 		try {
-			educationalObjectiveRepository.save(eo);
-			response = "Updated"; 
+			educationalObjectiveRepository.save(eo).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}

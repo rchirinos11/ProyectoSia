@@ -4,8 +4,8 @@ import pe.edu.pucp.sia.model.StudentResult;
 
 public interface StudentResultService {
 	public Iterable<StudentResult> listAll();
-	public Iterable<StudentResult> listBySpeciality(Integer id);
-	public String createStudentResult(StudentResult sr);
-	public String updateStudentResult(StudentResult sr);
+	public Iterable<StudentResult> listBySpecialty(Integer id);
+	public Integer createStudentResult(StudentResult sr);
+	public Integer updateStudentResult(StudentResult sr);
 	public String deleteStudentResult(Integer id);
 }
