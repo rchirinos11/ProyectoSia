@@ -18,11 +18,10 @@ public class ActivityServiceImpl implements ActivityService{
 	}
 
 	@Override
-	public String createActivity(Activity a) {
-		String response = "";
+	public Integer createActivity(Activity a) {
+		Integer response = 0;
 		try {
-			activityRepository.save(a);
-			response = "Created"; 
+			response = activityRepository.save(a).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -30,11 +29,10 @@ public class ActivityServiceImpl implements ActivityService{
 	}
 
 	@Override
-	public String updateActivity(Activity a) {
-		String response = "";
+	public Integer updateActivity(Activity a) {
+		Integer response = 0;
 		try {
-			activityRepository.save(a);
-			response = "Updated";
+			response = activityRepository.save(a).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
