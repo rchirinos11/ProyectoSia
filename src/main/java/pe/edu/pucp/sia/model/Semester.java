@@ -20,4 +20,5 @@ public class Semester {
 	private Integer number;
 	private Date startDate;
 	private Date endDate;
+	private Boolean current;
 }
