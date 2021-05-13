@@ -5,19 +5,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.Setter;
 import lombok.Getter;
 
-@Entity @Getter @Setter
+@Entity @Getter @Setter 
 public class MeasurementLevel {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_measurement_level")
 	private Integer idMeasurementLevel;
-	/*@JoinColumn(name="id_speciality", referencedColumnName = "id_speciality")
+	
+	@JoinColumn(name="id_speciality", referencedColumnName = "id_speciality")
 	@ManyToOne
-	private Speciality speciality;*/
+	private Speciality speciality;
 	private Integer orden;
 	private String name;	
 	//@Column(name="success_rate")

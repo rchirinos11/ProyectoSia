@@ -23,9 +23,9 @@ public class Measurement {
 	@ManyToOne
 	private ResultsPerCard resultsPerCard;
 	
-	/*@JoinColumn(name="id_person", referencedColumnName = "id_person")
+	@JoinColumn(name="id_person")
 	@ManyToOne
-	private Person person;*/
+	private Person person;
 	
 	@JoinColumn(name="id_measurement_level", referencedColumnName = "id_measurement_level")
 	@ManyToOne
@@ -69,8 +69,15 @@ public class Measurement {
 	}
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+	public Person getPerson() {
+		return person;
+	}
+	public void setPerson(Person person) {
+		this.person = person;
 	}	
 
+	
 	
 	
 }

@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import lombok.Setter;
 import lombok.Getter;
 
-@Entity
+@Entity @Getter @Setter
 public class LevelDetail {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_level_detail")

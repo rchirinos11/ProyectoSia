@@ -23,13 +23,13 @@ public class MeasurementCard {
 	@ManyToOne
 	private MeasurementType measurementType;*/
 	
-	/*@JoinColumn(name="id_person", referencedColumnName = "id_person")
+	@JoinColumn(name="id_person", referencedColumnName = "id_person")
 	@ManyToOne
 	private Person person;
 	
 	@JoinColumn(name="id_course", referencedColumnName = "id_course")
 	@ManyToOne
-	private Course course;	*/
+	private Course course;
 	
 	private LocalDate date;	
 	private Boolean active;
@@ -50,6 +50,18 @@ public class MeasurementCard {
 	}
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+	public Person getPerson() {
+		return person;
+	}
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+	public Course getCourse() {
+		return course;
+	}
+	public void setCourse(Course course) {
+		this.course = course;
 	}	
 	
 	
