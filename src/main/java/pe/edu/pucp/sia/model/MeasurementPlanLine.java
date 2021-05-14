@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.Setter;
@@ -14,8 +15,8 @@ import lombok.Getter;
 public class MeasurementPlanLine {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
-	private @ManyToOne Course course;
-	private @ManyToOne Semester semester;
+	private @ManyToOne @JoinColumn(name="id_course") Course course;
+	private @ManyToOne @JoinColumn(name="id_semester") Semester semester;
 //	private Indicator indicator;
 //	private @ManyToMany Section section;
 	private int sampleStudents;
