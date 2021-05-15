@@ -31,5 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
-/SIAlog.log
-SIAlog.log
+
+#Logger
+SIAlog.*
