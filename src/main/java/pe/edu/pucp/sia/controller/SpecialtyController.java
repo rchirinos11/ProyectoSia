@@ -39,6 +39,17 @@ public class SpecialtyController {
 		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.listByFaculty(id));
 	}
 	
+	@GetMapping("/listbycoordinator/{id}")
+	public ResponseEntity<Object> listByCoordinator(@PathVariable Integer id){
+		logger.info("Entered method listByCoordinator()");
+		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.listByCoordinator(id));
+	}
+	
+	@GetMapping("/listbyassistant/{id}")
+	public ResponseEntity<Object> listByAssistant(@PathVariable Integer id){
+		logger.info("Entered method listByAssistant()");
+		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.listByAssistant(id));
+	}
 	@PostMapping("/create")
 	public ResponseEntity<Object> createSpecialty(@RequestBody Specialty s){
 		logger.info("Entered method createSpecialty()");

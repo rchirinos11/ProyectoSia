@@ -28,6 +28,7 @@ public class Activity {
 	private LocalDate yearStart;
 	private LocalDate yearEnd;
 	private String responsible;
+	private boolean active;
 	/*
 	public Integer getId() {
 		return id;

@@ -19,5 +19,5 @@ public class EducationalObjective {
 	@JoinColumn(name="id_specialty")
 	private Specialty specialty;
 	private String description;
-	
+	private boolean active;
 }

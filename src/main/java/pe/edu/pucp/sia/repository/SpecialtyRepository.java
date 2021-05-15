@@ -9,4 +9,6 @@ import pe.edu.pucp.sia.model.Specialty;
 
 public interface SpecialtyRepository extends CrudRepository<Specialty,Integer>{
 	public List<Specialty> findByFacultyId(Integer id);
+	public List<Specialty> findByCoordinatorId(Integer id);
+	public List<Specialty> findByAssistantId(Integer id);
 }

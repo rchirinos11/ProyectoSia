@@ -19,5 +19,11 @@ public class Specialty {
 	@JoinColumn(name="id_faculty")
 	private Faculty faculty;
 	private String name;
-	
+	@ManyToOne
+	@JoinColumn(name="id_coordinator")
+	private Person coordinator;
+	@ManyToOne
+	@JoinColumn(name="id_assistant")
+	private Person assistant;
+	private boolean active;
 }

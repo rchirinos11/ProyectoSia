@@ -8,7 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity @Getter @Setter
 public class ImprovementProposal {
 	
 	@Id @Column(name="id_improvement_proposal") 
@@ -18,7 +21,8 @@ public class ImprovementProposal {
 	@JoinColumn(name="id_improvement_opportunity")
 	private ImprovementOpportunity improvementOpportunity;
 	private String description;
-	
+	private boolean active;
+	/*
 	public Integer getId() {
 		return id;
 	}
@@ -39,4 +43,5 @@ public class ImprovementProposal {
 	public void setDescription(String description) {
 		this.description=description;
 	}
+	*/
 }
