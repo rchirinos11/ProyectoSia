@@ -28,5 +28,4 @@ public class Semester {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate endDate;
 	private boolean current;
-	private boolean active;
 }
