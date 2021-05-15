@@ -19,5 +19,5 @@ public class Faculty {
 	@ManyToOne
 	@JoinColumn(name="id_coordinator")
 	private Person coordinator;
-	private Boolean active;
+	private boolean active;
 }
