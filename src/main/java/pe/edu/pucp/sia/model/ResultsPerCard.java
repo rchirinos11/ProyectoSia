@@ -34,5 +34,5 @@ public class ResultsPerCard {
 	private Float average;
 	private Float percentage;
 	private Integer totalStudents;	
-	private Boolean active;
+	private boolean active;
 }

@@ -33,5 +33,5 @@ public class Measurement {
 	
 	private Integer orden;
 	private String name;	
-	private Boolean active;	
+	private boolean active;	
 }

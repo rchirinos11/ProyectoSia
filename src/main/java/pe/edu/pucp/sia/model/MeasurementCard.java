@@ -32,5 +32,5 @@ public class MeasurementCard {
 	private Course course;
 	
 	private LocalDate date;	
-	private Boolean active;
+	private boolean active;
 }

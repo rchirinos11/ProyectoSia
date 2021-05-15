@@ -23,6 +23,6 @@ public class MeasurementLevel {
 	private Integer orden;
 	private String name;	
 	//@Column(name="success_rate")
-	private Float successRate;	
-	private Boolean active;
+	//private Float successRate;	
+	private boolean active;
 }
