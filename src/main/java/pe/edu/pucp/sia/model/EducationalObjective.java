@@ -8,33 +8,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity @Getter @Setter
 public class EducationalObjective {
 	@Id @Column(name="id_educational_objective") @GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	@ManyToOne
-	@JoinColumn(name="id_speciality")
-	private Speciality speciality;
+	@JoinColumn(name="id_specialty")
+	private Specialty specialty;
 	private String description;
-	
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public Speciality getSpeciality() {
-		return speciality;
-	}
-	public void setSpeciality(Speciality speciality) {
-		this.speciality = speciality;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	
+	private boolean active;
 }

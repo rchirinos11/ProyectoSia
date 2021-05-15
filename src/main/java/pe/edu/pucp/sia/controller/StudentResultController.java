@@ -31,10 +31,10 @@ public class StudentResultController {
 		return ResponseEntity.status(HttpStatus.OK).body(studentResultService.listAll());
 	}
 	
-	@GetMapping("/listbyspeciality/{id}")
-	public ResponseEntity<Object> listBySpeciality(@PathVariable Integer id){
-		logger.info("Entered method listBySpeciality()");
-		return ResponseEntity.status(HttpStatus.OK).body(studentResultService.listBySpeciality(id));
+	@GetMapping("/listbyspecialty/{id}")
+	public ResponseEntity<Object> listBySpecialty(@PathVariable Integer id){
+		logger.info("Entered method listBySpecialty()");
+		return ResponseEntity.status(HttpStatus.OK).body(studentResultService.listBySpecialty(id));
 	}
 	
 	@PostMapping("/create")

@@ -4,7 +4,8 @@ import pe.edu.pucp.sia.model.Faculty;
 
 public interface FacultyService {
 	public Iterable<Faculty> listAll();
-	public String createFaculty(Faculty f);
-	public String updateFaculty(Faculty f);
+	public Iterable<Faculty> listByCoordinator(Integer id);
+	public Integer createFaculty(Faculty f);
+	public Integer updateFaculty(Faculty f);
 	public String deleteFaculty(Integer id);
 }

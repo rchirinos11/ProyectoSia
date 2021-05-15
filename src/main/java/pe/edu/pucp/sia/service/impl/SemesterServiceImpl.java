@@ -50,5 +50,16 @@ public class SemesterServiceImpl implements SemesterService{
 		}
 		return response;
 	}
+	
+	@Override
+	public Integer updateCurrent(Integer id) {
+		Integer response = 0;
+		try {
+			response = semesterRepository.changeCurrentSemester(id);
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
+	}
 
 }

@@ -7,5 +7,6 @@ public interface SemesterService {
 	public Integer createSemester(Semester s);
 	public Integer updateSemester(Semester s);
 	public String deleteSemester(Integer id);
+	public Integer updateCurrent(Integer id);
 	
 }

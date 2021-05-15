@@ -42,12 +42,18 @@ public class SemesterController {
 	@PostMapping("/update")
 	public ResponseEntity<Object> updateSemester(@RequestBody Semester s){
 		logger.info("Entered method updateSemester()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(semesterService.updateSemester(s));
+		return ResponseEntity.status(HttpStatus.OK).body(semesterService.updateSemester(s));
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteSemester(@PathVariable Integer id){
 		logger.info("Entered method deleteSemester()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(semesterService.deleteSemester(id));
+		return ResponseEntity.status(HttpStatus.OK).body(semesterService.deleteSemester(id));
+	}
+	
+	@GetMapping("updateCurrent/{id}")
+	public ResponseEntity<Object> updateCurrentSemester(@PathVariable Integer id){
+		logger.info("Entered method updateCurrentSemester()");
+		return ResponseEntity.status(HttpStatus.OK).body(semesterService.updateCurrent(id));
 	}
 }

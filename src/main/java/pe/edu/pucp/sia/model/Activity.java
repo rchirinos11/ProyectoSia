@@ -10,7 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity @Getter @Setter
 public class Activity {
 	@Id @Column(name="id_activity") 
 	@GeneratedValue(strategy=GenerationType.AUTO)

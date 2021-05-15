@@ -19,11 +19,10 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     @Override
-    public String createProgram(Program p) {
-        String response = "";
+    public Integer createProgram(Program p) {
+        Integer response = 0;
 		try {
-			programRepository.save(p);
-			response = "Created"; 
+			response = programRepository.save(p).getId(); 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -31,11 +30,10 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     @Override
-    public String updateProgram(Program p) {
-        String response = "";
+    public Integer updateProgram(Program p) {
+        Integer response = 0;
 		try {
-			programRepository.save(p);
-			response = "Updated";
+			response = programRepository.save(p).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}

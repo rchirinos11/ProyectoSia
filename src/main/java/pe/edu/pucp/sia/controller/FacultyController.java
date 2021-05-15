@@ -31,6 +31,12 @@ public class FacultyController {
 		return ResponseEntity.status(HttpStatus.OK).body(facultyService.listAll());
 	}
 	
+	@GetMapping("/listbycoordinator/{id}")
+	public ResponseEntity<Object> listByCoordinator(@PathVariable Integer id){
+		logger.info("Entered method listByCoordinator()");
+		return ResponseEntity.status(HttpStatus.OK).body(facultyService.listByCoordinator(id));
+	}
+	
 	@PostMapping("/create")
 	public ResponseEntity<Object> createFaculty(@RequestBody Faculty f){
 		logger.info("Entered method createFaculty()");

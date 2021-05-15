@@ -13,7 +13,7 @@ import lombok.Setter;
 public class Indicator {
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_indicator")
-    private Integer idIndicator;
+    private Integer id;
     private String description;
     private boolean active;
     

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.Faculty;
+import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.repository.FacultyRepository;
 import pe.edu.pucp.sia.service.FacultyService;
 
@@ -19,11 +20,10 @@ public class FacultyServiceImpl implements FacultyService{
 	}
 
 	@Override
-	public String createFaculty(Faculty f) {
-		String response = "";
+	public Integer createFaculty(Faculty f) {
+		Integer response = 0;
 		try {
-			facultyRepository.save(f);
-			response = "Created"; 
+			response = facultyRepository.save(f).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -31,11 +31,10 @@ public class FacultyServiceImpl implements FacultyService{
 	}
 
 	@Override
-	public String updateFaculty(Faculty f) {
-		String response = "";
+	public Integer updateFaculty(Faculty f) {
+		Integer response = 0;
 		try {
-			facultyRepository.save(f);
-			response = "Updated"; 
+			response = facultyRepository.save(f).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -52,5 +51,14 @@ public class FacultyServiceImpl implements FacultyService{
 			System.out.println(ex.getMessage());
 		}
 		return response;
+	}
+
+	@Override
+	public Iterable<Faculty> listByCoordinator(Integer id) {
+		Iterable<Faculty> lista = facultyRepository.findByCoordinatorId(id);
+		for (Faculty faculty : lista) {
+			faculty.setCoordinator(null);
+		}
+		return lista;
 	}
 }

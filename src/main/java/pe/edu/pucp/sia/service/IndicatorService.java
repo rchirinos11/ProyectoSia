@@ -4,7 +4,7 @@ import pe.edu.pucp.sia.model.Indicator;
 
 public interface IndicatorService {
     public Iterable<Indicator>  listAll();
-	public String createIndicator(Indicator i);
-	public String updateIndicator(Indicator i);
+	public Integer createIndicator(Indicator i);
+	public Integer updateIndicator(Indicator i);
 	public String deleteIndicator(Integer id);
 }

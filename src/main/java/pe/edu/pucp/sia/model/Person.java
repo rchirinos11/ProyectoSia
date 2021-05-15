@@ -8,9 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Getter;
 import lombok.Setter;
 
+@Where(clause = "active=true")
 @Entity @Getter @Setter
 public class Person {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
@@ -21,7 +24,5 @@ public class Person {
 	private String pLastName;
 	private String mLastName;
 	private String email;
-	//@ManyToOne						//Esto lo agregan para sus FK
-	//@JoinColumn(name="id_person")		//Esto lo agregan para sus FK
-	//private ClasePadre clasePadre;	//Esto lo agregan para sus FK
+	private boolean active;
 }
