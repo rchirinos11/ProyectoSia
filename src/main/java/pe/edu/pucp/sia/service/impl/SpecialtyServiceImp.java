@@ -60,4 +60,22 @@ public class SpecialtyServiceImp implements SpecialtyService{
 		}
 		return lista;
 	}
+
+	@Override
+	public Iterable<Specialty> listByCoordinator(Integer id) {
+		Iterable<Specialty> lista = specialtyRepository.findByFacultyId(id);
+		for (Specialty specialty : lista) {
+			specialty.setCoordinator(null);
+		}
+		return lista;
+	}
+
+	@Override
+	public Iterable<Specialty> listByAssistant(Integer id) {
+		Iterable<Specialty> lista = specialtyRepository.findByFacultyId(id);
+		for (Specialty specialty : lista) {
+			specialty.setAssistant(null);
+		}
+		return lista;
+	}
 }
