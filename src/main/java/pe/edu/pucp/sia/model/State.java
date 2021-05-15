@@ -6,13 +6,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity @Getter @Setter
 public class State {
 	@Id @Column(name="id_state") 
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	private String description;
-	
+	private boolean active;
+	/*
 	public Integer getId() {
 		return id;
 	}
@@ -26,4 +30,5 @@ public class State {
 	public void setDescription(String description) {
 		this.description=description;
 	}
+	*/
 }

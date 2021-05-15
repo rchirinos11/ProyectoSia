@@ -24,7 +24,9 @@ public class Activity {
 	private String description;
 	private LocalDate yearStart;
 	private LocalDate yearEnd;
-	
+	private String responsible;
+	private boolean active;
+	/*
 	public Integer getId() {
 		return id;
 	}
@@ -66,4 +68,5 @@ public class Activity {
 	public void setYearEnd(LocalDate yearEnd) {
 		this.yearEnd = yearEnd;
 	}
+	*/
 }

@@ -6,14 +6,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity @Getter @Setter
 public class ImprovementOpportunity {
 	
 	@Id @Column(name="id_improvement_opportunity") 
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	private String description;
-	
+	private boolean active;
+	/*
 	public Integer getId() {
 		return id;
 	}
@@ -27,4 +31,5 @@ public class ImprovementOpportunity {
 	public void setDescription(String description) {
 		this.description=description;
 	}
+	*/
 }
