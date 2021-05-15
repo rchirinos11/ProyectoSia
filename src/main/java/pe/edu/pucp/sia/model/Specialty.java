@@ -25,4 +25,5 @@ public class Specialty {
 	@ManyToOne
 	@JoinColumn(name="id_assistant")
 	private Person assistant;
+	private Boolean active;
 }
