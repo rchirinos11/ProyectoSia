@@ -43,7 +43,7 @@ public class SemesterServiceImpl implements SemesterService{
 	public String deleteSemester(Integer id) {
 		String response = "";
 		try {
-			semesterRepository.deleteById(id);
+			semesterRepository.deleteSemester(id);
 			response = "Deleted";
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
