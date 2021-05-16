@@ -18,7 +18,7 @@ import pe.edu.pucp.sia.service.impl.EvidenceServiceImpl;
 
 @RestController
 @RequestMapping("/evidence")
-public class CourseController {
+public class EvidenceController {
 	@Autowired
 	private EvidenceService evidenceService = new EvidenceServiceImpl(); 
 	

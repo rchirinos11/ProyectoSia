@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.User;
 import pe.edu.pucp.sia.repository.UserRepository;
-import pe.edu.pucp.sia.service.UserTypeService;
+import pe.edu.pucp.sia.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService{
 	
 	@Autowired
-	private UserTypeRepository userRepository;
+	private UserRepository userRepository;
 	
 	@Override
 	public Iterable<User> listAll() {

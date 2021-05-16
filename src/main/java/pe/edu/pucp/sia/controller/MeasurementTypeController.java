@@ -18,7 +18,7 @@ import pe.edu.pucp.sia.service.impl.MeasurementTypeServiceImpl;
 
 @RestController
 @RequestMapping("/measurementType")
-public class CourseController {
+public class MeasurementTypeController {
 	@Autowired
 	private MeasurementTypeService measurementTypeService = new MeasurementTypeServiceImpl(); 
 	

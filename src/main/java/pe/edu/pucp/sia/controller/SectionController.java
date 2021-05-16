@@ -18,7 +18,7 @@ import pe.edu.pucp.sia.service.impl.SectionServiceImpl;
 
 @RestController
 @RequestMapping("/section")
-public class CourseController {
+public class SectionController {
 	@Autowired
 	private SectionService sectionService = new SectionServiceImpl(); 
 	
@@ -39,6 +39,6 @@ public class CourseController {
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteSection(@PathVariable Integer id){
-		return ResponseEntity.status(HttpStatus.CREATED).body(sectionService.deleteEvidence(id));
+		return ResponseEntity.status(HttpStatus.CREATED).body(sectionService.deleteSection(id));
 	}
 }
