@@ -18,6 +18,7 @@ public class Specialty {
 	@ManyToOne
 	@JoinColumn(name="id_faculty")
 	private Faculty faculty;
+	private String code;
 	private String name;
 	@ManyToOne
 	@JoinColumn(name="id_coordinator")
