@@ -27,18 +27,23 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.listAll());
 	}
 	
-	@PostMapping("/create")
+	@PostMapping("/register")
 	public ResponseEntity<Object> createUser(@RequestBody User u){
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(u));
 	}
 	
 	@PostMapping("/update")
 	public ResponseEntity<Object> updateUser(@RequestBody User u){
-		return ResponseEntity.status(HttpStatus.CREATED).body(userService.updateUser(u));
+		return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(u));
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteUser(@PathVariable Integer id){
-		return ResponseEntity.status(HttpStatus.CREATED).body(userService.deleteUser(id));
+		return ResponseEntity.status(HttpStatus.OK).body(userService.deleteUser(id));
+	}
+	
+	@PostMapping("/authenticate")
+	public ResponseEntity<Object> authenticateUser(@RequestBody User u){
+		return ResponseEntity.status(HttpStatus.OK).body(userService.authenticate(u));
 	}
 }

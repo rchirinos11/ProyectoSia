@@ -20,20 +20,46 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public int createUser(User u) {
-		// TODO Auto-generated method stub
-		return 0;
+		int response = 0;
+		try {
+			response = userRepository.registerUser(u.getPerson().getId(), u.getUsername(), u.getPassword());
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
-	public int deleteUser(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String deleteUser(Integer id) {
+		 String response = "";
+		 try {
+			 userRepository.deleteUser(id);
+			 response = "Deleted";
+		 } catch(Exception ex) {
+			 System.out.println(ex.getMessage());
+		 }
+		return response;
 	}
 
 	@Override
 	public int updateUser(User u) {
-		// TODO Auto-generated method stub
-		return 0;
+		int response = 0;
+		try {
+			response = userRepository.updateUser(u.getId(),u.getUsername(), u.getPassword());
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
+	}
+	
+	public int authenticate(User u) {
+		int response = 0;
+		try {
+			response = userRepository.authenticate(u.getUsername(), u.getPassword());
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
 	}
 
 }
