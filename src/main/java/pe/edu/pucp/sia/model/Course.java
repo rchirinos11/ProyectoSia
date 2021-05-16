@@ -1,7 +1,6 @@
 package pe.edu.pucp.sia.model;
 
-import java.sql.Date;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,9 +11,9 @@ import lombok.Setter;
 
 @Entity @Getter @Setter
 public class Course {
-    @Id @Column(name="id_course") @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
-    private String code;
-    private String name;
-    private boolean active;
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id_course")
+	private Integer id;
+	private String code;
+	private String name;
 }

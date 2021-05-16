@@ -18,11 +18,10 @@ public class SemesterServiceImpl implements SemesterService{
 	}
 
 	@Override
-	public String createSemester(Semester s) {
-		String response = "";
+	public Integer createSemester(Semester s) {
+		Integer response = 0;
 		try {
-			semesterRepository.save(s);
-			response = "Created"; 
+			response = semesterRepository.save(s).getId(); 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -30,11 +29,10 @@ public class SemesterServiceImpl implements SemesterService{
 	}
 
 	@Override
-	public String updateSemester(Semester s) {
-		String response = "";
+	public Integer updateSemester(Semester s) {
+		Integer response = 0;
 		try {
-			semesterRepository.save(s);
-			response = "Updated";
+			response = semesterRepository.save(s).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -45,8 +43,19 @@ public class SemesterServiceImpl implements SemesterService{
 	public String deleteSemester(Integer id) {
 		String response = "";
 		try {
-			semesterRepository.deleteById(id);
+			semesterRepository.deleteSemester(id);
 			response = "Deleted";
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
+	}
+	
+	@Override
+	public Integer updateCurrent(Integer id) {
+		Integer response = 0;
+		try {
+			response = semesterRepository.changeCurrentSemester(id);
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}

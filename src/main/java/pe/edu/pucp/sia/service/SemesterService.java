@@ -4,8 +4,9 @@ import pe.edu.pucp.sia.model.Semester;
 
 public interface SemesterService {
 	public Iterable<Semester>  listAll();
-	public String createSemester(Semester s);
-	public String updateSemester(Semester s);
+	public Integer createSemester(Semester s);
+	public Integer updateSemester(Semester s);
 	public String deleteSemester(Integer id);
+	public Integer updateCurrent(Integer id);
 	
 }

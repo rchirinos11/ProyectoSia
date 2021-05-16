@@ -12,28 +12,43 @@ public class CourseServiceImpl implements CourseService{
 	
 	@Autowired
 	private CourseRepository courseRepository;
-	
+  
 	@Override
 	public Iterable<Course> listAll() {
 		return courseRepository.findAll();
 	}
 
 	@Override
-	public int createCourse(Course c) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int deleteCourse(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int updateCourse(Course c) {
-		// TODO Auto-generated method stub
-		return 0;
+		int response = 0;
+		try {
+			response = courseRepository.save(c).getId();
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
 	}
 
+	@Override
+	public int createCourse(Course c) {
+		int response = 0;
+		try {
+			response = courseRepository.save(c).getId(); 
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public String deleteCourse(Integer id) {
+		String response = "";
+		try {
+			courseRepository.deleteById(id);
+			response = "Deleted";
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
+	}
 }
