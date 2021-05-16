@@ -54,4 +54,13 @@ public class PersonServiceImpl implements PersonService{
 		return response;
 	}
 
+	@Override
+	public Person loginPerson(String email) {
+		try {
+			return personRepository.findByEmail(email);
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return null;
+	}
 }

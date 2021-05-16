@@ -7,4 +7,5 @@ public interface PersonService {
 	public String createPerson(Person p);
 	public String deletePerson(Integer id);
 	public String updatePerson(Person p);
+	public Person loginPerson(String email);
 }
