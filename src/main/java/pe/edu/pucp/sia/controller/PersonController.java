@@ -49,4 +49,10 @@ public class PersonController {
 		logger.info("Entered method deletePerson()");
 		return ResponseEntity.status(HttpStatus.OK).body(personService.deletePerson(id));
 	}
+	
+	@PostMapping("/getPersonData")
+	public ResponseEntity<Object> getPersonData(@RequestBody Person p){
+		logger.info("Entered method getPersonData()");
+		return ResponseEntity.status(HttpStatus.OK).body(personService.listFacultiesSpecialties(p.getEmail()));
+	}
 }
