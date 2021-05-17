@@ -9,20 +9,20 @@ import pe.edu.pucp.sia.service.CourseService;
 
 @Service
 public class CourseServiceImpl implements CourseService{
+	
 	@Autowired
 	private CourseRepository courseRepository;
-
+  
 	@Override
 	public Iterable<Course> listAll() {
 		return courseRepository.findAll();
 	}
 
 	@Override
-	public String updateCourse(Course c) {
-		String response = "";
+	public int updateCourse(Course c) {
+		int response = 0;
 		try {
-			courseRepository.save(c);
-			response = "Updated"; 
+			response = courseRepository.save(c).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -30,11 +30,10 @@ public class CourseServiceImpl implements CourseService{
 	}
 
 	@Override
-	public String createCourse(Course c) {
-		String response = "";
+	public int createCourse(Course c) {
+		int response = 0;
 		try {
-			courseRepository.save(c);
-			response = "Created"; 
+			response = courseRepository.save(c).getId(); 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -52,5 +51,4 @@ public class CourseServiceImpl implements CourseService{
 		}
 		return response;
 	}
-	
 }
