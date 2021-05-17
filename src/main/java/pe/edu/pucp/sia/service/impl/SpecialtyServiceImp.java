@@ -44,7 +44,7 @@ public class SpecialtyServiceImp implements SpecialtyService{
 	public String deleteSpecialty(Integer id) {
 		String response = "";
 		try {
-			specialtyRepository.deleteById(id);
+			specialtyRepository.deleteSpecialty(id);
 			response = "Deleted"; 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
