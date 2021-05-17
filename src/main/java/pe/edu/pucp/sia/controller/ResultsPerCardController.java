@@ -43,7 +43,7 @@ public class ResultsPerCardController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(resultsPerCardService.updateResultsPerCard(r));
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@PostMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteResultsPerCard(@PathVariable Integer id){
 		logger.info("Entered method deleteResultsPerCard()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(resultsPerCardService.deleteResultsPerCard(id));

@@ -43,7 +43,7 @@ public class MeasurementCardController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(measurementCardService.updateMeasurementCard(mc));
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@PostMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteMeasurementCard(@PathVariable Integer id){
 		logger.info("Entered method deleteMeasurementCard()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(measurementCardService.deleteMeasurementCard(id));

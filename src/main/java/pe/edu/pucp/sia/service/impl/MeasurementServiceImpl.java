@@ -20,7 +20,7 @@ public class MeasurementServiceImpl implements MeasurementService {
 	public Integer createMeasurement(Measurement m) {
 		Integer response =0;
 		try {
-			response=measurementRepository.save(m).getIdMeasurement();
+			response=measurementRepository.save(m).getId();
 					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -31,7 +31,7 @@ public class MeasurementServiceImpl implements MeasurementService {
 	public Integer updateMeasurement(Measurement m) {
 		Integer response =0;
 		try {
-			response=measurementRepository.save(m).getIdMeasurement();
+			response=measurementRepository.save(m).getId();
 					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -42,7 +42,7 @@ public class MeasurementServiceImpl implements MeasurementService {
 	public String deleteMeasurement(Integer id) {
 		String response = "";
 		try {
-			measurementRepository.deleteById(id);
+			measurementRepository.deleteMeasurement(id);
 			response = "Deleted"; 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());

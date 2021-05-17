@@ -21,7 +21,7 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	public Integer createResultsPerCard(ResultsPerCard r) {
 		Integer response =0;
 		try {
-			response=resultsPerCardRepository.save(r).getIdResultsPerCard();
+			response=resultsPerCardRepository.save(r).getId();
 					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -32,7 +32,7 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	public Integer updateResultsPerCard(ResultsPerCard r) {
 		Integer response =0;
 		try {
-			response=resultsPerCardRepository.save(r).getIdResultsPerCard();
+			response=resultsPerCardRepository.save(r).getId();
 					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -43,7 +43,7 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	public String deleteResultsPerCard(Integer id) {
 		String response = "";
 		try {
-			resultsPerCardRepository.deleteById(id);
+			resultsPerCardRepository.deleteResultsPerCard(id);
 			response = "Deleted"; 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());

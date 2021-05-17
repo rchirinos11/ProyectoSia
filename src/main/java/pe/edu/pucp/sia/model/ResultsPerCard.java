@@ -9,14 +9,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Setter;
 import lombok.Getter;
 
+@Where(clause = "active=true")
 @Entity @Getter @Setter
 public class ResultsPerCard {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_results_per_card")
-	private Integer idResultsPerCard;
+	private Integer id;
 	
 	
 	@JoinColumn(name="id_indicator", referencedColumnName = "id_indicator")
@@ -34,5 +37,5 @@ public class ResultsPerCard {
 	private Float average;
 	private Float percentage;
 	private Integer totalStudents;	
-	private boolean active;
+	private boolean active=true;
 }
