@@ -43,7 +43,7 @@ public class ActivityServiceImpl implements ActivityService{
 	public String deleteActivity(Integer id) {
 		String response = "";
 		try {
-			activityRepository.deleteById(id);
+			activityRepository.deleteActivity(id);
 			response = "Deleted";
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());

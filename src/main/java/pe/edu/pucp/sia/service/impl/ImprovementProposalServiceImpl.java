@@ -43,7 +43,7 @@ public class ImprovementProposalServiceImpl implements ImprovementProposalServic
 	public String deleteImprovementProposal(Integer id) {
 		String response = "";
 		try {
-			improvementProposalRepository.deleteById(id);
+			improvementProposalRepository.deleteImprovementProposal(id);
 			response = "Deleted";
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());

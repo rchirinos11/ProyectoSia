@@ -43,7 +43,7 @@ public class StateServiceImpl implements StateService{
 	public String deleteState(Integer id) {
 		String response = "";
 		try {
-			stateRepository.deleteById(id);
+			stateRepository.deleteState(id);
 			response = "Deleted";
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());

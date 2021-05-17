@@ -43,7 +43,7 @@ public class ImprovementOpportunityServiceImpl implements ImprovementOpportunity
 	public String deleteImprovementOpportunity(Integer id) {
 		String response = "";
 		try {
-			improvementOpportunityRepository.deleteById(id);
+			improvementOpportunityRepository.deleteImprovementOpportunity(id);
 			response = "Deleted";
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
