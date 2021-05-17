@@ -9,14 +9,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Setter;
 import lombok.Getter;
 
+@Where(clause = "active=true")
 @Entity @Getter @Setter
 public class Measurement {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_measurement")
-	private Integer idMeasurement;
+	private Integer id;
 	
 	
 	@JoinColumn(name="id_results_per_card", referencedColumnName = "id_results_per_card")
@@ -33,5 +36,5 @@ public class Measurement {
 	
 	private Integer orden;
 	private String name;	
-	private Boolean active;	
+	private boolean active=true;	
 }

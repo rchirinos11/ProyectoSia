@@ -20,8 +20,9 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 	public Integer createMeasurementLevel(MeasurementLevel ml) {
 		Integer response =0;
 		try {
-			response=measurementLevelRepository.save(ml).getIdMeasurementLevel();
-					} catch(Exception ex) {
+			response=measurementLevelRepository.save(ml).getId();
+			
+		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
@@ -31,8 +32,8 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 	public Integer updateMeasurementLevel(MeasurementLevel ml) {
 		Integer response =0;
 		try {
-			response=measurementLevelRepository.save(ml).getIdMeasurementLevel();
-					} catch(Exception ex) {
+			response=measurementLevelRepository.save(ml).getId();
+		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
@@ -42,7 +43,7 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 	public String deleteMeasurementLevel(Integer id) {
 		String response = "";
 		try {
-			measurementLevelRepository.deleteById(id);
+			measurementLevelRepository.deleteMeasurementLevel(id);
 			response = "Deleted"; 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());

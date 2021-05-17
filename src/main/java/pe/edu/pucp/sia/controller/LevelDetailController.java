@@ -43,7 +43,7 @@ public class LevelDetailController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(levelDetailService.updateLevelDetail(l));
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@PostMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteLevelDetail(@PathVariable Integer id){
 		logger.info("Entered method deleteLevelDetail()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(levelDetailService.deleteLevelDetail(id));

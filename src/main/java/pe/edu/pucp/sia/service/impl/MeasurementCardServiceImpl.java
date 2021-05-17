@@ -20,8 +20,8 @@ public class MeasurementCardServiceImpl implements MeasurementCardService{
 	public Integer createMeasurementCard(MeasurementCard mc) {
 		Integer response =0;
 		try {
-			response=measurementCardRepository.save(mc).getIdMeasurementCard();
-					} catch(Exception ex) {
+			response=measurementCardRepository.save(mc).getId();				
+		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		return response;
@@ -31,7 +31,7 @@ public class MeasurementCardServiceImpl implements MeasurementCardService{
 	public Integer updateMeasurementCard(MeasurementCard mc) {
 		Integer response =0;
 		try {
-			response=measurementCardRepository.save(mc).getIdMeasurementCard();
+			response=measurementCardRepository.save(mc).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -42,7 +42,7 @@ public class MeasurementCardServiceImpl implements MeasurementCardService{
 	public String deleteMeasurementCard(Integer id) {
 		String response = "";
 		try {
-			measurementCardRepository.deleteById(id);
+			measurementCardRepository.deleteMeasurementCard(id);
 			response = "Deleted"; 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());

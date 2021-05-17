@@ -21,7 +21,7 @@ public class LevelDetailServiceImpl implements LevelDetailService{
 	public Integer createLevelDetail(LevelDetail ld) {
 		Integer response =0;
 		try {
-			response=levelDetailRepository.save(ld).getIdLevelDetail();
+			response=levelDetailRepository.save(ld).getId();
 					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -32,7 +32,7 @@ public class LevelDetailServiceImpl implements LevelDetailService{
 	public Integer updateLevelDetail(LevelDetail ld) {
 		Integer response =0;
 		try {
-			response=levelDetailRepository.save(ld).getIdLevelDetail();
+			response=levelDetailRepository.save(ld).getId();
 					} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -43,7 +43,7 @@ public class LevelDetailServiceImpl implements LevelDetailService{
 	public String deleteLevelDetail(Integer id) {
 	String response = "";
 		try {
-			levelDetailRepository.deleteById(id);
+			levelDetailRepository.deleteLevelDetail(id);
 			response = "Deleted";
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
