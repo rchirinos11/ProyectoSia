@@ -24,5 +24,4 @@ public class Person {
 	private String pLastName;
 	private String mLastName;
 	private String email;
-	private boolean active;
 }

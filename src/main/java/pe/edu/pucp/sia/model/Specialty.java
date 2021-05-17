@@ -8,9 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Getter;
 import lombok.Setter;
 
+@Where(clause = "active=true")
 @Entity @Getter @Setter
 public class Specialty {
 	@Id @Column(name="id_specialty") @GeneratedValue(strategy=GenerationType.AUTO)
@@ -26,5 +29,4 @@ public class Specialty {
 	@ManyToOne
 	@JoinColumn(name="id_assistant")
 	private Person assistant;
-	private boolean active;
 }
