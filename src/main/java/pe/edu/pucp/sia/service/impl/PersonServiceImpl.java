@@ -68,6 +68,7 @@ public class PersonServiceImpl implements PersonService{
 	@Override
 	public PersonDataResponse listFacultiesSpecialties(String email) {
 		PersonDataResponse response = null;
+		Person person;
 		Iterable<Faculty> facultyList;
 		Iterable<Specialty> cSpecialtyList;
 		Iterable<Specialty> aSpecialtyList;
@@ -75,6 +76,7 @@ public class PersonServiceImpl implements PersonService{
 			facultyList = facultyRepository.findByCoordinatorEmail(email);
 			cSpecialtyList = specialtyRepository.findByCoordinatorEmail(email);
 			aSpecialtyList = specialtyRepository.findByAssistantEmail(email);
+			person = personRepository.findByEmail(email);
 			
 			for(Faculty f : facultyList)
 				f.setCoordinator(null);
@@ -93,6 +95,7 @@ public class PersonServiceImpl implements PersonService{
 			response.setCoordinatingSpecialtyList(cSpecialtyList);
 			response.setAssistingSpecialtyList(aSpecialtyList);
 			response.setCoordinatingFacultyList(facultyList);
+			response.setPerson(person);
 			
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
