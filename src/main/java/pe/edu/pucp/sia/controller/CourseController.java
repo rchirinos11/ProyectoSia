@@ -15,11 +15,11 @@ import pe.edu.pucp.sia.model.Course;
 import pe.edu.pucp.sia.service.CourseService;
 import pe.edu.pucp.sia.service.impl.CourseServiceImpl;
 
-@RequestMapping("/course")
 @RestController
+@RequestMapping("/course")
 public class CourseController {
 	@Autowired
-	CourseService courseService = new CourseServiceImpl();
+	private CourseService courseService = new CourseServiceImpl(); 
 	
 	@GetMapping("/list")
 	public ResponseEntity<Object> listCourse(){

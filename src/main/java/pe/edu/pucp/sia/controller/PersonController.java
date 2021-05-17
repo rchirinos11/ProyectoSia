@@ -49,4 +49,16 @@ public class PersonController {
 		logger.info("Entered method deletePerson()");
 		return ResponseEntity.status(HttpStatus.OK).body(personService.deletePerson(id));
 	}
+	
+	@GetMapping("/login/{email}")
+	public ResponseEntity<Object> loginPerson(@PathVariable String email){
+		logger.info("Entered method loginPerson()");
+		return ResponseEntity.status(HttpStatus.OK).body(personService.loginPerson(email));
+	}
+		
+	@PostMapping("/getPersonData")
+	public ResponseEntity<Object> getPersonData(@RequestBody Person p){
+		logger.info("Entered method getPersonData()");
+		return ResponseEntity.status(HttpStatus.OK).body(personService.listFacultiesSpecialties(p.getEmail()));
+	}
 }
