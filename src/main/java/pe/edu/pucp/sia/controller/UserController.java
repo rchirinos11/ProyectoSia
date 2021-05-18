@@ -19,26 +19,31 @@ import pe.edu.pucp.sia.service.impl.UserServiceImpl;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+	Logger logger = LoggerFactory.getLogger(EducationalObjectiveController.class);
 	@Autowired
 	private UserService userService = new UserServiceImpl(); 
 	
 	@GetMapping("/list")
 	public ResponseEntity<Object> listUser(){
+		logger.info("Entered method listUser()");
 		return ResponseEntity.status(HttpStatus.OK).body(userService.listAll());
 	}
 	
 	@PostMapping("/create")
 	public ResponseEntity<Object> createUser(@RequestBody User u){
+		logger.info("Entered method createUser()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(u));
 	}
 	
 	@PostMapping("/update")
 	public ResponseEntity<Object> updateUser(@RequestBody User u){
+		logger.info("Entered method updateUser()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.updateUser(u));
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteUser(@PathVariable Integer id){
+		logger.info("Entered method deleteUser()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.deleteUser(id));
 	}
 }
