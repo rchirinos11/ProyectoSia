@@ -44,7 +44,7 @@ public class ModelStudentResultServiceImpl implements ModelStudentResultService 
     public String deleteModelStudentResult(Integer id) {
         String response = "";
 		try {
-			modelStudentResultRepository.deleteById(id);
+			modelStudentResultRepository.deleteModelStudentResult(id);
 			response = "Deleted";
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
