@@ -8,10 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Getter;
 import lombok.Setter;
 
-
+@Where(clause = "active=true")
 @Entity @Getter @Setter
 public class AcreditationModel {
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
@@ -20,7 +22,7 @@ public class AcreditationModel {
     private String acronym;
     @Column(name="complete_name")
     private String completeName;
-    private Boolean active;
+    
 
     @JoinColumn(name="id_program", referencedColumnName = "id_program")
     @ManyToOne

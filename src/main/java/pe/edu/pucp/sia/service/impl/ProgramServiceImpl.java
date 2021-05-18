@@ -44,7 +44,7 @@ public class ProgramServiceImpl implements ProgramService {
     public String deleteProgram(Integer id) {
         String response = "";
 		try {
-			programRepository.deleteById(id);
+			programRepository.deleteProgram(id);
 			response = "Deleted";
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());

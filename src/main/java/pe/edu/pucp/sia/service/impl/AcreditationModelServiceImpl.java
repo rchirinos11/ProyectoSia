@@ -44,7 +44,7 @@ public class AcreditationModelServiceImpl implements AcreditationModelService {
     public String deleteAcreditationModel(Integer id) {
         String response = "";
 		try {
-			acreditationModelRepository.deleteById(id);
+			acreditationModelRepository.deleteAcreditationModel(id);
 			response = "Deleted";
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());

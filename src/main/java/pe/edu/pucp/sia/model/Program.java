@@ -8,16 +8,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Getter;
 import lombok.Setter;
 
+@Where(clause = "active=true")
 @Entity @Getter @Setter
 public class Program {
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_program")
     private Integer id;
     private String name;
-    private Boolean active;
 
     @ManyToOne
     @JoinColumn(name="id_model_student_result")

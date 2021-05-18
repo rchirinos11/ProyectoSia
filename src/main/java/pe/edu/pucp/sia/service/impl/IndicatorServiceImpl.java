@@ -44,7 +44,7 @@ public class IndicatorServiceImpl implements IndicatorService {
     public String deleteIndicator(Integer id) {
         String response = "";
 		try {
-			indicatorRepository.deleteById(id);
+			indicatorRepository.deleteIndicator(id);
 			response = "Deleted";
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
