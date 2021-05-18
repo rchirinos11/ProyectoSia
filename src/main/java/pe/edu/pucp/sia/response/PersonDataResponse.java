@@ -8,6 +8,7 @@ import pe.edu.pucp.sia.model.Specialty;
 
 @Getter @Setter
 public class PersonDataResponse {
+	boolean admin;
 	Person person;
 	Iterable<Faculty> coordinatingFacultyList;
 	Iterable<Specialty> coordinatingSpecialtyList;

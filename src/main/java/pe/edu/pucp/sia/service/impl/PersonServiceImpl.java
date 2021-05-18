@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Person;
+import pe.edu.pucp.sia.model.Role;
 import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.repository.FacultyRepository;
 import pe.edu.pucp.sia.repository.PersonRepository;
@@ -96,6 +97,11 @@ public class PersonServiceImpl implements PersonService{
 			response.setAssistingSpecialtyList(aSpecialtyList);
 			response.setCoordinatingFacultyList(facultyList);
 			response.setPerson(person);
+			response.setAdmin(false);
+			
+			for(Role r : person.getRoleList())
+				if(r.getId()==1)
+					response.setAdmin(true);
 			
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
