@@ -45,8 +45,11 @@ public class FacultyServiceImpl implements FacultyService{
 	public String deleteFaculty(Integer id) {
 		String response = "";
 		try {
-			facultyRepository.deleteFaculty(id);
-			response = "Deleted"; 
+			int x = facultyRepository.deleteFaculty(id);
+			if(x==0)
+				response = "Deleted";
+			else
+				response = "Cannot delete due to dependency";
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
