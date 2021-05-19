@@ -12,5 +12,5 @@ public interface FacultyRepository extends CrudRepository<Faculty,Integer>{
 	public Iterable<Faculty> findByCoordinatorEmail(String email);
 	
 	@Procedure("sp_delete_faculty")
-	public void deleteFaculty(Integer id);
+	public int deleteFaculty(Integer id);
 }
