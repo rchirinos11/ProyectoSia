@@ -15,7 +15,7 @@ import pe.edu.pucp.sia.service.impl.FacultyServiceImpl;
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
-class SiaApplicationTests {
+class FacultyTester {
 	
 	@Autowired
 	FacultyService service = new FacultyServiceImpl();;
