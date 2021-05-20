@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Person;
+import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.service.FacultyService;
 import pe.edu.pucp.sia.service.PersonService;
 import pe.edu.pucp.sia.service.impl.FacultyServiceImpl;
@@ -24,7 +25,7 @@ import pe.edu.pucp.sia.service.impl.PersonServiceImpl;
 class FacultyTester {
 	
 	@Autowired
-	FacultyService service = new FacultyServiceImpl();
+	FacultyService serviceFaculty = new FacultyServiceImpl();
 	
 	@Autowired
 	PersonService serviceCoordinator = new PersonServiceImpl();
@@ -36,10 +37,9 @@ class FacultyTester {
 		Faculty faculty = new Faculty();
 		faculty.setName("Humanidades");
 		//Llama al metodo crear Facultad y obtiene el ID
-		Integer id = service.createFaculty(faculty);
+		Integer id = serviceFaculty.createFaculty(faculty);
 		//Lista las facultades
-		Iterable<Faculty> list = service.listAll();
-		//Comprueba id devuelta sea el mismo que el de BD
+		Iterable<Faculty> list = serviceFaculty.listAll();
 		faculty = list.iterator().next();
 		assertEquals("Humanidades",faculty.getName());
 		assertThat(id==faculty.getId());
@@ -49,13 +49,13 @@ class FacultyTester {
 	@Order(2)
 	public void updateFaculty(){
 		//Obtiene facultad agregada
-		Iterable<Faculty> list = service.listAll();
+		Iterable<Faculty> list = serviceFaculty.listAll();
 		Faculty faculty = list.iterator().next();
 		//Cambia un parametro
 		faculty.setName("Ciencias e Ingenieria");
-		service.updateFaculty(faculty);
+		serviceFaculty.updateFaculty(faculty);
 		//Obtiene lista nueva actualizada
-		list = service.listAll();
+		list = serviceFaculty.listAll();
 		assertEquals("Ciencias e Ingenieria",list.iterator().next().getName());
 		}
 	
@@ -63,13 +63,13 @@ class FacultyTester {
 	@Order(3)
 	public void logicDeleteFaculty(){
 		//Obtiene facultad agregada
-		Iterable<Faculty> list = service.listAll();
+		Iterable<Faculty> list = serviceFaculty.listAll();
 		Faculty faculty = list.iterator().next();
 		//Delete logico
 		faculty.setActive(false);
-		service.updateFaculty(faculty);
+		serviceFaculty.updateFaculty(faculty);
 		//Obtiene lista nueva actualizada
-		list = service.listAll();
+		list = serviceFaculty.listAll();
 		assertThat(list).isEmpty();
 		}
 	
@@ -84,12 +84,22 @@ class FacultyTester {
 		serviceCoordinator.createPerson(coordinator);
 		faculty.setCoordinator(coordinator);
 		//Llama al metodo crear Facultad y obtiene el ID
-		Integer id = service.createFaculty(faculty);
+		Integer id = serviceFaculty.createFaculty(faculty);
 		
 		//Obtiene facultad agregada
-		Iterable<Faculty> list = service.listByCoordinator(id);
+		Iterable<Faculty> list = serviceFaculty.listByCoordinator(id);
 		//Obtiene lista nueva actualizada
-		list = service.listAll();
+		list = serviceFaculty.listAll();
 		assertEquals("Arte",list.iterator().next().getName());
+		terminaTest();
 		}
+	
+	private void terminaTest() {
+		Iterable<Faculty> listf = serviceFaculty.listAll();
+		for (Faculty f : listf) {
+			//Delete logico
+			f.setActive(false);
+			serviceFaculty.updateFaculty(f);
+		}
+	}
 }

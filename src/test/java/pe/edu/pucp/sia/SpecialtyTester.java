@@ -3,6 +3,7 @@ package pe.edu.pucp.sia;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.After;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -120,7 +121,17 @@ public class SpecialtyTester {
 		//Obtiene lista nueva actualizada
 		list = serviceSpecialty.listAll();
 		assertThat(list).isEmpty();
+		terminaTest();
 		}
+	
+	private void terminaTest() {
+		Iterable<Faculty> listf = serviceFaculty.listAll();
+		for (Faculty f : listf) {
+			//Delete logico
+			f.setActive(false);
+			serviceFaculty.updateFaculty(f);
+		}
+	}
 	
 
 	

@@ -22,7 +22,7 @@ import pe.edu.pucp.sia.service.impl.StudentResultServiceImpl;
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
-public class StudentResultTest {
+public class StudentResultTester {
 	@Autowired
 	SpecialtyService serviceSpecialty = new SpecialtyServiceImpl();
 	
@@ -34,7 +34,7 @@ public class StudentResultTest {
 	
 	@Test
 	@Order(1)
-	public void insertSpecialityAndRecieveId() {
+	public void insertStudentResultAndRecieveId() {
 		//Crea facultad y especialidad
 		Faculty faculty = new Faculty();
 		faculty.setName("Ciencias");
@@ -64,7 +64,6 @@ public class StudentResultTest {
 	@Test
 	@Order(2)
 	public void updateStudentResult(){
-		//Obtiene facultad agregada
 		Iterable<StudentResult> list = serviceStudentResult.listAll();
 		StudentResult studentResult = list.iterator().next();
 		//Cambia un parametro
@@ -124,5 +123,22 @@ public class StudentResultTest {
 		//Obtiene lista nueva actualizada
 		list = serviceStudentResult.listAll();
 		assertThat(list).isEmpty();
+		terminaTest();
 		}
+	
+	private void terminaTest() {
+		Iterable<Specialty> lists = serviceSpecialty.listAll();
+		for (Specialty s : lists) {
+			//Delete logico
+			s.setActive(false);
+			serviceSpecialty.updateSpecialty(s);
+		}
+		
+		Iterable<Faculty> listf = serviceFaculty.listAll();
+		for (Faculty f : listf) {
+			//Delete logico
+			f.setActive(false);
+			serviceFaculty.updateFaculty(f);
+		}
+	}
 }
