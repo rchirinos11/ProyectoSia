@@ -23,7 +23,7 @@ class SiaApplicationTests {
 	@Test
 	@Order(1)
 	public void contextLoads() {
-        Iterable<Faculty> list = service.listAll();
+		Iterable<Faculty> list = service.listAll();
 		assertThat(list).size().isEqualTo(0);
 	}
 

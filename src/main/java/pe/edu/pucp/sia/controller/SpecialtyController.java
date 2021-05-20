@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.service.SpecialtyService;
-import pe.edu.pucp.sia.service.impl.SpecialtyServiceImp;
+import pe.edu.pucp.sia.service.impl.SpecialtyServiceImpl;
 
 @RestController
 @RequestMapping("/specialty")
@@ -25,7 +25,7 @@ public class SpecialtyController {
 	Logger logger = LoggerFactory.getLogger(SpecialtyController.class);
 	
 	@Autowired
-	private SpecialtyService specialtyService = new SpecialtyServiceImp();
+	private SpecialtyService specialtyService = new SpecialtyServiceImpl();
 	
 	@GetMapping("/list")
 	public ResponseEntity<Object> listSpecialty(){
