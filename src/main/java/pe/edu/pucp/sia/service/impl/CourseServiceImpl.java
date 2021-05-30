@@ -1,5 +1,7 @@
 package pe.edu.pucp.sia.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +52,16 @@ public class CourseServiceImpl implements CourseService{
 			System.out.println(ex.getMessage());
 		}
 		return response;
+	}
+
+	@Override
+	public List<Course> listCoursesByTeacherSpecialty(Integer idPerson, Integer idSpeciality) {
+		List<Course> lista=null;
+		try{
+			lista = courseRepository.listCoursesByTeacherSpecialty(idPerson, idSpeciality);
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return lista;
 	}
 }
