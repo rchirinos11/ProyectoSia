@@ -15,7 +15,7 @@ import lombok.Getter;
 @Entity @Getter @Setter
 public class MeasurementPlanLine {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_person")
+	@Column(name="id_measurement_plan_line")
 	private Integer id;
 	@ManyToOne @JoinColumn(name="id_course")
 	private Course course;
@@ -23,6 +23,9 @@ public class MeasurementPlanLine {
 	private Semester semester;
 	@ManyToOne @JoinColumn(name="id_indicator")
 	private Indicator indicator;
+	@ManyToOne @JoinColumn(name="id_person")
+	private Person person;
+	
 //	@ManyToOne @Column(name="id_section")
 //	private Section section;
 	private int sampleStudents;
