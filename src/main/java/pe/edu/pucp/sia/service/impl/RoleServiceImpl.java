@@ -50,6 +50,11 @@ public class RoleServiceImpl implements RoleService{
 		}
 		return response;
     }
+
+	@Override
+	public Iterable<Role> listByEmail(String email) {
+		return roleRepository.findByPersonListEmail(email);
+	}
     
     
 }

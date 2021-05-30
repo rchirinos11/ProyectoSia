@@ -6,4 +6,5 @@ public interface RoleService {
 	public Integer createRole(Role r);
 	public Integer updateRole(Role r);
 	public String deleteRole(Integer id);
+	public Iterable<Role> listByEmail(String email);
 }
