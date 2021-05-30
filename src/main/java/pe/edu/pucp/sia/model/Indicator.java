@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Where;
 
@@ -18,5 +20,13 @@ public class Indicator {
 	@Column(name="id_indicator")
     private Integer id;
     private String description;
-    
+    @ManyToOne
+	@JoinColumn(name="id_student_result")
+	private StudentResult studentResult;
+    @ManyToOne
+	@JoinColumn(name="id_semester_start")
+	private Semester semesterStart;
+    @ManyToOne
+	@JoinColumn(name="id_semester_end")
+	private Semester semesterEnd;
 }
