@@ -10,7 +10,6 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Semester;
 import pe.edu.pucp.sia.service.SemesterService;
 import pe.edu.pucp.sia.service.impl.SemesterServiceImpl;

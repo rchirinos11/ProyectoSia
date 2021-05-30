@@ -3,7 +3,6 @@ package pe.edu.pucp.sia;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.After;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import pe.edu.pucp.sia.model.Faculty;
-import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.service.FacultyService;
 import pe.edu.pucp.sia.service.PersonService;

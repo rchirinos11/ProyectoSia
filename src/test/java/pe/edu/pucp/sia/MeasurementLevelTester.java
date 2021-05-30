@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.MeasurementLevel;
 import pe.edu.pucp.sia.model.Specialty;
-import pe.edu.pucp.sia.model.StudentResult;
 import pe.edu.pucp.sia.service.FacultyService;
 import pe.edu.pucp.sia.service.MeasurementLevelService;
 import pe.edu.pucp.sia.service.SpecialtyService;
@@ -26,7 +25,7 @@ import pe.edu.pucp.sia.service.impl.SpecialtyServiceImpl;
 public class MeasurementLevelTester {
 	@Autowired
 	SpecialtyService serviceSpecialty = new SpecialtyServiceImpl();
-	
+
 	@Autowired
 	FacultyService serviceFaculty = new FacultyServiceImpl();
 	

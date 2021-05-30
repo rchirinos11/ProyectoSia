@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Person;
-import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.service.FacultyService;
 import pe.edu.pucp.sia.service.PersonService;
 import pe.edu.pucp.sia.service.impl.FacultyServiceImpl;
@@ -23,7 +22,7 @@ import pe.edu.pucp.sia.service.impl.PersonServiceImpl;
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
 class FacultyTester {
-	
+
 	@Autowired
 	FacultyService serviceFaculty = new FacultyServiceImpl();
 	
