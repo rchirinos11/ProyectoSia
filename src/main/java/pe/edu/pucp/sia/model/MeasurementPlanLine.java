@@ -9,9 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Setter;
 import lombok.Getter;
 
+@Where(clause="active=true")
 @Entity @Getter @Setter
 public class MeasurementPlanLine {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
@@ -27,5 +30,4 @@ public class MeasurementPlanLine {
 //	private Section section;
 	private int sampleStudents;
 	private String evaluatoryActivity;
-	private boolean active;
 }
