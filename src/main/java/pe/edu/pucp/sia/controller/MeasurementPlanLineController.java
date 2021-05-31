@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
+import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.service.MeasurementPlanLineService;
 import pe.edu.pucp.sia.service.impl.MeasurementPlanLineServiceImpl;
 
@@ -45,5 +46,10 @@ public class MeasurementPlanLineController {
 	@GetMapping("/listByCourse/{id}")
 	public ResponseEntity<Object> listByCourse(@PathVariable Integer id){
 		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listByCourse(id));
+	}
+	
+	@PostMapping("/listBySpecialtySemester")
+	public ResponseEntity<Object> listBySpecialtySemester(@RequestBody MPlanLineSpecialtySemesterRequest mplRequest){
+		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listBySpecialtyAndSemester(mplRequest.getIdSpecialty(),mplRequest.getIdSemester()));
 	}
 }
