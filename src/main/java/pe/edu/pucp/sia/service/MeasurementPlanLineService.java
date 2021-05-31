@@ -8,4 +8,5 @@ public interface MeasurementPlanLineService {
 	public String updateMeasurementPlanLine(MeasurementPlanLine m);
 	public String deleteMeasurementPlanLine(Integer id);
 	public Iterable<MeasurementPlanLine> listByCourse(Integer idFaculty);
+	public Iterable<MeasurementPlanLine> listBySpecialtyAndSemester(Integer idSpecialty, Integer idSemester);
 }
