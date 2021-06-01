@@ -20,21 +20,22 @@ import pe.edu.pucp.sia.service.impl.IndicatorServiceImpl;
 @RestController
 @RequestMapping("/indicator")
 public class IndicatorController {
-	Logger logger = LoggerFactory.getLogger(StudentResultController.class);
-	
+
+	Logger logger = LoggerFactory.getLogger(IndicatorController.class);
+
     @Autowired
     private IndicatorService indicatorService = new IndicatorServiceImpl();
     
     @GetMapping("/list")
 	public ResponseEntity<Object> listIndicator(){
-    	logger.info("Entered method listIndicator()");
+		logger.info("Entered method listIndicator()");
 		return ResponseEntity.status(HttpStatus.OK).body(indicatorService.listAll());
 	}
-    
-    @GetMapping("/listbystudentresult/{id}")
-	public ResponseEntity<Object> listByStudentResult(@PathVariable Integer id){
-		logger.info("Entered method listByStudentResult()");
-		return ResponseEntity.status(HttpStatus.OK).body(indicatorService.listByStudentResult(id));
+
+	@GetMapping("/listbyspecialty/{id}")
+	public ResponseEntity<Object> listBySpecialty(@PathVariable Integer id){
+		logger.info("Entered method listbyspecialty()");
+		return ResponseEntity.status(HttpStatus.OK).body(indicatorService.listBySpecialty(id));
 	}
 	
 	@PostMapping("/create")
@@ -50,7 +51,7 @@ public class IndicatorController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deletePerson(@PathVariable Integer id){
+	public ResponseEntity<Object> deleteIndicator(@PathVariable Integer id){
 		logger.info("Entered method deleteIndicator()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(indicatorService.deleteIndicator(id));
 	}

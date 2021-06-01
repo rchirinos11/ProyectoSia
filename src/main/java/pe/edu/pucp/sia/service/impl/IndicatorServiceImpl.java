@@ -66,4 +66,13 @@ public class IndicatorServiceImpl implements IndicatorService {
 		return lista;
 	}
     
+	@Override
+	public Iterable<Indicator> listBySpecialty(Integer id) {
+		Iterable<Indicator> lista = indicatorRepository.findBystudentResultSpecialtyId(id);
+		for (Indicator indicator : lista) {
+			indicator.setStudentResult(null);
+		}
+		return lista;
+	}
+
 }
