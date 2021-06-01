@@ -23,10 +23,4 @@ public class Indicator {
     @ManyToOne
 	@JoinColumn(name="id_student_result")
 	private StudentResult studentResult;
-    @ManyToOne
-	@JoinColumn(name="id_semester_start")
-	private Semester semesterStart;
-    @ManyToOne
-	@JoinColumn(name="id_semester_end")
-	private Semester semesterEnd;
 }
