@@ -51,4 +51,12 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 		return response;
 	}
 
+	@Override
+	public Iterable<ImprovementPlan> listBySpecialty(Integer id) {
+		Iterable<ImprovementPlan> lista = improvementPlanRepository.findBySpecialtyId(id);
+		for (ImprovementPlan improvementPlan : lista) {
+			improvementPlan.setSpecialty(null);
+		}
+		return lista;
+	}
 }

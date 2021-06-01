@@ -26,6 +26,12 @@ public class ImprovementPlanController {
 	@Autowired
 	private ImprovementPlanService improvementPlanService = new ImprovementPlanServiceImpl(); 
 	
+	@GetMapping("/listbyspecialty/{id}")
+	public ResponseEntity<Object> listBySpecialty(@PathVariable Integer id){
+		logger.info("Entered method listBySpecialty()");
+		return ResponseEntity.status(HttpStatus.OK).body(improvementPlanService.listBySpecialty(id));
+	}
+	
 	@GetMapping("/list")
 	public ResponseEntity<Object> listImprovementPlan(){
 		logger.info("Entered method listImprovementPlan()");
