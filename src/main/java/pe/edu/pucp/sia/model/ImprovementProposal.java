@@ -8,9 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Getter;
 import lombok.Setter;
 
+@Where(clause = "active=true")
 @Entity @Getter @Setter
 public class ImprovementProposal {
 	

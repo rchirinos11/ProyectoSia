@@ -6,9 +6,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Getter;
 import lombok.Setter;
 
+@Where(clause = "active=true")
 @Entity @Getter @Setter
 public class State {
 	@Id @Column(name="id_state") 
