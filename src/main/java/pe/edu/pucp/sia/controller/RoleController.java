@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Role;
 import pe.edu.pucp.sia.service.RoleService;
 import pe.edu.pucp.sia.service.impl.RoleServiceImpl;
@@ -43,5 +44,11 @@ public class RoleController {
 	public ResponseEntity<Object> deleteRole(@PathVariable Integer id){
 		logger.info("Entered method deleteRole()");
 		return ResponseEntity.status(HttpStatus.OK).body(roleService.deleteRole(id));
+	}
+	
+	@PostMapping("/listByEmail")
+	public ResponseEntity<Object> listByEmail(@RequestBody Person p){
+		logger.info("Entered method listByEmail()");
+		return ResponseEntity.status(HttpStatus.OK).body(roleService.listByEmail(p.getEmail()));
 	}
 }

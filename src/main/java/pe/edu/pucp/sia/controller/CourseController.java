@@ -26,6 +26,11 @@ public class CourseController {
 		return ResponseEntity.status(HttpStatus.OK).body(courseService.listAll());
 	}
 	
+	@GetMapping("/listbyPersonSpeciality/{idP}/{idS}")
+	public ResponseEntity<Object> listbyPersonSpeciality(@PathVariable Integer idP, @PathVariable Integer idS){
+		return ResponseEntity.status(HttpStatus.OK).body(courseService.listCoursesByTeacherSpecialty(idP,idS));
+	}
+	
 	@PostMapping("/create")
 	public ResponseEntity<Object> createCourse(@RequestBody Course c){
 		return ResponseEntity.status(HttpStatus.CREATED).body(courseService.createCourse(c));

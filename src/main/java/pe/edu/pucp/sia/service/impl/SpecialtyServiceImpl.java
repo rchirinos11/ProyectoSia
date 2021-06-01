@@ -9,7 +9,7 @@ import pe.edu.pucp.sia.repository.SpecialtyRepository;
 import pe.edu.pucp.sia.service.SpecialtyService;
 
 @Service
-public class SpecialtyServiceImp implements SpecialtyService{
+public class SpecialtyServiceImpl implements SpecialtyService{
 	@Autowired
 	private SpecialtyRepository specialtyRepository;
 	
