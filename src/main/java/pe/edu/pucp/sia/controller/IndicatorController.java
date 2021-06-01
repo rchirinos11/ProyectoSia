@@ -22,22 +22,22 @@ public class IndicatorController {
     private IndicatorService indicatorService = new IndicatorServiceImpl();
     
     @GetMapping("/list")
-	public ResponseEntity<Object> listPerson(){
+	public ResponseEntity<Object> listIndicator(){
 		return ResponseEntity.status(HttpStatus.OK).body(indicatorService.listAll());
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createPerson(@RequestBody Indicator i){
+	public ResponseEntity<Object> createIndicator(@RequestBody Indicator i){
 		return ResponseEntity.status(HttpStatus.CREATED).body(indicatorService.createIndicator(i));
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updatePerson(@RequestBody Indicator i){
+	public ResponseEntity<Object> updateIndicator(@RequestBody Indicator i){
 		return ResponseEntity.status(HttpStatus.CREATED).body(indicatorService.updateIndicator(i));
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deletePerson(@PathVariable Integer id){
+	public ResponseEntity<Object> deleteIndicator(@PathVariable Integer id){
 		return ResponseEntity.status(HttpStatus.CREATED).body(indicatorService.deleteIndicator(id));
 	}
 }

@@ -22,22 +22,22 @@ public class ProgramController {
     private ProgramService programService = new ProgramServiceImpl();
     
     @GetMapping("/list")
-	public ResponseEntity<Object> listPerson(){
+	public ResponseEntity<Object> listProgram(){
 		return ResponseEntity.status(HttpStatus.OK).body(programService.listAll());
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createPerson(@RequestBody Program p){
+	public ResponseEntity<Object> createProgram(@RequestBody Program p){
 		return ResponseEntity.status(HttpStatus.CREATED).body(programService.createProgram(p));
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updatePerson(@RequestBody Program p){
+	public ResponseEntity<Object> updateProgram(@RequestBody Program p){
 		return ResponseEntity.status(HttpStatus.CREATED).body(programService.updateProgram(p));
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deletePerson(@PathVariable Integer id){
+	public ResponseEntity<Object> deleteProgram(@PathVariable Integer id){
 		return ResponseEntity.status(HttpStatus.CREATED).body(programService.deleteProgram(id));
 	}
 }

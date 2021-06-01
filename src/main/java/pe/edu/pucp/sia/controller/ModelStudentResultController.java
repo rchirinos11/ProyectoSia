@@ -22,22 +22,22 @@ public class ModelStudentResultController {
     private ModelStudentResultService modelStudentResultService = new ModelStudentResultServiceImpl();
     
     @GetMapping("/list")
-	public ResponseEntity<Object> listPerson(){
+	public ResponseEntity<Object> listModelStudentResult(){
 		return ResponseEntity.status(HttpStatus.OK).body(modelStudentResultService.listAll());
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createPerson(@RequestBody ModelStudentResult m){
+	public ResponseEntity<Object> createModelStudentResult(@RequestBody ModelStudentResult m){
 		return ResponseEntity.status(HttpStatus.CREATED).body(modelStudentResultService.createModelStudentResult(m));
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updatePerson(@RequestBody ModelStudentResult m){
+	public ResponseEntity<Object> updateModelStudentResult(@RequestBody ModelStudentResult m){
 		return ResponseEntity.status(HttpStatus.CREATED).body(modelStudentResultService.updateModelStudentResult(m));
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deletePerson(@PathVariable Integer id){
+	public ResponseEntity<Object> deleteModelStudentResult(@PathVariable Integer id){
 		return ResponseEntity.status(HttpStatus.CREATED).body(modelStudentResultService.deleteModelStudentResult(id));
 	}
 }

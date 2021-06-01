@@ -22,22 +22,22 @@ public class AcreditationModelController {
     private AcreditationModelService acreditationModelService = new AcreditationModelServiceImpl();
     
     @GetMapping("/list")
-	public ResponseEntity<Object> listPerson(){
+	public ResponseEntity<Object> listAcreditationModel(){
 		return ResponseEntity.status(HttpStatus.OK).body(acreditationModelService.listAll());
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createPerson(@RequestBody AcreditationModel a){
+	public ResponseEntity<Object> createAcreditationModel(@RequestBody AcreditationModel a){
 		return ResponseEntity.status(HttpStatus.CREATED).body(acreditationModelService.createAcreditationModel(a));
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updatePerson(@RequestBody AcreditationModel a){
+	public ResponseEntity<Object> updateAcreditationModel(@RequestBody AcreditationModel a){
 		return ResponseEntity.status(HttpStatus.CREATED).body(acreditationModelService.updateAcreditationModel(a));
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deletePerson(@PathVariable Integer id){
+	public ResponseEntity<Object> deleteAcreditationModel(@PathVariable Integer id){
 		return ResponseEntity.status(HttpStatus.CREATED).body(acreditationModelService.deleteAcreditationModel(id));
 	}
 }
