@@ -18,7 +18,7 @@ import pe.edu.pucp.sia.service.ImprovementPlanService;
 import pe.edu.pucp.sia.service.impl.ImprovementPlanServiceImpl;
 
 @RestController
-@RequestMapping("/improvementopportunity")
+@RequestMapping("/improvementplan")
 public class ImprovementPlanController {
 
 	Logger logger = LoggerFactory.getLogger(ImprovementPlanController.class);
