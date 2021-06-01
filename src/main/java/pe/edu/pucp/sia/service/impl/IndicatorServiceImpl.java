@@ -51,41 +51,11 @@ public class IndicatorServiceImpl implements IndicatorService {
 		}
 		return response;
     }
-
-	@Override
-	public Iterable<Indicator> listByStudentResult(Integer id) {
-		Iterable<Indicator> lista = null;
-		try {
-			lista = indicatorRepository.findByStudentResultId(id);
-			for (Indicator indicator: lista) {
-				indicator.setStudentResult(null);
-			}
-		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
-		}
-		return lista;
-	}
-
-	@Override
-	public Iterable<Indicator> listByStudentResultSpecialty(Integer id) {
-		Iterable<Indicator> lista = null;
-		try {
-			lista = indicatorRepository.findByStudentResultSpecialtyId(id);
-			for (Indicator indicator: lista) {
-				indicator.setStudentResult(null);
-			}
-		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
-		}
-		return lista;
-	}
     
 	@Override
 	public Iterable<Indicator> listBySpecialty(Integer id) {
 		Iterable<Indicator> lista = indicatorRepository.findBystudentResultSpecialtyId(id);
-		for (Indicator indicator : lista) {
-			indicator.setStudentResult(null);
-		}
+		
 		return lista;
 	}
 
