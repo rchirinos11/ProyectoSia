@@ -37,13 +37,7 @@ public class IndicatorController {
 		logger.info("Entered method listbyspecialty()");
 		return ResponseEntity.status(HttpStatus.OK).body(indicatorService.listBySpecialty(id));
 	}
-    
-    @GetMapping("/listbyspecialty/{id}")
-	public ResponseEntity<Object> listBySpecialty(@PathVariable Integer id){
-		logger.info("Entered method listBySpecialty()");
-		return ResponseEntity.status(HttpStatus.OK).body(indicatorService.listByStudentResultSpecialty(id));
-	}
-	
+
 	@PostMapping("/create")
 	public ResponseEntity<Object> createIndicator(@RequestBody Indicator i){
 		logger.info("Entered method createIndicator()");
