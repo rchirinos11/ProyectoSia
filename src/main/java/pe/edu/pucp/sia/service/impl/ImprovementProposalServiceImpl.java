@@ -3,6 +3,7 @@ package pe.edu.pucp.sia.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.edu.pucp.sia.model.ImprovementPlan;
 import pe.edu.pucp.sia.model.ImprovementProposal;
 import pe.edu.pucp.sia.repository.ImprovementProposalRepository;
 import pe.edu.pucp.sia.service.ImprovementProposalService;
@@ -51,4 +52,12 @@ public class ImprovementProposalServiceImpl implements ImprovementProposalServic
 		return response;
 	}
 
+	@Override
+	public Iterable<ImprovementProposal> listByImprovementPlan(Integer id) {
+		Iterable<ImprovementProposal> lista = improvementProposalRepository.findByImprovementPlanId(id);
+		for (ImprovementProposal improvementProposal : lista) {
+			improvementProposal.setImprovementPlan(null);
+		}
+		return lista;
+	}
 }
