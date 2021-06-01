@@ -1,5 +1,7 @@
 package pe.edu.pucp.sia.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,26 +20,38 @@ import pe.edu.pucp.sia.service.impl.IndicatorServiceImpl;
 @RestController
 @RequestMapping("/indicator")
 public class IndicatorController {
+	Logger logger = LoggerFactory.getLogger(StudentResultController.class);
+	
     @Autowired
     private IndicatorService indicatorService = new IndicatorServiceImpl();
     
     @GetMapping("/list")
-	public ResponseEntity<Object> listPerson(){
+	public ResponseEntity<Object> listIndicator(){
+    	logger.info("Entered method listIndicator()");
 		return ResponseEntity.status(HttpStatus.OK).body(indicatorService.listAll());
+	}
+    
+    @GetMapping("/listbystudentresult/{id}")
+	public ResponseEntity<Object> listByStudentResult(@PathVariable Integer id){
+		logger.info("Entered method listByStudentResult()");
+		return ResponseEntity.status(HttpStatus.OK).body(indicatorService.listByStudentResult(id));
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createPerson(@RequestBody Indicator i){
+	public ResponseEntity<Object> createIndicator(@RequestBody Indicator i){
+		logger.info("Entered method createIndicator()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(indicatorService.createIndicator(i));
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updatePerson(@RequestBody Indicator i){
+	public ResponseEntity<Object> updateIndicator(@RequestBody Indicator i){
+		logger.info("Entered method updateIndicator()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(indicatorService.updateIndicator(i));
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Object> deletePerson(@PathVariable Integer id){
+		logger.info("Entered method deleteIndicator()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(indicatorService.deleteIndicator(id));
 	}
 }
