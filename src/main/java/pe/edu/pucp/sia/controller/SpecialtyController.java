@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Specialty;
+import pe.edu.pucp.sia.requests.SpecialtyUpdateAssistantRequest;
+import pe.edu.pucp.sia.requests.SpecialtyUpdateCoordinatorRequest;
 import pe.edu.pucp.sia.service.SpecialtyService;
 import pe.edu.pucp.sia.service.impl.SpecialtyServiceImpl;
 
@@ -66,5 +68,17 @@ public class SpecialtyController {
 	public ResponseEntity<Object> deleteSpecialty(@PathVariable Integer id){
 		logger.info("Entered method deleteSpecialty()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(specialtyService.deleteSpecialty(id));
+	}
+	
+	@PostMapping("setCoordinator")
+	public ResponseEntity<Object> updateSpecialtyCoordinator(@RequestBody SpecialtyUpdateCoordinatorRequest s){
+		logger.info("Entered method updateSpecialtyCoordinator()");
+		return ResponseEntity.status(HttpStatus.CREATED).body(specialtyService.updateCoordinator(s.getIdSpecialty(),s.getIdCoordinator()));
+	}
+	
+	@PostMapping("setAssistant")
+	public ResponseEntity<Object> updateSpecialtyAssistant(@RequestBody SpecialtyUpdateAssistantRequest s){
+		logger.info("Entered method updateSpecialtyAssistant()");
+		return ResponseEntity.status(HttpStatus.CREATED).body(specialtyService.updateAssitant(s.getIdSpecialty(),s.getIdAssistant()));
 	}
 }

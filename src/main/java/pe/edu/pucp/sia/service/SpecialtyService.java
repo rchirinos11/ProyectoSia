@@ -10,4 +10,6 @@ public interface SpecialtyService {
 	public Integer createSpecialty(Specialty s);
 	public Integer updateSpecialty(Specialty s);
 	public String deleteSpecialty(Integer id);
+	public String updateCoordinator(Integer idSpecialty, Integer idCoordinator);
+	public String updateAssitant(Integer idSpecialty, Integer idAssistant);
 }
