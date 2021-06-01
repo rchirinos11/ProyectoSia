@@ -64,4 +64,16 @@ public class FacultyServiceImpl implements FacultyService{
 		}
 		return lista;
 	}
+
+	@Override
+	public String updateCoordinator(Integer idFaculty, Integer idCoordinator) {
+		String response = "";
+		try {
+			facultyRepository.setCoordinator(idFaculty,idCoordinator);
+			response = "Updated";
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
+	}
 }

@@ -8,4 +8,5 @@ public interface FacultyService {
 	public Integer createFaculty(Faculty f);
 	public Integer updateFaculty(Faculty f);
 	public String deleteFaculty(Integer id);
+	public String updateCoordinator(Integer idFaculty, Integer idCoordinator);
 }

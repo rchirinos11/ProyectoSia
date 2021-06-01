@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Faculty;
+import pe.edu.pucp.sia.requests.FacultyUpdateCoordinatorRequest;
 import pe.edu.pucp.sia.service.FacultyService;
 import pe.edu.pucp.sia.service.impl.FacultyServiceImpl;
 
@@ -53,5 +54,11 @@ public class FacultyController {
 	public ResponseEntity<Object> deleteFaculty(@PathVariable Integer id){
 		logger.info("Entered method deleteFaculty()");
 		return ResponseEntity.status(HttpStatus.OK).body(facultyService.deleteFaculty(id));
+	}
+	
+	@PostMapping("/setCoordinator")
+	public ResponseEntity<Object> updateFacultyCoordinator(@RequestBody FacultyUpdateCoordinatorRequest f){
+		logger.info("Entered method updateFacultyCoordinator()");
+		return ResponseEntity.status(HttpStatus.CREATED).body(facultyService.updateCoordinator(f.getIdFaculty(),f.getIdCoordinator()));
 	}
 }
