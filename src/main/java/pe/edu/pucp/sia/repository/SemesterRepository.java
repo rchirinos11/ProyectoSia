@@ -11,4 +11,6 @@ public interface SemesterRepository extends CrudRepository<Semester, Integer>{
 	
 	@Procedure("sp_delete_semester")
 	public void deleteSemester(Integer id);
+	
+	public Semester findByCurrent(Boolean current);
 }

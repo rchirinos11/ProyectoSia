@@ -8,5 +8,5 @@ public interface SemesterService {
 	public Integer updateSemester(Semester s);
 	public String deleteSemester(Integer id);
 	public Integer updateCurrent(Integer id);
-	
+	public Semester findCurrent();
 }
