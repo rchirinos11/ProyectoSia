@@ -20,6 +20,7 @@ public class Indicator {
 	@Column(name="id_indicator")
     private Integer id;
     private String description;
+    private Integer code;
     @ManyToOne
 	@JoinColumn(name="id_student_result")
 	private StudentResult studentResult;
