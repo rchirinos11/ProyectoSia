@@ -3,7 +3,6 @@ package pe.edu.pucp.sia.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.repository.SpecialtyRepository;
 import pe.edu.pucp.sia.service.SpecialtyService;
@@ -77,5 +76,29 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 			specialty.setAssistant(null);
 		}
 		return lista;
+	}
+
+	@Override
+	public String updateCoordinator(Integer idSpecialty, Integer idCoordinator) {
+		String response = "";
+		try {
+			specialtyRepository.setCoordinator(idSpecialty,idCoordinator);
+			response = "Updated";
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public String updateAssitant(Integer idSpecialty, Integer idAssistant) {
+		String response = "";
+		try {
+			specialtyRepository.setAssistant(idSpecialty,idAssistant);
+			response = "Updated";
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
 	}
 }

@@ -26,6 +26,12 @@ public class ActivityController {
 	@Autowired
 	private ActivityService activityService = new ActivityServiceImpl(); 
 	
+	@GetMapping("/listbyimprovementproposal/{id}")
+	public ResponseEntity<Object> listByImprovementProposal(@PathVariable Integer id){
+		logger.info("Entered method listByImprovementProposal()");
+		return ResponseEntity.status(HttpStatus.OK).body(activityService.listByImprovementProposal(id));
+	}
+	
 	@GetMapping("/list")
 	public ResponseEntity<Object> listActivity(){
 		logger.info("Entered method listActivity()");

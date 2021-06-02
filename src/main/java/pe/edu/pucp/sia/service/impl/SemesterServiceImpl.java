@@ -62,4 +62,15 @@ public class SemesterServiceImpl implements SemesterService{
 		return response;
 	}
 
+	@Override
+	public Semester findCurrent() {
+		Semester semester = null;
+		try {
+			semester = semesterRepository.findByCurrent(true);
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return semester;
+	}
+
 }

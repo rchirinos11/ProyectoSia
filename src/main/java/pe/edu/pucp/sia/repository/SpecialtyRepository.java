@@ -17,4 +17,8 @@ public interface SpecialtyRepository extends CrudRepository<Specialty,Integer>{
 	
 	@Procedure("sp_delete_specialty")
 	public void deleteSpecialty(Integer id);
+	@Procedure("sp_set_specialty_coordinator")
+	public void setCoordinator(Integer idSpecialty,Integer idCoordinator);
+	@Procedure("sp_set_specialty_assistant")
+	public void setAssistant(Integer idSpecialty,Integer idAssistant);
 }

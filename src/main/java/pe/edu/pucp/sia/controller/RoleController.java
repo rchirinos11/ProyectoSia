@@ -37,7 +37,7 @@ public class RoleController {
     @PostMapping("/update")
 	public ResponseEntity<Object> updateRole(@RequestBody Role r){
 		logger.info("Entered method updateRole()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(roleService.updateRole(r));
+		return ResponseEntity.status(HttpStatus.OK).body(roleService.updateRole(r));
 	}
 	
 	@DeleteMapping("/delete/{id}")

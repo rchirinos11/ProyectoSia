@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.Activity;
+import pe.edu.pucp.sia.model.ImprovementProposal;
 import pe.edu.pucp.sia.repository.ActivityRepository;
 import pe.edu.pucp.sia.service.ActivityService;
 
@@ -51,4 +52,12 @@ public class ActivityServiceImpl implements ActivityService{
 		return response;
 	}
 
+	@Override
+	public Iterable<Activity> listByImprovementProposal(Integer id) {
+		Iterable<Activity> lista = activityRepository.findByImprovementProposalId(id);
+		for (Activity activity : lista) {
+			activity.setImprovementProposal(null);
+		}
+		return lista;
+	}
 }

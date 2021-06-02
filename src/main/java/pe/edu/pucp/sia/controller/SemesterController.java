@@ -56,4 +56,10 @@ public class SemesterController {
 		logger.info("Entered method updateCurrentSemester()");
 		return ResponseEntity.status(HttpStatus.OK).body(semesterService.updateCurrent(id));
 	}
+	
+	@GetMapping("/current")
+	public ResponseEntity<Object> findCurrent(){
+		logger.info("Entered method findCurrent()");
+		return ResponseEntity.status(HttpStatus.OK).body(semesterService.findCurrent());
+	}
 }
