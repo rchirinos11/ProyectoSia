@@ -47,7 +47,7 @@ public class FacultyController {
 	@PostMapping("/update")
 	public ResponseEntity<Object> updateFaculty(@RequestBody Faculty f){
 		logger.info("Entered method updateFaculty()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(facultyService.updateFaculty(f));
+		return ResponseEntity.status(HttpStatus.OK).body(facultyService.updateFaculty(f));
 	}
 	
 	@DeleteMapping("/delete/{id}")
@@ -59,6 +59,6 @@ public class FacultyController {
 	@PostMapping("/setCoordinator")
 	public ResponseEntity<Object> updateFacultyCoordinator(@RequestBody FacultyUpdateCoordinatorRequest f){
 		logger.info("Entered method updateFacultyCoordinator()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(facultyService.updateCoordinator(f.getIdFaculty(),f.getIdCoordinator()));
+		return ResponseEntity.status(HttpStatus.OK).body(facultyService.updateCoordinator(f.getIdFaculty(),f.getIdCoordinator()));
 	}
 }

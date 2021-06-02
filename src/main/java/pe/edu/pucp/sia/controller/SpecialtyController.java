@@ -61,24 +61,24 @@ public class SpecialtyController {
 	@PostMapping("/update")
 	public ResponseEntity<Object> updateSpecialty(@RequestBody Specialty s){
 		logger.info("Entered method updateSpecialty()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(specialtyService.updateSpecialty(s));
+		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updateSpecialty(s));
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteSpecialty(@PathVariable Integer id){
 		logger.info("Entered method deleteSpecialty()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(specialtyService.deleteSpecialty(id));
+		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.deleteSpecialty(id));
 	}
 	
 	@PostMapping("setCoordinator")
 	public ResponseEntity<Object> updateSpecialtyCoordinator(@RequestBody SpecialtyUpdateCoordinatorRequest s){
 		logger.info("Entered method updateSpecialtyCoordinator()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(specialtyService.updateCoordinator(s.getIdSpecialty(),s.getIdCoordinator()));
+		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updateCoordinator(s.getIdSpecialty(),s.getIdCoordinator()));
 	}
 	
 	@PostMapping("setAssistant")
 	public ResponseEntity<Object> updateSpecialtyAssistant(@RequestBody SpecialtyUpdateAssistantRequest s){
 		logger.info("Entered method updateSpecialtyAssistant()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(specialtyService.updateAssitant(s.getIdSpecialty(),s.getIdAssistant()));
+		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updateAssitant(s.getIdSpecialty(),s.getIdAssistant()));
 	}
 }
