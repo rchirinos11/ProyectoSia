@@ -23,6 +23,12 @@ public class LevelDetail {
 	@JoinColumn(name="id_measurement_level", referencedColumnName = "id_measurement_level")
 	@ManyToOne
 	private MeasurementLevel measurementLevel;
+	
+	@JoinColumn(name="id_indicator", referencedColumnName = "id_indicator")
+	@ManyToOne
+	private Indicator indicator;
+	
+	
 	private String description;	
-	//private boolean active=true;
+	private boolean active=true;
 }

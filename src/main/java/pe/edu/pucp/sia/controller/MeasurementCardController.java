@@ -31,6 +31,37 @@ public class MeasurementCardController {
 		return ResponseEntity.status(HttpStatus.OK).body(measurementCardService.listAll());
 	}
 	
+	@GetMapping("/listbyteacher/{id}")
+	public ResponseEntity<Object> listByTeacher(@PathVariable Integer id){
+		logger.info("Entered method listByTeacher()");
+		return ResponseEntity.status(HttpStatus.OK).body(measurementCardService.listByTeacher(id));
+	}
+	
+	@GetMapping("/listbycourse/{id}")
+	public ResponseEntity<Object> listByCourse(@PathVariable Integer id){
+		logger.info("Entered method listByCourse()");
+		return ResponseEntity.status(HttpStatus.OK).body(measurementCardService.listByCourse(id));
+	}
+
+	@GetMapping("/listbyteachercourse/{idTeacher}/{idCourse}")
+	public ResponseEntity<Object> listByTeacherCourse(@PathVariable Integer idTeacher,@PathVariable Integer idCourse){
+		logger.info("Entered method listByTeacherCourse()");
+		return ResponseEntity.status(HttpStatus.OK).body(measurementCardService.listdByTeacherCourse(idTeacher,idCourse));
+	}
+	
+	@GetMapping("/listbyteachercourse2/{idTeacher}/{idCourse}")
+	public ResponseEntity<Object> listByTeacherCourse2(@PathVariable Integer idTeacher,@PathVariable Integer idCourse){
+		logger.info("Entered method listByTeacherCourse2()");
+		return ResponseEntity.status(HttpStatus.OK).body(measurementCardService.listdByTeacherCourse2(idTeacher,idCourse));
+	}
+	
+	@GetMapping("/listbyteachercourse3/{idTeacher}/{idCourse}")
+	public ResponseEntity<Object> listByTeacherCourse3(@PathVariable Integer idTeacher,@PathVariable Integer idCourse){
+		logger.info("Entered method listByTeacherCourse3()");
+		return ResponseEntity.status(HttpStatus.OK).body(measurementCardService.listdByTeacherCourse3(idTeacher,idCourse));
+	}
+	
+	
 	@PostMapping("/create")
 	public ResponseEntity<Object> createMeasurementCard(@RequestBody MeasurementCard mc){
 		logger.info("Entered method createMeasurementCard()");

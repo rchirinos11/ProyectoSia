@@ -41,4 +41,10 @@ public class SectionController {
 	public ResponseEntity<Object> deleteSection(@PathVariable Integer id){
 		return ResponseEntity.status(HttpStatus.CREATED).body(sectionService.deleteSection(id));
 	}
+	
+	@GetMapping("/listbymeasurementplanline/{id}")
+	public ResponseEntity<Object> listByMeasurementPlanLine(@PathVariable Integer id){
+		return ResponseEntity.status(HttpStatus.OK).body(sectionService.listByMeasurementPlanLine(id));
+	}
+	
 }

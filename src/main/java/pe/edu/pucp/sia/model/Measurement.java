@@ -1,4 +1,4 @@
-package pe.edu.pucp.sia.model;
+	package pe.edu.pucp.sia.model;
 
 import javax.persistence.Column;
 

@@ -1,7 +1,5 @@
 package pe.edu.pucp.sia.model;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,31 +10,23 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Where;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 @Where(clause = "active=true")
 @Entity @Getter @Setter
-public class MeasurementCard {
+public class Person_X_Measurement_Plan_Line {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_measurement_card")
+	@Column(name="id_person_measurement_plan_line")
 	private Integer id;
-
-	@JoinColumn(name="id_measurement_type", referencedColumnName = "id_measurement_type")
-	@ManyToOne
-	private MeasurementType measurementType;
 	
 	@JoinColumn(name="id_person", referencedColumnName = "id_person")
 	@ManyToOne
 	private Person person;
-	
-	@JoinColumn(name="id_course", referencedColumnName = "id_course")
+	@JoinColumn(name="id_measurement_plan_line", referencedColumnName = "id_measurement_plan_line")
 	@ManyToOne
-	private Course course;
+	private MeasurementPlanLine measurementPlanLine;
 	
-	@JsonFormat(pattern="yyyy-MM-dd")
-	private LocalDate date;	
 	private boolean active=true;
+
 }

@@ -26,8 +26,10 @@ public class MeasurementPlanLine {
 	private Semester semester;
 	@ManyToOne @JoinColumn(name="id_indicator")
 	private Indicator indicator;
-	@ManyToOne @JoinColumn(name="id_person")
-	private Person person;
+	/*@ManyToOne @JoinColumn(name="id_person")
+	private Person person;*/	
+	@ManyToOne @JoinColumn(name="id_measurement_type")
+	private MeasurementType measurementType;
 	
 //	@ManyToOne @Column(name="id_section")
 //	private Section section;

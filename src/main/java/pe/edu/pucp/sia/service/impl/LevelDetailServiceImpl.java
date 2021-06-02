@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.LevelDetail;
+import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.repository.LevelDetailRepository;
 import pe.edu.pucp.sia.service.LevelDetailService;
 
@@ -49,6 +50,16 @@ public class LevelDetailServiceImpl implements LevelDetailService{
 			System.out.println(ex.getMessage());
 		}
 		return response;
+	}
+
+	@Override
+	public Iterable<LevelDetail> listBySpecialty(Integer idSpecialty) {
+		Iterable<LevelDetail> lista =levelDetailRepository.listLevelDetailBySpecialty(idSpecialty);
+		for(LevelDetail l : lista) {	
+			l.setMeasurementLevel(null);
+			l.setIndicator(null);
+		}
+		return lista;
 	}
 
 }

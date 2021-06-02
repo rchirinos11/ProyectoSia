@@ -48,4 +48,9 @@ public class LevelDetailController {
 		logger.info("Entered method deleteLevelDetail()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(levelDetailService.deleteLevelDetail(id));
 	}
+	
+	@GetMapping("/listbyspecialty/{id}")
+	public ResponseEntity<Object> listBySpecialty(@PathVariable Integer id){
+		return ResponseEntity.status(HttpStatus.OK).body(levelDetailService.listBySpecialty(id));
+	}
 }

@@ -3,6 +3,7 @@ package pe.edu.pucp.sia.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.Section;
 import pe.edu.pucp.sia.repository.SectionRepository;
 import pe.edu.pucp.sia.service.SectionService;
@@ -34,6 +35,12 @@ public class SectionServiceImpl implements SectionService{
 	public int updateSection(Section s) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Iterable<Section> listByMeasurementPlanLine(Integer idMeasurementPlanLine) {
+		Iterable<Section> lista= sectionRepository.listSectionByMeasurementPlanLine(idMeasurementPlanLine);		
+		return lista;
 	}
 
 }
