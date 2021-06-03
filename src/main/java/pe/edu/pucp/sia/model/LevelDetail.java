@@ -24,5 +24,5 @@ public class LevelDetail {
 	@ManyToOne
 	private MeasurementLevel measurementLevel;
 	private String description;	
-	//private boolean active=true;
+	
 }
