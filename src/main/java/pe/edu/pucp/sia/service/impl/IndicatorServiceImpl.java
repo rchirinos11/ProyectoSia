@@ -1,12 +1,16 @@
 package pe.edu.pucp.sia.service.impl;
 
+import java.util.Iterator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.Indicator;
 import pe.edu.pucp.sia.model.LevelDetail;
+import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.repository.IndicatorRepository;
 import pe.edu.pucp.sia.repository.LevelDetailRepository;
+import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.service.IndicatorService;
 
 @Service
@@ -16,6 +20,8 @@ public class IndicatorServiceImpl implements IndicatorService {
 	private IndicatorRepository indicatorRepository;
     @Autowired
     private LevelDetailRepository levelDetailRepository;
+    @Autowired
+    private MeasurementPlanLineRepository mplRepository;
 
     @Override
     public Iterable<Indicator> listAll() {
@@ -51,8 +57,13 @@ public class IndicatorServiceImpl implements IndicatorService {
     public String deleteIndicator(Integer id) {
         String response = "";
 		try {
-			indicatorRepository.deleteIndicator(id);
-			response = "Deleted";
+			Iterator<MeasurementPlanLine> i = mplRepository.findByIndicatorId(id).iterator();
+			if(!i.hasNext()) {
+				indicatorRepository.deleteIndicator(id);
+				response = "Deleted";
+			} else {
+				response = "Cannot delete due to dependency";
+			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}

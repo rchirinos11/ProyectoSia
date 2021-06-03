@@ -17,5 +17,5 @@ public interface MeasurementPlanLineRepository extends CrudRepository<Measuremen
 	public Iterable<MeasurementPlanLine> findByCourseId(Integer id);
 	public Iterable<MeasurementPlanLine> findByIndicatorStudentResultSpecialtyIdAndSemesterId(Integer idSpecialty, Integer idSemester);
 	public Iterable<MeasurementPlanLine> findByCourseIdAndSemesterId(Integer idCourse, Integer idSemester);
-	
+	public Iterable<MeasurementPlanLine> findByIndicatorId(Integer id);
 }
