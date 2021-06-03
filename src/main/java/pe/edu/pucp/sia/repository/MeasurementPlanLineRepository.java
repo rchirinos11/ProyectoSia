@@ -1,6 +1,5 @@
 package pe.edu.pucp.sia.repository;
 
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,5 +16,6 @@ public interface MeasurementPlanLineRepository extends CrudRepository<Measuremen
 	
 	public Iterable<MeasurementPlanLine> findByCourseId(Integer id);
 	public Iterable<MeasurementPlanLine> findByIndicatorStudentResultSpecialtyIdAndSemesterId(Integer idSpecialty, Integer idSemester);
+	public Iterable<MeasurementPlanLine> findByCourseIdAndSemesterId(Integer idCourse, Integer idSemester);
 	
 }

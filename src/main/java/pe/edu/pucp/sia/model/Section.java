@@ -1,14 +1,19 @@
 package pe.edu.pucp.sia.model;
 
-import java.sql.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.Where;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,8 +24,11 @@ public class Section {
     @Id @Column(name="id_section") @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
     private int code;
-    private boolean active=true;
-    //@ForeignKey(name="id_measurement_plan_line");
-    //private Integer ;
+    
+    @JsonIgnore
+    @ManyToMany @JoinTable(name="measurementplanline_section_list",
+			joinColumns = @JoinColumn(name = "id_section"), 
+			inverseJoinColumns = @JoinColumn(name = "id_measurement_plan_line"))
+    private List<MeasurementPlanLine> mplanlines;
     
 }
