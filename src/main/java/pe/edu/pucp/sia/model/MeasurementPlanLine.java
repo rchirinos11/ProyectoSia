@@ -33,6 +33,7 @@ public class MeasurementPlanLine {
 	@ManyToOne @JoinColumn(name="id_measurement_type")
 	private MeasurementType measurementType;
 	private int sampleStudents;
+	private String evidenceName;
 	private String evaluatoryActivity;
 	
 	@ManyToMany @JoinTable(name="measurementplanline_section_list",
@@ -44,4 +45,5 @@ public class MeasurementPlanLine {
 			joinColumns = @JoinColumn(name = "id_measurement_plan_line"), 
 			inverseJoinColumns = @JoinColumn(name = "id_person"))
 	private List<Person> persons;
+	
 }
