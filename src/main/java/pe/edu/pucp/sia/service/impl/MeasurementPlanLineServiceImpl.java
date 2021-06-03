@@ -57,8 +57,8 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 		return mPlanLineRepository.findByCourseId(idFaculty);
 	}
 
-	/*@Override
-	/public Iterable<MeasurementPlanLine> listBySpecialtyAndSemester(Integer idSpecialty, Integer idSemester) {
+	@Override
+	public Iterable<MeasurementPlanLine> listBySpecialtyAndSemester(Integer idSpecialty, Integer idSemester) {
 		Iterable<MeasurementPlanLine> list = null;
 		try {
 			list = mPlanLineRepository.findByIndicatorStudentResultSpecialtyIdAndSemesterId(idSpecialty, idSemester);
@@ -71,10 +71,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 		}
 		
 		return list;
-	}*/
-	
-	
-	
+	}
 
 	@Override
 	public Iterable<MeasurementPlanLine> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson) 
@@ -93,18 +90,4 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	return list;
 	}
 
-	@Override
-	public Iterable<MeasurementPlanLine> listBySpecialtyAndSemester(Integer idSpecialty, Integer idSemester) {
-		Iterable<MeasurementPlanLine> list = null;
-		try {
-			list = mPlanLineRepository.listMeasurementPlanLineBySpecialtySemester(idSpecialty, idSemester);
-			for(MeasurementPlanLine mpl : list) {	
-				mpl.setSemester(null);
-			}
-		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
-		}
-		
-		return list;
-	}
 }

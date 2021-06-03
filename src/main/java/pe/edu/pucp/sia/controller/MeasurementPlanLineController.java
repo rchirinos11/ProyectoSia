@@ -48,14 +48,9 @@ public class MeasurementPlanLineController {
 		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listByCourse(id));
 	}
 	
-	/*@PostMapping("/listBySpecialtySemester")
+	@PostMapping("/listBySpecialtySemester")
 	public ResponseEntity<Object> listBySpecialtySemester(@RequestBody MPlanLineSpecialtySemesterRequest mplRequest){
 		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listBySpecialtyAndSemester(mplRequest.getIdSpecialty(),mplRequest.getIdSemester()));
-	}*/
-	
-	@GetMapping("/listBySpecialtySemester/{idSpecialty}/{idSemester}")
-	public ResponseEntity<Object> listBySpecialtySemester(@PathVariable Integer idSpecialty,@PathVariable Integer idSemester){
-		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listBySpecialtyAndSemester(idSpecialty,idSemester));
 	}
 	
 	@GetMapping("/listByCourseSemesterTeacher/{idCourse}/{idSemester}/{idPerson}")
