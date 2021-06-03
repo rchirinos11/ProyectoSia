@@ -4,9 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import pe.edu.pucp.sia.model.ImprovementPlan;
 import pe.edu.pucp.sia.model.ImprovementProposal;
+import pe.edu.pucp.sia.model.Specialty;
 
 @Getter @Setter
 public class ImprovementPlanDataResponse {
-	ImprovementPlan improvementPlan;
-	Iterable<ImprovementProposal> improvementProposalList;
+	private Integer id;
+	private Specialty specialty;
+	private String title;
+	private String opportunity;
+	Iterable<ImprovementProposal> improvementProposals;
 }

@@ -66,14 +66,16 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 		ImprovementPlanDataResponse response = new ImprovementPlanDataResponse();
 		List<ImprovementPlanDataResponse> listaResponse = new ArrayList<ImprovementPlanDataResponse>();
 		for (ImprovementPlan improvementPlan : lista) {
-			improvementPlan.setSpecialty(null);
 			response = new ImprovementPlanDataResponse();
-			response.setImprovementPlan(improvementPlan);
+			response.setId(improvementPlan.getId());
+			response.setSpecialty(null);
+			response.setTitle(improvementPlan.getTitle());
+			response.setOpportunity(improvementPlan.getOpportunity());
 			improvementProposalList = improvementProposalRepository.findByImprovementPlanId(improvementPlan.getId());
 			for (ImprovementProposal improvementProposal : improvementProposalList) {
 				improvementProposal.setImprovementPlan(null);
 			}
-			response.setImprovementProposalList(improvementProposalList);
+			response.setImprovementProposals(improvementProposalList);
 			listaResponse.add(response);
 		}
 		return listaResponse;
