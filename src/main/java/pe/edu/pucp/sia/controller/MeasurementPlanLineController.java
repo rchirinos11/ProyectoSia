@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
+import pe.edu.pucp.sia.requests.MPlanLineCourseSemesterRequest;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.service.MeasurementPlanLineService;
 import pe.edu.pucp.sia.service.impl.MeasurementPlanLineServiceImpl;
@@ -58,5 +59,9 @@ public class MeasurementPlanLineController {
 		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listByCourseSemesterTeacher(idCourse,idSemester,idPerson));
 	}
 	
+	@PostMapping("/listByCourseSemester")
+	public ResponseEntity<Object> listByCourseSemester(@RequestBody MPlanLineCourseSemesterRequest mplRequest){
+		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listByCourseAndSemester(mplRequest.getIdCourse(), mplRequest.getIdSemester()));
+	}
 	
 }

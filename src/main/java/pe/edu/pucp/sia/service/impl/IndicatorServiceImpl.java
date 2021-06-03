@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.Indicator;
+import pe.edu.pucp.sia.model.LevelDetail;
 import pe.edu.pucp.sia.repository.IndicatorRepository;
+import pe.edu.pucp.sia.repository.LevelDetailRepository;
 import pe.edu.pucp.sia.service.IndicatorService;
 
 @Service
@@ -12,6 +14,8 @@ public class IndicatorServiceImpl implements IndicatorService {
 
     @Autowired
 	private IndicatorRepository indicatorRepository;
+    @Autowired
+    private LevelDetailRepository levelDetailRepository;
 
     @Override
     public Iterable<Indicator> listAll() {
@@ -22,6 +26,9 @@ public class IndicatorServiceImpl implements IndicatorService {
 	public Integer createIndicator(Indicator i) {
 		Integer response = 0;
 		try {
+			for(LevelDetail l : i.getLevelDetailList()) 
+				levelDetailRepository.save(l);
+			
 			response = indicatorRepository.save(i).getId(); 
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());

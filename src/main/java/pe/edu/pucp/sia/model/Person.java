@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,11 +29,15 @@ public class Person {
 	private String pLastName;
 	private String mLastName;
 	private String email;
-	private boolean active=true;
 	
-	@ManyToMany
-	@JoinTable(name = "role_person_list",
+	@ManyToMany	@JoinTable(name = "role_person_list",
 			joinColumns = @JoinColumn(name = "id_person"), 
 			inverseJoinColumns = @JoinColumn(name = "id_role"))
 	private List<Role> roleList;
+	
+	@JsonIgnore
+	@ManyToMany @JoinTable(name="measurementplanline_person_list",
+			joinColumns = @JoinColumn(name = "id_person"), 
+			inverseJoinColumns = @JoinColumn(name = "id_measurement_plan_line"))
+	private List<MeasurementPlanLine> mplanlines;
 }
