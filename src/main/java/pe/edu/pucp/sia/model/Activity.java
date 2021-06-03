@@ -1,7 +1,5 @@
 package pe.edu.pucp.sia.model;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,8 +27,8 @@ public class Activity {
 	private ImprovementProposal improvementProposal;
 	private String description;
 	private String evidence;
-	private LocalDate yearStart;
-	private LocalDate yearEnd;
+	private Integer yearStart;
+	private Integer yearEnd;
 	private String responsible;
 	//private boolean active;
 }
