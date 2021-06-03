@@ -22,14 +22,13 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	}
 
 	@Override
-	public String createMeasurementPlanLine(MeasurementPlanLine m) {
-		String response = "";
+	public Integer createMeasurementPlanLine(MeasurementPlanLine m) {
+		Integer response = null;
 		try {
 			for(Section s : m.getSections()) 
 				sectionRepository.save(s);
 			
-			mPlanLineRepository.save(m);
-			response = "Created";
+			response = mPlanLineRepository.save(m).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -37,11 +36,10 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	}
 
 	@Override
-	public String updateMeasurementPlanLine(MeasurementPlanLine m) {
-		String response = "";
+	public Integer updateMeasurementPlanLine(MeasurementPlanLine m) {
+		Integer response = null;
 		try {
-			mPlanLineRepository.save(m);
-			response = "Updated";
+			response = mPlanLineRepository.save(m).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
