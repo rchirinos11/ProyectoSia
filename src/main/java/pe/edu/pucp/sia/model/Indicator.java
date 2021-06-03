@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+
 import org.hibernate.annotations.Where;
 
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class Indicator {
 	private StudentResult studentResult;
 
     @OneToMany()
-    @JoinColumn(name="id_indicator")
+    @JoinColumn(name="id_indicator") 
     private List<LevelDetail> levelDetailList;
 
 

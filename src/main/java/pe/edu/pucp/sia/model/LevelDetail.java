@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.hibernate.annotations.Where;
 
 import lombok.Setter;
@@ -26,6 +28,7 @@ public class LevelDetail {
 	
 	@JoinColumn(name="id_indicator", referencedColumnName = "id_indicator")
 	@ManyToOne
+	@JsonIgnore()
 	private Indicator indicator;
 	
 	
