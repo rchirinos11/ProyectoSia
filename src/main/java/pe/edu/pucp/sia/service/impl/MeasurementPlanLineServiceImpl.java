@@ -4,13 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
+import pe.edu.pucp.sia.model.Section;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
+import pe.edu.pucp.sia.repository.SectionRepository;
 import pe.edu.pucp.sia.service.MeasurementPlanLineService;
 
 @Service
 public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineService{
 	@Autowired
 	private MeasurementPlanLineRepository mPlanLineRepository;
+	@Autowired
+	private SectionRepository sectionRepository;
 
 	@Override
 	public Iterable<MeasurementPlanLine> listAll() {
@@ -21,6 +25,9 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	public String createMeasurementPlanLine(MeasurementPlanLine m) {
 		String response = "";
 		try {
+			for(Section s : m.getSections()) 
+				sectionRepository.save(s);
+			
 			mPlanLineRepository.save(m);
 			response = "Created";
 		} catch(Exception ex) {
@@ -88,6 +95,22 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	}
 	
 	return list;
+	}
+
+	@Override
+	public Iterable<MeasurementPlanLine> listByCourseAndSemester(Integer idCourse, Integer idSemester) {
+		Iterable<MeasurementPlanLine> list = null;
+		try {
+			list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
+			for(MeasurementPlanLine mpl : list) {	
+				mpl.setCourse(null);
+				mpl.setSemester(null);
+			}
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		return list;
 	}
 
 }
