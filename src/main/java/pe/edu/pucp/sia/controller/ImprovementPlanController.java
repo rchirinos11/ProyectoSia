@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.ImprovementPlan;
+import pe.edu.pucp.sia.requests.CreateImprovementPlanRequest;
 import pe.edu.pucp.sia.service.ImprovementPlanService;
 import pe.edu.pucp.sia.service.impl.ImprovementPlanServiceImpl;
 
@@ -39,7 +40,7 @@ public class ImprovementPlanController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createImprovementPlan(@RequestBody ImprovementPlan i){
+	public ResponseEntity<Object> createImprovementPlan(@RequestBody CreateImprovementPlanRequest i){
 		logger.info("Entered method createImprovementPlan()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(improvementPlanService.createImprovementPlan(i));
 	}
