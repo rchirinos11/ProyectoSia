@@ -15,6 +15,7 @@ import pe.edu.pucp.sia.repository.ImprovementProposalRepository;
 import pe.edu.pucp.sia.requests.CreateImprovementPlanRequest;
 import pe.edu.pucp.sia.requests.CreateImprovementProposalRequest;
 import pe.edu.pucp.sia.response.ImprovementPlanDataResponse;
+import pe.edu.pucp.sia.response.ImprovementProposalResponse;
 import pe.edu.pucp.sia.service.ImprovementPlanService;
 
 @Service
@@ -84,7 +85,10 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 	public Iterable<ImprovementPlanDataResponse> listBySpecialty(Integer id) {
 		Iterable<ImprovementPlan> lista = improvementPlanRepository.findBySpecialtyId(id);
 		Iterable<ImprovementProposal> improvementProposalList = null;
+		Iterable<Activity> activityList = null;
+		List<ImprovementProposalResponse> improvementProposalResponseList = null;
 		ImprovementPlanDataResponse response = new ImprovementPlanDataResponse();
+		ImprovementProposalResponse ipr = null;
 		List<ImprovementPlanDataResponse> listaResponse = new ArrayList<ImprovementPlanDataResponse>();
 		for (ImprovementPlan improvementPlan : lista) {
 			response = new ImprovementPlanDataResponse();
@@ -92,11 +96,20 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 			response.setSpecialty(null);
 			response.setTitle(improvementPlan.getTitle());
 			response.setOpportunity(improvementPlan.getOpportunity());
+			improvementProposalResponseList = new ArrayList<ImprovementProposalResponse>();
 			improvementProposalList = improvementProposalRepository.findByImprovementPlanId(improvementPlan.getId());
 			for (ImprovementProposal improvementProposal : improvementProposalList) {
-				improvementProposal.setImprovementPlan(null);
+				ipr = new ImprovementProposalResponse();
+				ipr.setId(improvementProposal.getId());
+				ipr.setDescription(improvementProposal.getDescription());
+				activityList = activityRepository.findByImprovementProposalId(improvementProposal.getId()); 
+				for(Activity activity : activityList) {
+					activity.setImprovementProposal(null);
+				}
+				ipr.setActivities(activityList);
+				improvementProposalResponseList.add(ipr);
 			}
-			response.setImprovementProposals(improvementProposalList);
+			response.setImprovementProposals(improvementProposalResponseList);
 			listaResponse.add(response);
 		}
 		return listaResponse;
