@@ -46,6 +46,8 @@ public class IndicatorServiceImpl implements IndicatorService {
     public Integer updateIndicator(Indicator i) {
         Integer response = 0;
 		try {
+			for(LevelDetail l : i.getLevelDetailList()) 
+				levelDetailRepository.save(l);
 			response = indicatorRepository.save(i).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
