@@ -25,8 +25,11 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	public Integer createMeasurementPlanLine(MeasurementPlanLine m) {
 		Integer response = null;
 		try {
-			for(Section s : m.getSections()) 
-				sectionRepository.save(s);
+			if(m.getSections()!=null) {
+				for(Section s : m.getSections())
+					if(s.getId()==null)
+						sectionRepository.save(s);
+			}
 			
 			response = mPlanLineRepository.save(m).getId();
 		} catch(Exception ex) {
@@ -39,6 +42,11 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	public Integer updateMeasurementPlanLine(MeasurementPlanLine m) {
 		Integer response = null;
 		try {
+			if(m.getSections()!=null) {
+				for(Section s : m.getSections())
+					if(s.getId()==null)
+						sectionRepository.save(s);
+			}
 			response = mPlanLineRepository.save(m).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
