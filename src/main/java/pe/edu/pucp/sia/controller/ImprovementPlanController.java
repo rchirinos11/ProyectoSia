@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import pe.edu.pucp.sia.model.ImprovementPlan;
 import pe.edu.pucp.sia.requests.CreateImprovementPlanRequest;
+import pe.edu.pucp.sia.requests.UpdateImprovementPlanRequest;
 import pe.edu.pucp.sia.service.ImprovementPlanService;
 import pe.edu.pucp.sia.service.impl.ImprovementPlanServiceImpl;
 
@@ -46,7 +46,7 @@ public class ImprovementPlanController {
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateImprovementPlan(@RequestBody ImprovementPlan i){
+	public ResponseEntity<Object> updateImprovementPlan(@RequestBody UpdateImprovementPlanRequest i){
 		logger.info("Entered method updateImprovementPlan()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(improvementPlanService.updateImprovementPlan(i));
 	}
