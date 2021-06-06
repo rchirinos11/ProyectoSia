@@ -62,7 +62,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 
 	@Override
 	public Iterable<Specialty> listByCoordinator(Integer id) {
-		Iterable<Specialty> lista = specialtyRepository.findByFacultyId(id);
+		Iterable<Specialty> lista = specialtyRepository.findByCoordinatorId(id);
 		for (Specialty specialty : lista) {
 			specialty.setCoordinator(null);
 		}
@@ -71,7 +71,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 
 	@Override
 	public Iterable<Specialty> listByAssistant(Integer id) {
-		Iterable<Specialty> lista = specialtyRepository.findByFacultyId(id);
+		Iterable<Specialty> lista = specialtyRepository.findByAssistantId(id);
 		for (Specialty specialty : lista) {
 			specialty.setAssistant(null);
 		}
