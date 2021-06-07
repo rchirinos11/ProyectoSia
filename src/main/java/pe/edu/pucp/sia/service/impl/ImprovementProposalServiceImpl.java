@@ -3,15 +3,20 @@ package pe.edu.pucp.sia.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.edu.pucp.sia.model.Activity;
 import pe.edu.pucp.sia.model.ImprovementPlan;
 import pe.edu.pucp.sia.model.ImprovementProposal;
+import pe.edu.pucp.sia.repository.ActivityRepository;
 import pe.edu.pucp.sia.repository.ImprovementProposalRepository;
+import pe.edu.pucp.sia.requests.CreateImprovementProposalRequest;
 import pe.edu.pucp.sia.service.ImprovementProposalService;
 
 @Service
 public class ImprovementProposalServiceImpl implements ImprovementProposalService{
 	@Autowired
 	private ImprovementProposalRepository improvementProposalRepository;
+	@Autowired
+	private ActivityRepository activityRepository;
 	
 	@Override
 	public Iterable<ImprovementProposal> listAll() {
@@ -30,10 +35,19 @@ public class ImprovementProposalServiceImpl implements ImprovementProposalServic
 	}
 
 	@Override
-	public Integer updateImprovementProposal(ImprovementProposal i) {
+	public Integer updateImprovementProposal(CreateImprovementProposalRequest ipr) {
+		ImprovementProposal i = new ImprovementProposal();
 		Integer response = 0;
 		try {
+			i.setId(ipr.getId());
+			i.setDescription(ipr.getDescription());
 			response = improvementProposalRepository.save(i).getId();
+			for(Activity a : ipr.getActivities()) {
+				if(a.getId() == 0) {
+					a.setImprovementProposal(i);
+					activityRepository.save(a);
+				}
+			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
