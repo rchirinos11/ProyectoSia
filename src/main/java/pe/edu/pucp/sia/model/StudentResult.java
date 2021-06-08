@@ -32,5 +32,5 @@ public class StudentResult {
 	private Semester semesterEnd;
 	private int orderNumber;
 	private String description;
-	//private boolean active=true;
+	private boolean active=true;
 }
