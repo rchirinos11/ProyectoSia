@@ -14,7 +14,6 @@ import pe.edu.pucp.sia.repository.ImprovementPlanRepository;
 import pe.edu.pucp.sia.repository.ImprovementProposalRepository;
 import pe.edu.pucp.sia.requests.CreateImprovementPlanRequest;
 import pe.edu.pucp.sia.requests.CreateImprovementProposalRequest;
-import pe.edu.pucp.sia.requests.UpdateImprovementPlanRequest;
 import pe.edu.pucp.sia.response.ImprovementPlanDataResponse;
 import pe.edu.pucp.sia.response.ImprovementProposalResponse;
 import pe.edu.pucp.sia.service.ImprovementPlanService;
@@ -60,23 +59,10 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 	}
 
 	@Override
-	public Integer updateImprovementPlan(UpdateImprovementPlanRequest uipr) {
-		ImprovementPlan i = new ImprovementPlan();
+	public Integer updateImprovementPlan(ImprovementPlan i) {
 		Integer response = 0;
-		Iterable<ImprovementProposal> improvementProposals = uipr.getImprovementProposals();
 		try {
-			i.setId(uipr.getId());
-			i.setSpecialty(uipr.getSpecialty());
-			i.setTitle(uipr.getTitle());
-			i.setOpportunity(uipr.getOpportunity());
 			response = improvementPlanRepository.save(i).getId();
-			
-			for(ImprovementProposal ip : improvementProposals) {
-				if(ip.getId() == 0) {
-					ip.setImprovementPlan(i);
-					improvementProposalRepository.save(ip);
-				}
-			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
