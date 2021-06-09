@@ -31,7 +31,7 @@ public class ImprovementPlanTester {
 	FacultyService serviceFaculty = new FacultyServiceImpl();
 	Faculty faculty = new Faculty();
 	Specialty specialty = new Specialty();
-	/*
+	
 	@Test
 	@Order(1)
 	public void insertImprovementPlanRecieveId() {
@@ -77,7 +77,7 @@ public class ImprovementPlanTester {
 		assertEquals("Primer plan",list.iterator().next().getTitle());
 		}
 	
-	/*@Test
+	@Test
 	@Order(3)
 	public void logicDeleteImprovementPlan(){
 		Iterable<ImprovementPlan> list = service.listAll();
@@ -89,5 +89,5 @@ public class ImprovementPlanTester {
 		list = service.listAll();
 		assertThat(list).isEmpty();
 		}
-	*/
+	
 }
