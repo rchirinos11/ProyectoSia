@@ -30,5 +30,5 @@ public class Activity {
 	private Integer yearStart;
 	private Integer yearEnd;
 	private String responsible;
-	//private boolean active;
+	private boolean active=true;
 }

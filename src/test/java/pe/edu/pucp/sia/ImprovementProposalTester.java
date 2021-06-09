@@ -12,20 +12,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.ImprovementPlan;
+import pe.edu.pucp.sia.model.ImprovementProposal;
 import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.requests.CreateImprovementPlanRequest;
 import pe.edu.pucp.sia.service.FacultyService;
 import pe.edu.pucp.sia.service.ImprovementPlanService;
+import pe.edu.pucp.sia.service.ImprovementProposalService;
 import pe.edu.pucp.sia.service.SpecialtyService;
 import pe.edu.pucp.sia.service.impl.FacultyServiceImpl;
 import pe.edu.pucp.sia.service.impl.ImprovementPlanServiceImpl;
+import pe.edu.pucp.sia.service.impl.ImprovementProposalServiceImpl;
 import pe.edu.pucp.sia.service.impl.SpecialtyServiceImpl;
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
-public class ImprovementPlanTester {
+public class ImprovementProposalTester {
 	@Autowired
-	ImprovementPlanService service = new ImprovementPlanServiceImpl();
+	ImprovementProposalService service = new ImprovementProposalServiceImpl();
+	@Autowired
+	ImprovementPlanService serviceImprovementPlan = new ImprovementPlanServiceImpl();
 	@Autowired
 	SpecialtyService serviceSpecialty = new SpecialtyServiceImpl();
 	@Autowired
@@ -33,7 +38,7 @@ public class ImprovementPlanTester {
 	
 	@Test
 	@Order(1)
-	public void insertImprovementPlanRecieveId() {
+	public void insertImprovementProposalRecieveId() {
 		//Crea facultades
 		Faculty faculty = new Faculty();
 		faculty.setName("Ciencias");
@@ -51,43 +56,52 @@ public class ImprovementPlanTester {
 		improvementPlanRequest.setSpecialty(specialty);
 		improvementPlanRequest.setTitle("Plan");
 		improvementPlanRequest.setOpportunity("Oportunidad");
-		Integer id = service.createImprovementPlan(improvementPlanRequest);
+		improvementPlan.setSpecialty(specialty);
+		improvementPlan.setTitle("Plan");
+		improvementPlan.setOpportunity("Oportunidad");
+		improvementPlan.setId(serviceImprovementPlan.createImprovementPlan(improvementPlanRequest).getId());
 		
-		//Lista los planes de mejora
-		Iterable<ImprovementPlan> listI = service.listAll();
+		//Crea propuesta de mejora
+		ImprovementProposal improvementProposal = new ImprovementProposal();
+		improvementProposal.setImrpovementPlan(improvementPlan);
+		improvementProposal.setDescription("Descripción propuesta");
+		Integer id =  service.createImprovementProposal(improvementProposal);
+		
+		//Lista las oportunidades de mejora
+		Iterable<ImprovementProposal> listI = service.listAll();
 		
 		//Comprueba id devuelta sea el mismo que el de BD
-		improvementPlan = listI.iterator().next();
-		assertEquals("Plan",improvementPlan.getTitle());
-		assertEquals("Oportunidad",improvementPlan.getOpportunity());
-		assertThat(id==improvementPlan.getId());
+		improvementProposal = listI.iterator().next();
+		assertEquals("Descripción propuesta",improvementProposal.getDescription());
+		assertThat(id==improvementProposal.getId());
 	}
 	
 	@Test
 	@Order(2)
-	public void updateImprovementPlan(){
-		Iterable<ImprovementPlan> list = service.listAll();
-		ImprovementPlan improvementPlan = list.iterator().next();
+	public void updateImprovementProposal(){
+		Iterable<ImprovementProposal> list = service.listAll();
+		ImprovementProposal improvementProposal = list.iterator().next();
 		//Cambia un parametro
-		improvementPlan.setTitle("Primer plan");
-		service.updateImprovementPlan(improvementPlan);
+		improvementProposal.setDescription("Descripción de la propuesta");
+		service.updateImprovementProposal(improvementProposal);
 		//Obtiene lista nueva actualizada
 		list = service.listAll();
-		assertEquals("Primer plan",list.iterator().next().getTitle());
+		assertEquals("Descripción de la propuesta",list.iterator().next().getDescription());
 		}
 	
 	@Test
 	@Order(3)
 	public void logicDeleteImprovementPlan(){
-		Iterable<ImprovementPlan> list = service.listAll();
-		ImprovementPlan improvementPlan = list.iterator().next();
+		Iterable<ImprovementProposal> list = service.listAll();
+		ImprovementProposal improvementProposal = list.iterator().next();
 		//Delete logico
-		improvementPlan.setActive(false);
-		service.updateImprovementPlan(improvementPlan);
+		improvementProposal.setActive(false);
+		service.updateImprovementProposal(improvementProposal);
 		//Obtiene lista nueva actualizada
 		list = service.listAll();
 		assertThat(list).isEmpty();
 		//Dejar todo desactivado
+		serviceImprovementPlan.deleteImprovementPlan(serviceImprovementPlan.listAll().iterator().next().getId());
 		serviceSpecialty.deleteSpecialty(serviceSpecialty.listAll().iterator().next().getId());
 		serviceFaculty.deleteFaculty(serviceFaculty.listAll().iterator().next().getId());
 		}
