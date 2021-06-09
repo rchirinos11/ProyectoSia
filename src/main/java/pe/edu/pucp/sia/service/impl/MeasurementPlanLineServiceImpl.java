@@ -13,6 +13,7 @@ import pe.edu.pucp.sia.model.Section;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.SectionRepository;
+import pe.edu.pucp.sia.response.MeasurementPlanResponse;
 import pe.edu.pucp.sia.service.MeasurementPlanLineService;
 
 
@@ -110,7 +111,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	}
 
 	@Override
-	public Iterable<MeasurementPlanLine> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson) 
+	public Iterable<MeasurementPlanLine> listByCourseSemesterTeacherOld(Integer idCourse, Integer idSemester,Integer idPerson) 
 	{
 		Iterable<MeasurementPlanLine> list = null;
 		/*try {
@@ -159,6 +160,40 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 		}
 		
 		return list;
+	}
+
+	@Override
+	public Iterable<MeasurementPlanResponse> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,
+			Integer idPerson) {
+		Iterable<MeasurementPlanResponse> responseList = null;
+		List<MeasurementPlanResponse> list = new ArrayList<MeasurementPlanResponse>();
+		Iterable<MeasurementPlanLine> measurementPlanList;
+		Iterable<ResultsPerCard> resultsPerCardList;
+		Iterable<Section> sectionList;
+		
+		try {
+			measurementPlanList = mPlanLineRepository.listMeasurementPlanLineByCourseSemesterTeacher(idCourse, idSemester, idPerson);
+			for(MeasurementPlanLine mpl : measurementPlanList) {	
+				mpl.setCourse(null);
+				mpl.setSemester(null);
+				
+				resultsPerCardList = resultsPerCardRepository.findByMeasurementPlanLineId(mpl.getId());
+				for (ResultsPerCard rc : resultsPerCardList) {
+					rc.setMeasurementPlanLine(null);
+				}
+				sectionList = sectionRepository.listSectionByMeasurementPlanLine(mpl.getId());
+				MeasurementPlanResponse response = new MeasurementPlanResponse();
+				response.setMeasurementPlanLine(mpl);
+				response.setResultsPerCardList(resultsPerCardList);
+				response.setSectionList(sectionList);
+				list.add(response);
+			}
+			//Genera Iterable a partir de la lista
+			responseList = list;
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return responseList;	
 	}
 
 }

@@ -54,6 +54,11 @@ public class MeasurementPlanLineController {
 		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listBySpecialtyAndSemester(mplRequest.getIdSpecialty(),mplRequest.getIdSemester()));
 	}
 	
+	@GetMapping("/listByCourseSemesterTeacherOld/{idCourse}/{idSemester}/{idPerson}")
+	public ResponseEntity<Object> listByCourseSemesterTeacherOld(@PathVariable Integer idCourse,@PathVariable Integer idSemester,@PathVariable Integer idPerson){
+		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listByCourseSemesterTeacherOld(idCourse,idSemester,idPerson));
+	}
+	
 	@GetMapping("/listByCourseSemesterTeacher/{idCourse}/{idSemester}/{idPerson}")
 	public ResponseEntity<Object> listByCourseSemesterTeacher(@PathVariable Integer idCourse,@PathVariable Integer idSemester,@PathVariable Integer idPerson){
 		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listByCourseSemesterTeacher(idCourse,idSemester,idPerson));
