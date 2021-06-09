@@ -39,6 +39,7 @@ public class ResultsPerCard {
 	@JoinColumn(name="id_measurement_plan_line", referencedColumnName = "id_measurement_plan_line")
 	@ManyToOne
 	private MeasurementPlanLine measurementPlanLine;	
+	
 	private Float average;
 	private Float percentage;
 	private Integer totalStudents;	

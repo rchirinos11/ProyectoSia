@@ -50,7 +50,9 @@ public class MeasurementPlanLine {
 			inverseJoinColumns = @JoinColumn(name = "id_person"))
 	private List<Person> persons;
 		
-	 @OneToMany(mappedBy = "measurementPlanLine")	 
-	 private List<ResultsPerCard> resultsPerCards;
+	//@OneToMany(mappedBy = "measurementPlanLine")	 
+	@OneToMany()
+    @JoinColumn(name="id_measurement_plan_line") 
+	private List<ResultsPerCard> resultsPerCards;
 	
 }
