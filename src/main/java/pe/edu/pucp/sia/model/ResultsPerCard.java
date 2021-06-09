@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Setter;
 import lombok.Getter;
 
@@ -33,9 +35,11 @@ public class ResultsPerCard {
 	@ManyToOne
 	private MeasurementLevel measurementLevel;*/
 	
+	@JsonIgnore
 	@JoinColumn(name="id_measurement_plan_line", referencedColumnName = "id_measurement_plan_line")
 	@ManyToOne
 	private MeasurementPlanLine measurementPlanLine;	
+	
 	private Float average;
 	private Float percentage;
 	private Integer totalStudents;	
