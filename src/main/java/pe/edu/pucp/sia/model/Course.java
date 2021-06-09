@@ -18,8 +18,6 @@ public class Course {
 	private Integer id;
 	private String code;
 	private String name;
-
-	@ManyToOne
-	@JoinColumn(name="id_specialty")
+	@ManyToOne @JoinColumn(name="id_specialty")
 	private Specialty specialty;
 }
