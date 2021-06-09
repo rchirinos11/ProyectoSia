@@ -34,7 +34,7 @@ public class Measurement {
 	@ManyToOne
 	private MeasurementLevel measurementLevel;
 	
-	private Integer orden;
-	private String name;	
+	//private Integer orden;
+	//private String name;	
 	private boolean active=true;	
 }
