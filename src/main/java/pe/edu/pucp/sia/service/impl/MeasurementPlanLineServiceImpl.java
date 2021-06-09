@@ -1,5 +1,6 @@
 package pe.edu.pucp.sia.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
+import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Section;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
@@ -137,4 +139,26 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 		}
 		return list;
 	}
+
+	@Override
+	public Iterable<MeasurementPlanLine> listBySemesterAndTeachers(Integer idSemester, Integer idPerson) {
+		Iterable<MeasurementPlanLine> list = null;
+		try {
+			Person p = new Person();
+			p.setId(idPerson);
+			List<Person> personList = new ArrayList<Person>();
+			personList.add(p);
+			list = mPlanLineRepository.findBySemesterIdAndPersonsIn(idSemester, personList);
+			for(MeasurementPlanLine mpl : list) {
+				mpl.setIndicator(null);
+				mpl.setPersons(null);
+				mpl.setSemester(null);
+			}
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		return list;
+	}
+
 }
