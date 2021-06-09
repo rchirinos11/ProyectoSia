@@ -22,4 +22,5 @@ public class Course {
 	@ManyToOne
 	@JoinColumn(name="id_specialty")
 	private Specialty specialty;
+	
 }

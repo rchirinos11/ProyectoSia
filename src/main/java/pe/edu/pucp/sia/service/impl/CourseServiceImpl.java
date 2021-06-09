@@ -72,5 +72,8 @@ public class CourseServiceImpl implements CourseService{
 			course.setSpecialty(null);
 		}
 		return lista;
+		
+
 	}
+
 }

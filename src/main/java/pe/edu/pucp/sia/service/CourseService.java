@@ -11,4 +11,5 @@ public interface CourseService {
 	public int updateCourse(Course c);   
 	public List<Course> listCoursesByTeacherSpecialty(Integer idPerson,Integer idSpeciality);
 	public Iterable<Course> listBySpecialty(Integer id);
+	
 }

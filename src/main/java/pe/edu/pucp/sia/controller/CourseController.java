@@ -31,6 +31,7 @@ public class CourseController {
 		return ResponseEntity.status(HttpStatus.OK).body(courseService.listCoursesByTeacherSpecialty(idP,idS));
 	}
 	
+	
 	@GetMapping("/listbyspecialty/{id}")
 	public ResponseEntity<Object> listBySpecialty(@PathVariable Integer id){
 		return ResponseEntity.status(HttpStatus.OK).body(courseService.listBySpecialty(id));
