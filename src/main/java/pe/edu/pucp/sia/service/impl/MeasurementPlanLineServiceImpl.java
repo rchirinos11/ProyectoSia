@@ -114,7 +114,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	public Iterable<MeasurementPlanLine> listByCourseSemesterTeacherOld(Integer idCourse, Integer idSemester,Integer idPerson) 
 	{
 		Iterable<MeasurementPlanLine> list = null;
-		/*try {
+		try {
 			list = mPlanLineRepository.listMeasurementPlanLineByCourseSemesterTeacher(idCourse, idSemester, idPerson);
 			for(MeasurementPlanLine mpl : list) {	
 				mpl.setCourse(null);
@@ -122,7 +122,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
-		}*/
+		}
 		return list;
 	}
 
