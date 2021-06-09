@@ -40,11 +40,11 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 						sectionRepository.save(s);
 			}
 			if(m.getResultsPerCards()!=null) {
-				for(ResultsPerCard r : m.getResultsPerCards())
-					if(r.getId()==null)
-						resultsPerCardRepository.save(r);
-			}
-		response = mPlanLineRepository.save(m).getId();
+				for(ResultsPerCard r : m.getResultsPerCards()) 
+					if(r.getId()==null) 
+						resultsPerCardRepository.save(r).getId();												
+			}		
+			response = mPlanLineRepository.save(m).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -77,10 +77,10 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	public String deleteMeasurementPlanLine(Integer id) {
 		String response = "";
 		try {
-			/*MeasurementPlanLine m=mPlanLineRepository.findById(id).get();
+			MeasurementPlanLine m=mPlanLineRepository.findById(id).get();
 			for(ResultsPerCard r:m.getResultsPerCards()) {
 				resultsPerCardRepository.deleteById(r.getId());
-			}*/
+			}
 			mPlanLineRepository.deleteById(id);
 			response = "Deleted";
 		} catch(Exception ex) {
