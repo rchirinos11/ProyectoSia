@@ -25,6 +25,8 @@ public class Indicator {
     private Integer id;
     private String description;
     private String code;
+	private boolean active=true;
+
 
     @ManyToOne
 	@JoinColumn(name="id_student_result")
