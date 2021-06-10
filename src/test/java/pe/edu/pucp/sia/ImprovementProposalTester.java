@@ -59,11 +59,11 @@ public class ImprovementProposalTester {
 		improvementPlan.setSpecialty(specialty);
 		improvementPlan.setTitle("Plan");
 		improvementPlan.setOpportunity("Oportunidad");
-		improvementPlan.setId(serviceImprovementPlan.createImprovementPlan(improvementPlanRequest).getId());
+		improvementPlan.setId(serviceImprovementPlan.createImprovementPlan(improvementPlanRequest));
 		
 		//Crea propuesta de mejora
 		ImprovementProposal improvementProposal = new ImprovementProposal();
-		improvementProposal.setImrpovementPlan(improvementPlan);
+		improvementProposal.setImprovementPlan(improvementPlan);
 		improvementProposal.setDescription("Descripción propuesta");
 		Integer id =  service.createImprovementProposal(improvementProposal);
 		
@@ -101,9 +101,15 @@ public class ImprovementProposalTester {
 		list = service.listAll();
 		assertThat(list).isEmpty();
 		//Dejar todo desactivado
-		serviceImprovementPlan.deleteImprovementPlan(serviceImprovementPlan.listAll().iterator().next().getId());
-		serviceSpecialty.deleteSpecialty(serviceSpecialty.listAll().iterator().next().getId());
-		serviceFaculty.deleteFaculty(serviceFaculty.listAll().iterator().next().getId());
+		ImprovementPlan improvementPlan = serviceImprovementPlan.listAll().iterator().next();
+		improvementPlan.setActive(false);
+		serviceImprovementPlan.updateImprovementPlan(improvementPlan);
+		Specialty specialty = serviceSpecialty.listAll().iterator().next();
+		specialty.setActive(false);
+		serviceSpecialty.updateSpecialty(specialty);
+		Faculty faculty = serviceFaculty.listAll().iterator().next();
+		faculty.setActive(false);
+		serviceFaculty.updateFaculty(faculty);
 		}
 	
 }

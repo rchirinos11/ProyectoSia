@@ -61,7 +61,7 @@ public class SectionTester {
 		Iterable<Section> list = serviceSection.listAll();
 		Section section = list.iterator().next();
 		//Cambia un parametro
-		section.setName(20161359);
+		section.setCode(20161359);
 		serviceSection.updateSection(section);
 		//Obtiene lista nueva actualizada
 		list = serviceSection.listAll();

@@ -88,8 +88,12 @@ public class ImprovementPlanTester {
 		list = service.listAll();
 		assertThat(list).isEmpty();
 		//Dejar todo desactivado
-		serviceSpecialty.deleteSpecialty(serviceSpecialty.listAll().iterator().next().getId());
-		serviceFaculty.deleteFaculty(serviceFaculty.listAll().iterator().next().getId());
+		Specialty specialty = serviceSpecialty.listAll().iterator().next();
+		specialty.setActive(false);
+		serviceSpecialty.updateSpecialty(specialty);
+		Faculty faculty = serviceFaculty.listAll().iterator().next();
+		faculty.setActive(false);
+		serviceFaculty.updateFaculty(faculty);
 		}
 	
 }

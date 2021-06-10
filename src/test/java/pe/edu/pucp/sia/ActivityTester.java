@@ -72,18 +72,18 @@ class ActivityTester {
 		improvementPlan.setSpecialty(specialty);
 		improvementPlan.setTitle("Plan");
 		improvementPlan.setOpportunity("Oportunidad");
-		improvementPlan.setId(serviceImprovementPlan.createImprovementPlan(improvementPlanRequest).getId());
+		improvementPlan.setId(serviceImprovementPlan.createImprovementPlan(improvementPlanRequest));
 		
 		//Crea propuesta de mejora
 		ImprovementProposal improvementProposal = new ImprovementProposal();
-		improvementProposal.setImrpovementPlan(improvementPlan);
+		improvementProposal.setImprovementPlan(improvementPlan);
 		improvementProposal.setDescription("Descripción propuesta");
 		service.createImprovementProposal(improvementProposal);
 		
 		//Crea estado
 		State state = new State();
 		state.setDescription("No iniciado");
-		Integer id = serviceState.createState(state);		
+		serviceState.createState(state);		
 		
 		//Crea actividad
 		Activity activity = new Activity();
@@ -99,7 +99,7 @@ class ActivityTester {
 		//Lista las actividades
 		Iterable<Activity> list = serviceActivity.listAll();
 		activity = list.iterator().next();
-		assertEquals("Propuesta",activity.getDescription());
+		assertEquals("Actividad",activity.getDescription());
 		assertEquals("Documentos de evidencia",activity.getEvidence());
 		assertEquals(2020,activity.getYearStart());
 		assertEquals(2021,activity.getYearEnd());
@@ -136,10 +136,20 @@ class ActivityTester {
 		list = serviceActivity.listAll();
 		assertThat(list).isEmpty();
 		//Dejar todo desactivado
-		serviceState.deleteState(serviceState.listAll().iterator().next().getId());
-		service.deleteImprovementProposal(service.listAll().iterator().next().getId());
-		serviceImprovementPlan.deleteImprovementPlan(serviceImprovementPlan.listAll().iterator().next().getId());
-		serviceSpecialty.deleteSpecialty(serviceSpecialty.listAll().iterator().next().getId());
-		serviceFaculty.deleteFaculty(serviceFaculty.listAll().iterator().next().getId());		
+		State state = serviceState.listAll().iterator().next();
+		state.setActive(false);
+		serviceState.updateState(state);
+		ImprovementProposal improvementProposal = service.listAll().iterator().next();
+		improvementProposal.setActive(false);
+		service.updateImprovementProposal(improvementProposal);
+		ImprovementPlan improvementPlan = serviceImprovementPlan.listAll().iterator().next();
+		improvementPlan.setActive(false);
+		serviceImprovementPlan.updateImprovementPlan(improvementPlan);
+		Specialty specialty = serviceSpecialty.listAll().iterator().next();
+		specialty.setActive(false);
+		serviceSpecialty.updateSpecialty(specialty);
+		Faculty faculty = serviceFaculty.listAll().iterator().next();
+		faculty.setActive(false);
+		serviceFaculty.updateFaculty(faculty);	
 		}
 }

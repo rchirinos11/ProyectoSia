@@ -93,6 +93,8 @@ class FacultyTester {
 		terminaTest();
 		}
 	
+	@Test
+	@Order(5)
 	private void terminaTest() {
 		Iterable<Faculty> listf = serviceFaculty.listAll();
 		for (Faculty f : listf) {
@@ -100,5 +102,8 @@ class FacultyTester {
 			f.setActive(false);
 			serviceFaculty.updateFaculty(f);
 		}
+		Person coordinator = serviceCoordinator.listAll().iterator().next();
+		coordinator.setActive(false);
+		serviceCoordinator.updatePerson(coordinator);
 	}
 }

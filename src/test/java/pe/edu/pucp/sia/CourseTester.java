@@ -45,7 +45,7 @@ public class CourseTester {
         //Lista los cursos
 		Iterable<Course> list = serviceCourse.listAll();
 		course = list.iterator().next();
-		assertEquals("Humanidades",course.getName());
+		assertEquals("Sistemas Operativos",course.getName());
 		assertThat(id==course.getId());
         assertEquals("1INF06",course.getCode());
 	}
@@ -80,6 +80,8 @@ public class CourseTester {
             assertThat(list).isEmpty();
 		}
 	
+	@Test
+	@Order(4)
 	private void terminaTest() {
 		Iterable<Course> lists = serviceCourse.listAll();
 		for (Course c : lists) {
