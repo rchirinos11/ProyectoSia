@@ -8,7 +8,7 @@ import pe.edu.pucp.sia.model.Section;
 
 @Getter @Setter
 public class MeasurementPlanResponse {
-	MeasurementPlanLine measurementPlanLine;
-	Iterable<ResultsPerCard> resultsPerCardList;
-	Iterable<Section> sectionList;
+	//MeasurementPlanLine measurementPlanLine;
+	//Iterable<ResultsPerCard> resultsPerCardList;
+	//Iterable<Section> sectionList;
 }

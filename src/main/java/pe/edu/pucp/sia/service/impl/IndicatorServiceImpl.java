@@ -32,7 +32,7 @@ public class IndicatorServiceImpl implements IndicatorService {
 	public Integer createIndicator(Indicator i) {
 		Integer response = 0;
 		try {
-			for(LevelDetail l : i.getLevelDetailList()) 
+			for(LevelDetail l : i.getLevelDetails()) 
 				levelDetailRepository.save(l);
 			
 			response = indicatorRepository.save(i).getId(); 
@@ -46,7 +46,7 @@ public class IndicatorServiceImpl implements IndicatorService {
     public Integer updateIndicator(Indicator i) {
         Integer response = 0;
 		try {
-			for(LevelDetail l : i.getLevelDetailList()) 
+			for(LevelDetail l : i.getLevelDetails()) 
 				levelDetailRepository.save(l);
 			response = indicatorRepository.save(i).getId();
 		} catch(Exception ex) {

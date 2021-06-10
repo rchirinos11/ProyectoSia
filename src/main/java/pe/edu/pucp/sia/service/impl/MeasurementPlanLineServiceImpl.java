@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.edu.pucp.sia.model.Indicator;
+import pe.edu.pucp.sia.model.LevelDetail;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Person;
@@ -111,7 +113,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	}
 
 	@Override
-	public Iterable<MeasurementPlanLine> listByCourseSemesterTeacherOld(Integer idCourse, Integer idSemester,Integer idPerson) 
+	public Iterable<MeasurementPlanLine> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson) 
 	{
 		Iterable<MeasurementPlanLine> list = null;
 		try {
@@ -119,6 +121,15 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			for(MeasurementPlanLine mpl : list) {	
 				mpl.setCourse(null);
 				mpl.setSemester(null);
+				//indicator = mpl.getIndicator();
+				//indicator.setSpecialty(null);
+				//mpl.setIndicator(indicator);
+				//mpl.setIndicator(mpl.getIndicator());
+				mpl.getIndicator().getStudentResult().setSpecialty(null);
+				List<LevelDetail> listLevelDetail = mpl.getIndicator().getLevelDetails();
+				for (LevelDetail ld : listLevelDetail) {
+					ld.getMeasurementLevel().setSpecialty(null);
+				}
 			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
@@ -161,7 +172,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 		
 		return list;
 	}
-
+	/*
 	@Override
 	public Iterable<MeasurementPlanResponse> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,
 			Integer idPerson) {
@@ -195,5 +206,6 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 		}
 		return responseList;	
 	}
+	*/
 
 }

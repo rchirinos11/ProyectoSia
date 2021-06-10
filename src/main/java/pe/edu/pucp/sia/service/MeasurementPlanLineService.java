@@ -10,8 +10,8 @@ public interface MeasurementPlanLineService {
 	public String deleteMeasurementPlanLine(Integer id);
 	public Iterable<MeasurementPlanLine> listByCourse(Integer idFaculty);
 	public Iterable<MeasurementPlanLine> listBySpecialtyAndSemester(Integer idSpecialty, Integer idSemester);
-	public Iterable<MeasurementPlanLine> listByCourseSemesterTeacherOld(Integer idCourse, Integer idSemester,Integer idPerson);
-	public Iterable<MeasurementPlanResponse> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson);
+	public Iterable<MeasurementPlanLine> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson);
+	//public Iterable<MeasurementPlanResponse> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson);
 	public Iterable<MeasurementPlanLine> listByCourseAndSemester(Integer idCourse, Integer idSemester);
 	public Iterable<MeasurementPlanLine> listBySemesterAndTeachers(Integer idSemester, Integer idPerson);
 }
