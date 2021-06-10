@@ -20,4 +20,5 @@ public class Course {
 	private String name;
 	@ManyToOne @JoinColumn(name="id_specialty")
 	private Specialty specialty;
+	private boolean active=true;
 }
