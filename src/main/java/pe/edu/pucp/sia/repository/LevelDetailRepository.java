@@ -12,6 +12,8 @@ public interface LevelDetailRepository extends CrudRepository <LevelDetail,Integ
 	public Iterable<LevelDetail> listLevelDetailBySpecialty(@Param("in_id_specialty") Integer idSpecialty);
 	
 	
+	public Iterable<LevelDetail> findByIndicatorId(Integer id);
+	
 	@Procedure("sp_delete_level_detail")
 	public void deleteLevelDetail(Integer id);
 }

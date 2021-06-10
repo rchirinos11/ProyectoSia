@@ -60,7 +60,8 @@ public class IndicatorServiceImpl implements IndicatorService {
         String response = "";
 		try {
 			Iterator<MeasurementPlanLine> i = mplRepository.findByIndicatorId(id).iterator();
-			if(!i.hasNext()) {
+			Iterator<LevelDetail> l = levelDetailRepository.findByIndicatorId(id).iterator();
+			if(!i.hasNext() && !l.hasNext()) {
 				indicatorRepository.deleteIndicator(id);
 				response = "Deleted";
 			} else {
