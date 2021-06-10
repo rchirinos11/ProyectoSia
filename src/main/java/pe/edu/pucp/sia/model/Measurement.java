@@ -11,6 +11,9 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Setter;
 import lombok.Getter;
 
@@ -21,7 +24,7 @@ public class Measurement {
 	@Column(name="id_measurement")
 	private Integer id;
 	
-	
+	//@JsonIgnore
 	@JoinColumn(name="id_results_per_card", referencedColumnName = "id_results_per_card")
 	@ManyToOne
 	private ResultsPerCard resultsPerCard;
@@ -36,5 +39,12 @@ public class Measurement {
 	
 	//private Integer orden;
 	//private String name;	
-	private boolean active=true;	
+	private boolean active=true;
+
+	public ResultsPerCard getResultsPerCard() {
+		return null;
+	}	
+	
+	
+	
 }
