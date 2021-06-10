@@ -27,4 +27,5 @@ public class Role {
 		joinColumns = @JoinColumn(name = "id_role"), 
 		inverseJoinColumns = @JoinColumn(name = "id_person"))
     private List<Person> personList;
+    //private boolean active;
 }
