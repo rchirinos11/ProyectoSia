@@ -8,6 +8,6 @@ public interface ImprovementPlanService {
 	public Iterable<ImprovementPlan>  listAll();
 	public Iterable<ImprovementPlanDataResponse> listBySpecialty(Integer id);
 	public Integer createImprovementPlan(CreateImprovementPlanRequest c);
-	public Integer updateImprovementPlan(ImprovementPlan i);
+	public Integer updateImprovementPlan(CreateImprovementPlanRequest i);
 	public String deleteImprovementPlan(Integer id);
 }

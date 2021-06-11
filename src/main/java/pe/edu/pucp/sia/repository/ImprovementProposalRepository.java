@@ -11,4 +11,6 @@ public interface ImprovementProposalRepository extends CrudRepository<Improvemen
 	public List<ImprovementProposal> findByImprovementPlanId(Integer id);
 	@Procedure("sp_delete_improvement_proposal")
 	public void deleteImprovementProposal(Integer id);
+	@Procedure("sp_reactivate_improvement_proposal")
+	public void reactivateImprovementProposal(Integer id);
 }

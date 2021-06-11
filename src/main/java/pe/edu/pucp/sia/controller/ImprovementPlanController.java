@@ -46,7 +46,7 @@ public class ImprovementPlanController {
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateImprovementPlan(@RequestBody ImprovementPlan i){
+	public ResponseEntity<Object> updateImprovementPlan(@RequestBody CreateImprovementPlanRequest i){
 		logger.info("Entered method updateImprovementPlan()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(improvementPlanService.updateImprovementPlan(i));
 	}

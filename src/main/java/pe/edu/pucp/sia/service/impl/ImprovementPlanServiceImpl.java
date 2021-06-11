@@ -59,10 +59,45 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 	}
 
 	@Override
-	public Integer updateImprovementPlan(ImprovementPlan i) {
+	public Integer updateImprovementPlan(CreateImprovementPlanRequest ipr) {
 		Integer response = 0;
 		try {
-			response = improvementPlanRepository.save(i).getId();
+			Iterable<ImprovementProposal> improvementProposals = improvementProposalRepository.findByImprovementPlanId(ipr.getId());
+			Iterable<Activity> activities = null;
+			for(ImprovementProposal i : improvementProposals) {
+				activities = activityRepository.findByImprovementProposalId(i.getId());
+				for(Activity a : activities) {
+					activityRepository.deleteActivity(a.getId());
+				}
+				improvementProposalRepository.deleteImprovementProposal(i.getId());
+			}
+			
+			ImprovementPlan improvementPlan = new ImprovementPlan();
+			improvementPlan.setId(ipr.getId());
+			improvementPlan.setSpecialty(ipr.getSpecialty());
+			improvementPlan.setTitle(ipr.getTitle());
+			improvementPlan.setOpportunity(ipr.getOpportunity());
+			response = improvementPlanRepository.save(improvementPlan).getId();
+			
+			ImprovementProposal improvementProposal = null;
+			for(CreateImprovementProposalRequest iprr : ipr.getImprovementProposals()) {
+				improvementProposal = new ImprovementProposal();
+				improvementProposal.setId(iprr.getId());
+				improvementProposal.setImprovementPlan(improvementPlan);
+				improvementProposal.setDescription(iprr.getDescription());
+				if(improvementProposal.getId() != null) {
+					improvementProposalRepository.reactivateImprovementProposal(improvementProposal.getId());
+				}
+				improvementProposalRepository.save(improvementProposal);
+				
+				for(Activity activity : iprr.getActivities()) {
+					activity.setImprovementProposal(improvementProposal);
+					if(activity.getId() != null) {
+						activityRepository.reactivateActivity(activity.getId());
+					}
+					activityRepository.save(activity);
+				}
+			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
