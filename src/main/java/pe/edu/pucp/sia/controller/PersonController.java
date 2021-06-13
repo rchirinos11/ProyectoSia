@@ -31,6 +31,12 @@ public class PersonController {
 		logger.info("Entered method listPerson()");
 		return ResponseEntity.status(HttpStatus.OK).body(personService.listAll());
 	}
+
+	@GetMapping("/listWorkers")
+	public ResponseEntity<Object> listWorkers(){
+		logger.info("Entered method listWorkers()");
+		return ResponseEntity.status(HttpStatus.OK).body(personService.listWorkers());
+	}
 	
 	@PostMapping("/create")
 	public ResponseEntity<Object> createPerson(@RequestBody Person p){

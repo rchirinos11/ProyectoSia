@@ -5,6 +5,7 @@ import pe.edu.pucp.sia.response.PersonDataResponse;
 
 public interface PersonService {
 	public Iterable<Person> listAll();
+	public Iterable<Person> listWorkers();
 	public String createPerson(Person p);
 	public String deletePerson(Integer id);
 	public String updatePerson(Person p);

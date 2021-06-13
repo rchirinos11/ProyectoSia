@@ -118,4 +118,10 @@ public class PersonServiceImpl implements PersonService{
 		}
 		return null;
 	}
+
+	@Override
+	public Iterable<Person> listWorkers() {
+		Iterable<Person> list=personRepository.findByEmailIsNotNull();
+		return list;		
+	}
 }
