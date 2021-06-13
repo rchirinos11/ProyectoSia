@@ -1,17 +1,32 @@
 package pe.edu.pucp.sia.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.edu.pucp.sia.model.Measurement;
 import pe.edu.pucp.sia.model.MeasurementLevel;
+import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.ResultsPerCard;
+import pe.edu.pucp.sia.model.Role;
+import pe.edu.pucp.sia.repository.MeasurementRepository;
+import pe.edu.pucp.sia.repository.PersonRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
+import pe.edu.pucp.sia.requests.RegisterStudentMeditionsRequest;
 import pe.edu.pucp.sia.service.ResultsPerCardService;
 
 @Service
 public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	@Autowired
 	private ResultsPerCardRepository resultsPerCardRepository;
+	
+	@Autowired
+	private PersonRepository personRepository;
+	
+	@Autowired
+	private MeasurementRepository measurementRepository;
 	
 	@Override
 	public Iterable<ResultsPerCard> listAll() {
@@ -60,6 +75,50 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 			rc.setMeasurementPlanLine(null);
 		}
 		return lista;
+	}
+
+	@Override
+	public Integer registerStudentMeditions(RegisterStudentMeditionsRequest rq) {
+		Integer response = 0;
+		try {
+			Integer idResult = rq.getResultsPerCard().getId();
+			Integer idStudent;
+			Measurement meFound;
+			ResultsPerCard result = new ResultsPerCard();
+			Person student,found;
+			List<Role> listaRoles = new ArrayList<>();
+			Role rol = new Role();
+			rol.setId(305);
+			listaRoles.add(rol);
+			result.setId(idResult);
+			for (Measurement me : rq.getMeasurements()) {
+				me.setResultsPerCard(result); //Le coloca el FK del resultPerCard
+				
+				//Añade alumno, verificando existencia
+				student = me.getPerson();
+				found = personRepository.findByCode(student.getCode());
+				if (found==null) {  //si no existe
+					student.setRoleList(listaRoles); 
+					idStudent = personRepository.save(student).getId();
+				}else
+					idStudent = found.getId();
+				me.getPerson().setId(idStudent);	//Le coloca el idStudent a su student
+				
+				//Guarda en BD
+				meFound = measurementRepository.findByPersonIdAndResultsPerCardId(idStudent, idResult);
+				if (meFound==null)
+					measurementRepository.save(me);
+				else {
+					meFound.setActive(false);
+					measurementRepository.save(meFound);
+					measurementRepository.save(me);
+				}
+			}
+			response = 1;
+		}catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
 	}
 
 }

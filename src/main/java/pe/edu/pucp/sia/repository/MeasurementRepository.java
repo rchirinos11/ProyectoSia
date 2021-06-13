@@ -8,4 +8,5 @@ import pe.edu.pucp.sia.model.Measurement;
 public interface MeasurementRepository extends CrudRepository<Measurement,Integer> {
 	@Procedure("sp_delete_measurement")
 	public void deleteMeasurement(Integer id);
+	public Measurement findByPersonIdAndResultsPerCardId(Integer idPerson, Integer idResultPerCard);
 }
