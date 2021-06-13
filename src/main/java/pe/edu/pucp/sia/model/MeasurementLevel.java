@@ -27,5 +27,5 @@ public class MeasurementLevel {
 	private String name;	
 	//@Column(name="success_rate")
 	//private Float successRate;	
-	private boolean active=true;
+	//private boolean active=true;
 }
