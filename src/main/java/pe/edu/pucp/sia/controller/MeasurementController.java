@@ -49,4 +49,9 @@ public class MeasurementController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(measurementService.deleteMeasurement(id));
 	}
 
+	@DeleteMapping("deleteByResultsPerCard/{id}")
+	public ResponseEntity<Object> deleteByResultsPerCard(@PathVariable Integer id){
+		logger.info("Entered method deleteByResultsPerCard()");
+		return ResponseEntity.status(HttpStatus.CREATED).body(measurementService.deleteByResultsPerCard(id));
+	}
 }

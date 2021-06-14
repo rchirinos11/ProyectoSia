@@ -54,4 +54,19 @@ public class MeasurementServiceImpl implements MeasurementService {
 		return response;
 	}
 
+	@Override
+	public String deleteByResultsPerCard(Integer idResultsPerCard) {
+		 String response = "";
+		try {
+			if(measurementRepository.deleteByResultsPerCardId(idResultsPerCard) > 0)
+				response = "Deleted";
+			else 
+				response = "Error occurred while deleting";
+			
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
+	}
+
 }

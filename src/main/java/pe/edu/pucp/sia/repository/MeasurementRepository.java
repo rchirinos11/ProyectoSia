@@ -6,7 +6,10 @@ import org.springframework.data.repository.CrudRepository;
 import pe.edu.pucp.sia.model.Measurement;
 
 public interface MeasurementRepository extends CrudRepository<Measurement,Integer> {
+	public Measurement findByPersonIdAndResultsPerCardId(Integer idPerson, Integer idResultPerCard);
+	
 	@Procedure("sp_delete_measurement")
 	public void deleteMeasurement(Integer id);
-	public Measurement findByPersonIdAndResultsPerCardId(Integer idPerson, Integer idResultPerCard);
+	@Procedure("sp_delete_measurement_by_result")
+	public Integer deleteByResultsPerCardId(Integer idResultsPerCard);
 }
