@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.requests.CreateImprovementPlanRequest;
-import pe.edu.pucp.sia.requests.RegisterStudentMeditionsRequest;
 import pe.edu.pucp.sia.service.ResultsPerCardService;
 import pe.edu.pucp.sia.service.impl.ResultsPerCardServiceImpl;
 
@@ -57,8 +56,8 @@ public class ResultsPerCardController {
 	}
 
 	@PostMapping("/registerstudentmeditions")
-	public ResponseEntity<Object> registerStudentMeditions(@RequestBody RegisterStudentMeditionsRequest rq){
+	public ResponseEntity<Object> registerStudentMeditions(@RequestBody ResultsPerCard r){
 		logger.info("Entered method registerStudentMeditions()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(resultsPerCardService.registerStudentMeditions(rq));
+		return ResponseEntity.status(HttpStatus.CREATED).body(resultsPerCardService.registerStudentMeditions(r));
 	}
 }
