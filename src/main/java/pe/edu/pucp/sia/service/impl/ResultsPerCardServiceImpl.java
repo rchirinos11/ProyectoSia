@@ -7,14 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.Measurement;
-import pe.edu.pucp.sia.model.MeasurementLevel;
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Role;
 import pe.edu.pucp.sia.repository.MeasurementRepository;
 import pe.edu.pucp.sia.repository.PersonRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
-import pe.edu.pucp.sia.requests.RegisterStudentMeditionsRequest;
+import pe.edu.pucp.sia.repository.RoleRepository;
 import pe.edu.pucp.sia.service.ResultsPerCardService;
 
 @Service
@@ -27,6 +26,10 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	
 	@Autowired
 	private MeasurementRepository measurementRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+
 	
 	@Override
 	public Iterable<ResultsPerCard> listAll() {
@@ -78,20 +81,22 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	}
 
 	@Override
-	public Integer registerStudentMeditions(RegisterStudentMeditionsRequest rq) {
+	public Integer registerStudentMeditions(ResultsPerCard r) {
 		Integer response = 0;
+		Integer d1,d2;
 		try {
-			Integer idResult = rq.getResultsPerCard().getId();
-			Integer idStudent;
+			Integer idResult = r.getId();
+			Integer idStudent,idProfesor;
 			Measurement meFound;
 			ResultsPerCard result = new ResultsPerCard();
 			Person student,found;
 			List<Role> listaRoles = new ArrayList<>();
 			Role rol = new Role();
-			rol.setId(305);
+			idProfesor = roleRepository.findByDescription("Profesor").getId();
+			rol.setId(idProfesor);
 			listaRoles.add(rol);
 			result.setId(idResult);
-			for (Measurement me : rq.getMeasurements()) {
+			for (Measurement me : r.getMeasurements()) {
 				me.setResultsPerCard(result); //Le coloca el FK del resultPerCard
 				
 				//Añade alumno, verificando existencia
@@ -110,8 +115,8 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 					measurementRepository.save(me);
 				else {
 					meFound.setActive(false);
-					measurementRepository.save(meFound);
-					measurementRepository.save(me);
+					d1=measurementRepository.save(meFound).getId();
+					d2=measurementRepository.save(me).getId();
 				}
 			}
 			response = 1;

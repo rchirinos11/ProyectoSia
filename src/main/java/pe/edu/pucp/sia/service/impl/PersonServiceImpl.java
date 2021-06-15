@@ -124,4 +124,17 @@ public class PersonServiceImpl implements PersonService{
 		Iterable<Person> list=personRepository.findByEmailIsNotNull();
 		return list;		
 	}
+
+	@Override
+	public Iterable<Role> listRoleByPerson(Integer id) {
+		Iterable<Role> lista=null;
+		try {
+			Person p=personRepository.findById(id).get();
+			if(p.getRoleList()!=null)
+				lista=p.getRoleList();			
+		}catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}	
+		return lista;		
+	}
 }
