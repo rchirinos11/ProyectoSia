@@ -32,6 +32,12 @@ public class PersonController {
 		return ResponseEntity.status(HttpStatus.OK).body(personService.listAll());
 	}
 
+	@GetMapping("/listRolesByPerson/{id}")
+	public ResponseEntity<Object> listRolesByPerson(@PathVariable Integer id){
+		logger.info("Entered method listRolesByPerson()");
+		return ResponseEntity.status(HttpStatus.OK).body(personService.listRoleByPerson(id));
+	}
+	
 	@GetMapping("/listWorkers")
 	public ResponseEntity<Object> listWorkers(){
 		logger.info("Entered method listWorkers()");
