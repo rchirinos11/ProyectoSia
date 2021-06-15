@@ -36,8 +36,8 @@ public class Person {
 	private List<Role> roleList;
 	
 	@JsonIgnore
-	@ManyToMany @JoinTable(name="measurementplanline_person_list",
-			joinColumns = @JoinColumn(name = "id_person"), 
-			inverseJoinColumns = @JoinColumn(name = "id_measurement_plan_line"))
-	private List<MeasurementPlanLine> mplanlines;
+	@ManyToMany @JoinTable(name="section_person_list",
+			joinColumns = @JoinColumn(name = "id_teacher"), 
+			inverseJoinColumns = @JoinColumn(name = "id_section"))
+	private List<Section> sections;
 }

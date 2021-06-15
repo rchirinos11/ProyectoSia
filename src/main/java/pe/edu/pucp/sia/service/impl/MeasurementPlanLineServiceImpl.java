@@ -133,19 +133,15 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	{
 		Iterable<MeasurementPlanLine> list = null;
 		try {
-			list = mPlanLineRepository.listMeasurementPlanLineByCourseSemesterTeacher(idCourse, idSemester, idPerson);
+			Person p = new Person();
+			p.setId(idPerson);
+			List<Person> personList = new ArrayList<Person>();
+			personList.add(p);
+			list = mPlanLineRepository.findByCourseIdAndSemesterIdAndSectionsTeachersIn(idCourse, idSemester, personList);
 			for(MeasurementPlanLine mpl : list) {	
 				mpl.setCourse(null);
 				mpl.setSemester(null);
-				//indicator = mpl.getIndicator();
-				//indicator.setSpecialty(null);
-				//mpl.setIndicator(indicator);
-				//mpl.setIndicator(mpl.getIndicator());
-				mpl.getIndicator().getStudentResult().setSpecialty(null);
-				List<LevelDetail> listLevelDetail = mpl.getIndicator().getLevelDetails();
-				for (LevelDetail ld : listLevelDetail) {
-					ld.getMeasurementLevel().setSpecialty(null);
-				}
+				mpl.setIndicator(null);
 			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
@@ -176,10 +172,9 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			p.setId(idPerson);
 			List<Person> personList = new ArrayList<Person>();
 			personList.add(p);
-			list = mPlanLineRepository.findBySemesterIdAndPersonsIn(idSemester, personList);
+			list = mPlanLineRepository.findBySemesterIdAndSectionsTeachersIn(idSemester, personList);
 			for(MeasurementPlanLine mpl : list) {
 				mpl.setIndicator(null);
-				mpl.setPersons(null);
 				mpl.setSemester(null);
 			}
 		} catch(Exception ex) {
@@ -188,40 +183,4 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 		
 		return list;
 	}
-	/*
-	@Override
-	public Iterable<MeasurementPlanResponse> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,
-			Integer idPerson) {
-		Iterable<MeasurementPlanResponse> responseList = null;
-		List<MeasurementPlanResponse> list = new ArrayList<MeasurementPlanResponse>();
-		Iterable<MeasurementPlanLine> measurementPlanList;
-		Iterable<ResultsPerCard> resultsPerCardList;
-		Iterable<Section> sectionList;
-		
-		try {
-			measurementPlanList = mPlanLineRepository.listMeasurementPlanLineByCourseSemesterTeacher(idCourse, idSemester, idPerson);
-			for(MeasurementPlanLine mpl : measurementPlanList) {	
-				mpl.setCourse(null);
-				mpl.setSemester(null);
-				
-				resultsPerCardList = resultsPerCardRepository.findByMeasurementPlanLineId(mpl.getId());
-				for (ResultsPerCard rc : resultsPerCardList) {
-					rc.setMeasurementPlanLine(null);
-				}
-				sectionList = sectionRepository.listSectionByMeasurementPlanLine(mpl.getId());
-				MeasurementPlanResponse response = new MeasurementPlanResponse();
-				response.setMeasurementPlanLine(mpl);
-				response.setResultsPerCardList(resultsPerCardList);
-				response.setSectionList(sectionList);
-				list.add(response);
-			}
-			//Genera Iterable a partir de la lista
-			responseList = list;
-		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
-		}
-		return responseList;	
-	}
-	*/
-
 }

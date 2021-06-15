@@ -44,13 +44,7 @@ public class MeasurementPlanLine {
 			joinColumns = @JoinColumn(name = "id_measurement_plan_line"), 
 			inverseJoinColumns = @JoinColumn(name = "id_section"))
 	private List<Section> sections;
-
-	@ManyToMany @JoinTable(name="measurementplanline_person_list",
-			joinColumns = @JoinColumn(name = "id_measurement_plan_line"), 
-			inverseJoinColumns = @JoinColumn(name = "id_person"))
-	private List<Person> persons;
-		
-	//@OneToMany(mappedBy = "measurementPlanLine")	 
+			 
 	@OneToMany()
     @JoinColumn(name="id_measurement_plan_line") 
 	private List<ResultsPerCard> resultsPerCards;

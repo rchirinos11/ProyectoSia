@@ -43,6 +43,7 @@ public class ResultsPerCard {
 	@ManyToOne
 	private MeasurementPlanLine measurementPlanLine;	
 	
+	@JsonIgnore
 	@OneToMany()
     @JoinColumn(name="id_results_per_card") 
 	private List<Measurement> measurements;
