@@ -36,29 +36,14 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	@Override
 	public Integer createMeasurementPlanLine(MeasurementPlanLine m) {
 		Integer response = null;
-		Integer contador=0;
 		try {
 			if(m.getSections()!=null) {
+				List<ResultsPerCard> lista= new ArrayList<ResultsPerCard>();
 				for(Section s : m.getSections()) {
-					if(s.getId()==null) {
-						sectionRepository.save(s);
-					}
-					contador++;
-				}		
-			}		
-			/*if(m.getResultsPerCards()!=null) {
-				for(ResultsPerCard r : m.getResultsPerCards()) 
-					if(r.getId()==null) 
-						resultsPerCardRepository.save(r).getId();												
-			}*/
-			if(contador!=0) {
-				List<ResultsPerCard> lista= new ArrayList<ResultsPerCard>();				
-				for(Integer i=0;i<contador;i++) {
-					ResultsPerCard r= new ResultsPerCard();	
-					r.setAverage(0.0f);
-					r.setPercentage(0.0f);
-					r.setTotalStudents(0);
-					resultsPerCardRepository.save(r).getId();		
+					sectionRepository.save(s);
+					
+					ResultsPerCard r= new ResultsPerCard();
+					resultsPerCardRepository.save(r).getId();
 					lista.add(r);
 				}
 				m.setResultsPerCards(lista);
@@ -76,13 +61,11 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 		try {
 			if(m.getSections()!=null) {
 				for(Section s : m.getSections())
-					if(s.getId()==null)
-						sectionRepository.save(s);
+					sectionRepository.save(s);
 			}
 			if(m.getResultsPerCards()!=null) {
 				for(ResultsPerCard r : m.getResultsPerCards())
-					if(r.getId()==null)
-						resultsPerCardRepository.save(r);
+					resultsPerCardRepository.save(r);
 			}
 			
 			response = mPlanLineRepository.save(m).getId();

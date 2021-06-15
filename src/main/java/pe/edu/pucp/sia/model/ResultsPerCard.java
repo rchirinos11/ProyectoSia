@@ -48,8 +48,8 @@ public class ResultsPerCard {
     @JoinColumn(name="id_results_per_card") 
 	private List<Measurement> measurements;
 	
-	private Float average;
-	private Float percentage;
-	private Integer totalStudents;	
+	private float average;
+	private float percentage;
+	private int totalStudents;	
 	private boolean active=true;
 }

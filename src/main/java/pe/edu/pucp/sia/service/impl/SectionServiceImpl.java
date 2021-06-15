@@ -16,31 +16,58 @@ public class SectionServiceImpl implements SectionService{
 	
 	@Override
 	public Iterable<Section> listAll() {
-		return sectionRepository.findAll();
+		Iterable<Section> response = null;
+		try {
+			response = sectionRepository.findAll(); 
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
-	public int createSection(Section s) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Integer createSection(Section s) {
+		Integer response = null;
+		try {
+			response = sectionRepository.save(s).getId();
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
-	public int deleteSection(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String deleteSection(Integer id) {
+		String response = null;
+		try {
+			sectionRepository.deleteById(id);;
+			response = "Deleted";
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
-	public int updateSection(Section s) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Integer updateSection(Section s) {
+		Integer response = null;
+		try {
+			response = sectionRepository.save(s).getId();
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
 	public Iterable<Section> listByMeasurementPlanLine(Integer idMeasurementPlanLine) {
-		Iterable<Section> lista= sectionRepository.listSectionByMeasurementPlanLine(idMeasurementPlanLine);		
-		return lista;
+		Iterable<Section> response = null;
+		try {
+			response = sectionRepository.listSectionByMeasurementPlanLine(idMeasurementPlanLine); 
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}		
+		return response;
 	}
 
 }
