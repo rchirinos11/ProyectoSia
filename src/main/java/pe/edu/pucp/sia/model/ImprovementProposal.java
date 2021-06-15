@@ -24,5 +24,5 @@ public class ImprovementProposal {
 	@JoinColumn(name="id_improvement_plan")
 	private ImprovementPlan improvementPlan;
 	private String description;
-	//private boolean active;
+	private boolean active=true;
 }

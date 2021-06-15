@@ -122,6 +122,8 @@ public class SpecialtyTester {
 		terminaTest();
 		}
 	
+	@Test
+	@Order(5)
 	private void terminaTest() {
 		Iterable<Faculty> listf = serviceFaculty.listAll();
 		for (Faculty f : listf) {
