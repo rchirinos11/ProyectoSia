@@ -27,8 +27,14 @@ public class Activity {
 	private ImprovementProposal improvementProposal;
 	private String description;
 	private String evidence;
-	private Integer yearStart;
-	private Integer yearEnd;
+	//private Integer yearStart;
+	//private Integer yearEnd;
+	@ManyToOne
+	@JoinColumn(name="id_semester_start")
+	private Semester semesterStart;
+	@ManyToOne
+	@JoinColumn(name="id_semester_end")
+	private Semester semesterEnd;
 	private String responsible;
 	//private boolean active;
 }
