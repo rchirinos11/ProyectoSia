@@ -124,7 +124,6 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			for(MeasurementPlanLine mpl : list) {	
 				mpl.setCourse(null);
 				mpl.setSemester(null);
-				mpl.setIndicator(null);
 			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
