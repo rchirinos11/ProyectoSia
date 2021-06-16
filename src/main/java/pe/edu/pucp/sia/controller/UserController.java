@@ -1,5 +1,7 @@
 package pe.edu.pucp.sia.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,7 @@ import pe.edu.pucp.sia.service.impl.UserServiceImpl;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-	Logger logger = LoggerFactory.getLogger(EducationalObjectiveController.class);
+	Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	private UserService userService = new UserServiceImpl(); 
 	
