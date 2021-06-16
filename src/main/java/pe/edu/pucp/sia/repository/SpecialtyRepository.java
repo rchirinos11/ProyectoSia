@@ -22,6 +22,6 @@ public interface SpecialtyRepository extends CrudRepository<Specialty,Integer>{
 	@Procedure("sp_set_specialty_assistant")
 	public void setAssistant(Integer idSpecialty,Integer idAssistant);
 	
-	@Procedure("sp_update_percentage")
+	@Procedure("sp_set_specialty_percentage")
 	public void setPercentage(Integer idSpecialty,Integer percentage);
 }
