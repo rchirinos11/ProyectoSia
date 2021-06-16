@@ -101,8 +101,12 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 		try {
 			list = mPlanLineRepository.findByIndicatorStudentResultSpecialtyIdAndSemesterId(idSpecialty, idSemester);
 			for(MeasurementPlanLine mpl : list) {
-				mpl.getIndicator().getStudentResult().setSpecialty(null);
+				mpl.getCourse().setSpecialty(null);			
 				mpl.setSemester(null);
+				mpl.setIndicator(null);
+				mpl.setMeasurementType(null);
+				mpl.setResultsPerCards(null);
+				//mpl.getIndicator().getStudentResult().setSpecialty(null);			
 			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
