@@ -17,6 +17,7 @@ import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.requests.SpecialtyUpdateAssistantRequest;
 import pe.edu.pucp.sia.requests.SpecialtyUpdateCoordinatorRequest;
+import pe.edu.pucp.sia.requests.SpecialtyUpdatePercentageRequest;
 import pe.edu.pucp.sia.service.SpecialtyService;
 import pe.edu.pucp.sia.service.impl.SpecialtyServiceImpl;
 
@@ -80,5 +81,11 @@ public class SpecialtyController {
 	public ResponseEntity<Object> updateSpecialtyAssistant(@RequestBody SpecialtyUpdateAssistantRequest s){
 		logger.info("Entered method updateSpecialtyAssistant()");
 		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updateAssitant(s.getIdSpecialty(),s.getIdAssistant()));
+	}
+
+	@PostMapping("setAssistant")
+	public ResponseEntity<Object> updateSuccessPercentage(@RequestBody SpecialtyUpdatePercentageRequest s){
+		logger.info("Entered method updateSuccessPercentage()");
+		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updatePercentage(s.getId(),s.getPercentage()));
 	}
 }

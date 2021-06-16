@@ -12,4 +12,5 @@ public interface SpecialtyService {
 	public String deleteSpecialty(Integer id);
 	public String updateCoordinator(Integer idSpecialty, Integer idCoordinator);
 	public String updateAssitant(Integer idSpecialty, Integer idAssistant);
+	public String updatePercentage(Integer idSpecialty, Integer percentage);
 }
