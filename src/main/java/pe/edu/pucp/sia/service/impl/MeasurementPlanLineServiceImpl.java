@@ -106,7 +106,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			for(MeasurementPlanLine mpl : list) {
 				mpl.getCourse().setSpecialty(null);			
 				mpl.setSemester(null);
-				mpl.setMeasurementType(null);
+				//mpl.setMeasurementType(null);
 				mpl.setResultsPerCards(null);
 				//mpl.getIndicator().getStudentResult().setSpecialty(null);			
 			}
