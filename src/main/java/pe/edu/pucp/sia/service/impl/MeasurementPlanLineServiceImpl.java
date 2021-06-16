@@ -182,7 +182,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 				mpl.setSemester(null);	
 				
 				(mpl.getSections()).remove(sectionRepository.findById(idSection).get());			
-				(mpl.getResultsPerCards()).remove(resultsPerCardRepository.findBySectionId(idSection));
+				(mpl.getResultsPerCards()).remove(resultsPerCardRepository.findBySectionId(idSection).get(0));
 
 			}
 		} catch(Exception ex) {
