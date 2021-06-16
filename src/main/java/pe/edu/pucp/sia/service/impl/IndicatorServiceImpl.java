@@ -1,6 +1,7 @@
 package pe.edu.pucp.sia.service.impl;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,16 @@ public class IndicatorServiceImpl implements IndicatorService {
 		Iterable<Indicator> lista = indicatorRepository.findBystudentResultSpecialtyId(id);
 		for (Indicator indicator: lista) {
 			indicator.getStudentResult().setSpecialty(null);
+		}
+		return lista;
+	}
+
+	@Override
+	public List<Indicator> listByStudentResult(Integer id) {
+		List<Indicator> lista = indicatorRepository.findBystudentResultIdOrderByCode(id);
+		for (Indicator indicator: lista) {
+			indicator.setStudentResult(null);
+			indicator.setLevelDetails(null);
 		}
 		return lista;
 	}

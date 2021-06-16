@@ -36,6 +36,12 @@ public class StudentResultController {
 		logger.info("Entered method listBySpecialty()");
 		return ResponseEntity.status(HttpStatus.OK).body(studentResultService.listBySpecialty(id));
 	}
+
+	@GetMapping("/listbyspecialtyplusindicator/{id}")
+	public ResponseEntity<Object> listBySpecialtyPlusIndicator(@PathVariable Integer id){
+		logger.info("Entered method listBySpecialtyPlusIndicator()");
+		return ResponseEntity.status(HttpStatus.OK).body(studentResultService.listBySpecialtyPlusIndicator(id));
+	}
 	
 	@PostMapping("/create")
 	public ResponseEntity<Object> createStudentResult(@RequestBody StudentResult sr){
