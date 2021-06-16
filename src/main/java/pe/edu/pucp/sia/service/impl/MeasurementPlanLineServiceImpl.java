@@ -41,11 +41,12 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 				List<ResultsPerCard> lista= new ArrayList<ResultsPerCard>();
 				for(Section s : m.getSections()) {
 					Integer idSection;//
-					idSection=sectionRepository.save(s).getId();//
+					idSection=sectionRepository.save(s).getId();
+					s.setId(idSection);
 					
 					ResultsPerCard r= new ResultsPerCard();
-					r.setSection(sectionRepository.findById(idSection).get());//
-					resultsPerCardRepository.save(r).getId();
+					r.setSection(s);
+					r.setId(resultsPerCardRepository.save(r).getId());
 					lista.add(r);
 				}
 				m.setResultsPerCards(lista);
