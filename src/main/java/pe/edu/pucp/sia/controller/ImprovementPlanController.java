@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.ImprovementPlan;
 import pe.edu.pucp.sia.requests.CreateImprovementPlanRequest;
+import pe.edu.pucp.sia.requests.ImprovementPlanActivityRequest;
 import pe.edu.pucp.sia.service.ImprovementPlanService;
 import pe.edu.pucp.sia.service.impl.ImprovementPlanServiceImpl;
 
@@ -31,6 +32,12 @@ public class ImprovementPlanController {
 	public ResponseEntity<Object> listBySpecialty(@PathVariable Integer id){
 		logger.info("Entered method listBySpecialty()");
 		return ResponseEntity.status(HttpStatus.OK).body(improvementPlanService.listBySpecialty(id));
+	}
+	
+	@PostMapping("/listbyactivitystatesandsemesters")
+	public ResponseEntity<Object> listByActivityStatesAndSemesters(@RequestBody ImprovementPlanActivityRequest i){
+		logger.info("Entered method listByActivityStatesAndSemesters()");
+		return ResponseEntity.status(HttpStatus.OK).body(improvementPlanService.listByActivityStatesAndSemesters(i));
 	}
 	
 	@GetMapping("/list")
