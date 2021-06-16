@@ -83,7 +83,9 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	@Override
 	public Integer registerStudentMeditions(ResultsPerCard r) {
 		Integer response = 0;
-		Integer d1,d2;
+		Integer nota;
+		Integer total=0,total34=0,cantidad=0;
+		float media, porcentaje;
 		try {
 			Integer idResult = r.getId();
 			Integer idStudent,idProfesor;
@@ -92,7 +94,7 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 			Person student,found;
 			List<Role> listaRoles = new ArrayList<>();
 			Role rol = new Role();
-			idProfesor = roleRepository.findByDescription("Profesor").getId();
+			idProfesor = roleRepository.findByDescription("Alumno").getId();
 			rol.setId(idProfesor);
 			listaRoles.add(rol);
 			result.setId(idResult);
@@ -115,10 +117,21 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 					measurementRepository.save(me);
 				else {
 					meFound.setActive(false);
-					d1=measurementRepository.save(meFound).getId();
-					d2=measurementRepository.save(me).getId();
+					measurementRepository.save(meFound);
+					measurementRepository.save(me);
 				}
+				
+				//Suma las notas necesarias
+				nota=me.getMeasurementLevel().getOrden();
+				if (nota==3 || nota==4)
+					total34++;
+				total+=nota;
+				cantidad++;
 			}
+			//Calcula resultados totales
+			media = (float)total/cantidad;
+			porcentaje = (float)total34/total;
+			resultsPerCardRepository.registerResultsPerCard(idResult,cantidad,media,porcentaje);
 			response = 1;
 		}catch(Exception ex) {
 			System.out.println(ex.getMessage());
