@@ -105,7 +105,6 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			for(MeasurementPlanLine mpl : list) {
 				mpl.getCourse().setSpecialty(null);			
 				mpl.setSemester(null);
-				mpl.setIndicator(null);
 				mpl.setMeasurementType(null);
 				mpl.setResultsPerCards(null);
 				//mpl.getIndicator().getStudentResult().setSpecialty(null);			
@@ -175,25 +174,16 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	@Override
 	public Iterable<MeasurementPlanLine> listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection) {
 		Iterable<MeasurementPlanLine> list = null;
-		List<Section> listS = new ArrayList<Section>();
-		List<ResultsPerCard> listR= new ArrayList<ResultsPerCard>();;
+		
 		try {
 			list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
-			for(MeasurementPlanLine mpl : list) {	
+			for(MeasurementPlanLine mpl : list) {		
 				mpl.setCourse(null);
-				mpl.setSemester(null);
+				mpl.setSemester(null);	
 				
-				
-				for(Section s : mpl.getSections()) {
-					if (s.getId()==idSection) 
-						listS.add(s);
-				}
-				for(ResultsPerCard r : mpl.getResultsPerCards()) {
-					if (r.getSection().getId()==idSection)
-						listR.add(r);
-				}
-				mpl.setSections(listS);
-				mpl.setResultsPerCards(listR);
+				(mpl.getSections()).remove(sectionRepository.findById(idSection).get());			
+				(mpl.getResultsPerCards()).remove(resultsPerCardRepository.findBySectionId(idSection));
+
 			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
