@@ -20,7 +20,7 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 
 	@Override
 	public Iterable<MeasurementLevel> listAll() {
-		return measurementLevelRepository.findAll();
+		return measurementLevelRepository.findAllByOrderByOrdenAsc();
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 
 	@Override
 	public Iterable<MeasurementLevel> listBySpecialty(Integer id) {
-		Iterable<MeasurementLevel> lista = measurementLevelRepository.findBySpecialtyId(id);
+		Iterable<MeasurementLevel> lista = measurementLevelRepository.findBySpecialtyIdOrderByOrdenAsc(id);
 		for (MeasurementLevel ml : lista) {
 			ml.setSpecialty(null);
 		}
