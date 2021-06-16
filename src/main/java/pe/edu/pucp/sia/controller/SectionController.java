@@ -24,19 +24,16 @@ public class SectionController {
 	
 	@GetMapping("/list")
 	public ResponseEntity<Object> listSection(){
-		logger.info("Entered method listSection()");
 		return ResponseEntity.status(HttpStatus.OK).body(sectionService.listAll());
 	}
 	
 	@PostMapping("/create")
 	public ResponseEntity<Object> createSection(@RequestBody Section s){
-		logger.info("Entered method createSection()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(sectionService.createSection(s));
 	}
 	
 	@PostMapping("/update")
 	public ResponseEntity<Object> updateSection(@RequestBody Section s){
-		logger.info("Entered method updateSection()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(sectionService.updateSection(s));
 	}
 	
