@@ -1,7 +1,5 @@
 package pe.edu.pucp.sia.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +19,6 @@ import pe.edu.pucp.sia.service.impl.EvidenceServiceImpl;
 @RestController
 @RequestMapping("/evidence")
 public class EvidenceController {
-	Logger logger = LoggerFactory.getLogger(EvidenceController.class);
 	@Autowired
 	private EvidenceService evidenceService = new EvidenceServiceImpl(); 
 	
