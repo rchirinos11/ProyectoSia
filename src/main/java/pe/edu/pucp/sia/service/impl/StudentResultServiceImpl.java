@@ -66,7 +66,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 
 	@Override
 	public Iterable<StudentResult> listBySpecialty(Integer id) {
-		Iterable<StudentResult> lista = studentResultRepository.findBySpecialtyIdOrderById(id);
+		Iterable<StudentResult> lista = studentResultRepository.findBySpecialtyIdOrderByOrderNumber(id);
 		for (StudentResult studentResult : lista) {
 			studentResult.setSpecialty(null);
 		}
@@ -75,7 +75,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 
 	@Override
 	public Iterable<StudentResultDozer> listBySpecialtyPlusIndicator(Integer id) {
-		List<StudentResult> lista = studentResultRepository.findBySpecialtyIdOrderById(id);
+		List<StudentResult> lista = studentResultRepository.findBySpecialtyIdOrderByOrderNumber(id);
 		for (StudentResult studentResult : lista) {
 			studentResult.setSpecialty(null);
 		}
