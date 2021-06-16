@@ -31,11 +31,10 @@ public class PersonServiceImpl implements PersonService{
 	}
 
 	@Override
-	public String createPerson(Person p) {
-		String response = "";
+	public Integer createPerson(Person p) {
+		Integer response = 0;
 		try {
-			personRepository.save(p);
-			response = "Created"; 
+			response = personRepository.save(p).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}

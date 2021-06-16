@@ -8,7 +8,7 @@ public interface PersonService {
 	public Iterable<Person> listAll();
 	public Iterable<Person> listWorkers();
 	public Iterable<Role> listRoleByPerson(Integer id);
-	public String createPerson(Person p);
+	public Integer createPerson(Person p);
 	public String deletePerson(Integer id);
 	public String updatePerson(Person p);
 	public Person loginPerson(String email);	
