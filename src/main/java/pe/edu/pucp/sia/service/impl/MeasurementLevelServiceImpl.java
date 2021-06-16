@@ -72,4 +72,28 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 		return lista;
 	}
 
+	@Override
+	public Integer updateCurrentMeasurementLevel(Integer id) {
+		Integer response =0;
+		Integer specialtyId=0;
+		try {
+			MeasurementLevel ml = measurementLevelRepository.findById(id).get();
+			ml.setIsMinimum(1);		
+			response=measurementLevelRepository.save(ml).getId();
+			
+			specialtyId=ml.getSpecialty().getId();			
+			Iterable<MeasurementLevel> lista = measurementLevelRepository.findAll();
+			for(MeasurementLevel m : lista) {
+				if(m.getSpecialty()!=null)				
+					if (m.getSpecialty().getId()==specialtyId && (m.getId())!=response) {
+							m.setIsMinimum(0);
+							measurementLevelRepository.save(m);
+					}
+			}
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
+	}
+
 }
