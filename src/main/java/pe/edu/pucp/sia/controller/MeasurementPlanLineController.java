@@ -70,4 +70,9 @@ public class MeasurementPlanLineController {
 		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listBySemesterAndTeachers(mplRequest.getIdSemester(), mplRequest.getIdTeacher()));
 	}
 	
+	@GetMapping("/listByCourseSemesterSection/{idC}/{idSem}/{idSec}")
+	public ResponseEntity<Object> listByCourseSemesterSection(@PathVariable Integer idC,@PathVariable Integer idSem,@PathVariable Integer idSec){
+		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listByCourseAndSemesterAndSchedule(idC, idSem, idSec));
+	}
+	
 }

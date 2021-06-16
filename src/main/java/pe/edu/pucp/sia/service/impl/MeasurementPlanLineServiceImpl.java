@@ -40,9 +40,11 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			if(m.getSections()!=null) {
 				List<ResultsPerCard> lista= new ArrayList<ResultsPerCard>();
 				for(Section s : m.getSections()) {
-					sectionRepository.save(s);
+					Integer idSection;//
+					idSection=sectionRepository.save(s).getId();//
 					
 					ResultsPerCard r= new ResultsPerCard();
+					r.setSection(sectionRepository.findById(idSection).get());//
 					resultsPerCardRepository.save(r).getId();
 					lista.add(r);
 				}
@@ -167,6 +169,35 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			System.out.println(ex.getMessage());
 		}
 		
+		return list;
+	}
+
+	@Override
+	public Iterable<MeasurementPlanLine> listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection) {
+		Iterable<MeasurementPlanLine> list = null;
+		List<Section> listS = new ArrayList<Section>();
+		List<ResultsPerCard> listR= new ArrayList<ResultsPerCard>();;
+		try {
+			list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
+			for(MeasurementPlanLine mpl : list) {	
+				mpl.setCourse(null);
+				mpl.setSemester(null);
+				
+				
+				for(Section s : mpl.getSections()) {
+					if (s.getId()==idSection) 
+						listS.add(s);
+				}
+				for(ResultsPerCard r : mpl.getResultsPerCards()) {
+					if (r.getSection().getId()==idSection)
+						listR.add(r);
+				}
+				mpl.setSections(listS);
+				mpl.setResultsPerCards(listR);
+			}
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
 		return list;
 	}
 }

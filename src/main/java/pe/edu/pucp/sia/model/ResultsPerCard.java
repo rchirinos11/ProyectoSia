@@ -48,6 +48,11 @@ public class ResultsPerCard {
     @JoinColumn(name="id_results_per_card") 
 	private List<Measurement> measurements;
 	
+	//
+	@ManyToOne @JoinColumn(name="id_section")
+	private Section section;
+	//
+	
 	private float average;
 	private float percentage;
 	private int totalStudents;	

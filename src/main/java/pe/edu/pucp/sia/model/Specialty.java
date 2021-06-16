@@ -29,5 +29,8 @@ public class Specialty {
 	@ManyToOne
 	@JoinColumn(name="id_assistant")
 	private Person assistant;
+	private Integer successPercentage=70;
+	
+	
 	//private boolean active=true;
 }
