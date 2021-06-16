@@ -83,9 +83,9 @@ public class SpecialtyController {
 		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updateAssitant(s.getIdSpecialty(),s.getIdAssistant()));
 	}
 
-	@PostMapping("setAssistant")
+	@PostMapping("setPercentage")
 	public ResponseEntity<Object> updateSuccessPercentage(@RequestBody SpecialtyUpdatePercentageRequest s){
 		logger.info("Entered method updateSuccessPercentage()");
-		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updatePercentage(s.getId(),s.getPercentage()));
+		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updatePercentage(s.getIdSpecialty(),s.getSuccessPercentage()));
 	}
 }

@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter @Setter
 public class SpecialtyUpdatePercentageRequest {
-    private Integer id;
-    private Integer percentage;
+    private Integer idSpecialty;
+    private Integer successPercentage;
 }
