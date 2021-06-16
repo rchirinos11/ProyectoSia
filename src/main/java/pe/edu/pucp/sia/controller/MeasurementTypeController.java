@@ -24,21 +24,25 @@ public class MeasurementTypeController {
 	
 	@GetMapping("/list")
 	public ResponseEntity<Object> listMeasurementType(){
+		logger.info("Entered method listMeasurementType()");
 		return ResponseEntity.status(HttpStatus.OK).body(measurementTypeService.listAll());
 	}
 	
 	@PostMapping("/create")
 	public ResponseEntity<Object> createMeasurementType(@RequestBody MeasurementType m){
+		logger.info("Entered method createMeasurementType()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(measurementTypeService.createMeasurementType(m));
 	}
 	
 	@PostMapping("/update")
 	public ResponseEntity<Object> updateMeasurementType(@RequestBody MeasurementType m){
+		logger.info("Entered method updateMeasurementType()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(measurementTypeService.updateMeasurementType(m));
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteMeasurementType(@PathVariable Integer id){
+		logger.info("Entered method deleteMeasurementType()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(measurementTypeService.deleteMeasurementType(id));
 	}
 }
