@@ -94,7 +94,7 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 			Person student,found;
 			List<Role> listaRoles = new ArrayList<>();
 			Role rol = new Role();
-			idProfesor = roleRepository.findByDescription("Profesor").getId();
+			idProfesor = roleRepository.findByDescription("Alumno").getId();
 			rol.setId(idProfesor);
 			listaRoles.add(rol);
 			result.setId(idResult);
