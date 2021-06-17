@@ -222,7 +222,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	}
 
 	@Override
-	public ApiResponse listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection) {
+	public ApiResponse listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer code) {
 		ApiResponse response = null;
 		try {
 			List<MeasurementPlanLine> listMpl = new ArrayList<MeasurementPlanLine>();	
