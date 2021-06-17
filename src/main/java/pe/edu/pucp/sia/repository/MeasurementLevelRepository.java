@@ -11,6 +11,7 @@ public interface MeasurementLevelRepository extends CrudRepository <MeasurementL
 	public List<MeasurementLevel> findBySpecialtyIdOrderByOrdenAsc(Integer id);
 	public List<MeasurementLevel> findAllByOrderByOrdenAsc();
 	public MeasurementLevel findBySpecialtyIdAndIsMinimum(Integer idSpecialty,Integer minimum);
+	//public MeasurementLevel findById(Integer id);
 	@Procedure("sp_delete_measurement_level")
 	public void deleteMeasurementLevel(Integer id);
 }
