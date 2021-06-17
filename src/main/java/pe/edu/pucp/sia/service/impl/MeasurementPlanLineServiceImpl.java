@@ -232,19 +232,28 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 				mpl.setSemester(null);
 
 				List<Section> ss=new ArrayList<Section>();
-				Section s=sectionRepository.findById(idSection).get();
-				if(s!=null) {
+				List<Section> a=sectionRepository.findByCode(code);
+				if(!a.isEmpty()) {
+					for(Section b: a ) {
+						for(Section sec : mpl.getSections()) {
+							if(sec.equals(b)) {
+								ss.add(b);			
+							}
+						}
+					}
+				}		
+				/*if(s!=null) {
 					for(Section sec : mpl.getSections()) {
 						if(sec.equals(s)) {
 							ss.add(s);
 						}
 					}
-				}
+				}*/
 				mpl.setSections(ss);	
 				
 				List<ResultsPerCard> rr=new ArrayList<ResultsPerCard>();
-				if(!(resultsPerCardRepository.findBySectionIdAndMeasurementPlanLineId(idSection,mpl.getId())).isEmpty()) {
-					ResultsPerCard r=resultsPerCardRepository.findBySectionIdAndMeasurementPlanLineId(idSection,mpl.getId()).get(0);
+				if(!(resultsPerCardRepository.findBySectionCodeAndMeasurementPlanLineId(code,mpl.getId())).isEmpty()) {
+					ResultsPerCard r=resultsPerCardRepository.findBySectionCodeAndMeasurementPlanLineId(code,mpl.getId()).get(0);
 					if(r!=null) {
 						for(ResultsPerCard res : mpl.getResultsPerCards()) {
 							if(res.equals(r)) {
