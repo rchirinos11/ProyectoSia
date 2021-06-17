@@ -14,5 +14,5 @@ public interface MeasurementPlanLineService {
 	//public Iterable<MeasurementPlanResponse> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson);
 	public Iterable<MeasurementPlanLine> listByCourseAndSemester(Integer idCourse, Integer idSemester);
 	public Iterable<MeasurementPlanLine> listBySemesterAndTeachers(Integer idSemester, Integer idPerson);
-	public Iterable<MeasurementPlanLine> listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection);
+	public Iterable<MeasurementPlanLine> listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer code);
 }
