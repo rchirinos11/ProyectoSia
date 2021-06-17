@@ -1,6 +1,7 @@
 package pe.edu.pucp.sia.service.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,11 +123,27 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	{
 		Iterable<MeasurementPlanLine> list = null;
 		try {
-			Person p = new Person();
-			p.setId(idPerson);
+			Person person = new Person();
+			person.setId(idPerson);
 			List<Person> personList = new ArrayList<Person>();
-			personList.add(p);
+			personList.add(person);
 			list = mPlanLineRepository.findByCourseIdAndSemesterIdAndSectionsTeachersIn(idCourse, idSemester, personList);
+			for(MeasurementPlanLine m : list) {
+				List<Section> newSectionList = new ArrayList<Section>();
+				List<ResultsPerCard> newResultspercardList = new ArrayList<ResultsPerCard>();
+				Iterator<ResultsPerCard> i = m.getResultsPerCards().iterator();
+				for(Section s : m.getSections()) {
+					ResultsPerCard r = i.next();
+					for(Person p : s.getTeachers())
+						if(p.getId().equals(idPerson)) {
+							newSectionList.add(s);
+							r.setSection(null);
+							newResultspercardList.add(r);
+					}
+				}
+				m.setSections(newSectionList);
+				m.setResultsPerCards(newResultspercardList);
+			}
 			for(MeasurementPlanLine mpl : list) {	
 				mpl.setCourse(null);
 				mpl.setSemester(null);
@@ -164,6 +181,8 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			for(MeasurementPlanLine mpl : list) {
 				mpl.setIndicator(null);
 				mpl.setSemester(null);
+				for(ResultsPerCard r : mpl.getResultsPerCards())
+					r.setSection(null);
 			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
