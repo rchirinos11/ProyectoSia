@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import pe.edu.pucp.sia.model.Activity;
 import pe.edu.pucp.sia.model.ImprovementPlan;
 import pe.edu.pucp.sia.model.ImprovementProposal;
+import pe.edu.pucp.sia.model.Semester;
 import pe.edu.pucp.sia.repository.ActivityRepository;
 import pe.edu.pucp.sia.repository.ImprovementPlanRepository;
 import pe.edu.pucp.sia.repository.ImprovementProposalRepository;
+import pe.edu.pucp.sia.repository.SemesterRepository;
 import pe.edu.pucp.sia.requests.CreateImprovementPlanRequest;
 import pe.edu.pucp.sia.requests.CreateImprovementProposalRequest;
 import pe.edu.pucp.sia.requests.ImprovementPlanActivityRequest;
@@ -29,6 +31,8 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 	private ImprovementProposalRepository improvementProposalRepository;
 	@Autowired
 	private ActivityRepository activityRepository;
+	@Autowired
+	private SemesterRepository semesterRepository;
 	
 	@Override
 	public Iterable<ImprovementPlan> listAll() {
@@ -158,14 +162,11 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 		Iterable<Activity> activities = null;
 		Integer idIni = i.getIdSemesterStart();
 		Integer idFin = i.getIdSemesterEnd();
-		if(idIni != null && idFin != null)
-			activities = activityRepository.findBySemesterStartIdAndSemesterEndIdAndImprovementProposalInAndStateInOrderByImprovementProposalImprovementPlanIdDescImprovementProposalDesc(idIni,idFin,improvementProposalRepository.findByImprovementPlanIn(improvementPlanRepository.findBySpecialtyId(i.getIdSpecialty())),i.getStates());
-		else if(idIni == null && idFin != null)
-			activities = activityRepository.findBySemesterEndIdAndImprovementProposalInAndStateInOrderByImprovementProposalImprovementPlanIdDescImprovementProposalDesc(idFin,improvementProposalRepository.findByImprovementPlanIn(improvementPlanRepository.findBySpecialtyId(i.getIdSpecialty())),i.getStates());
-		else if(idIni != null && idFin == null)
-			activities = activityRepository.findBySemesterStartIdAndImprovementProposalInAndStateInOrderByImprovementProposalImprovementPlanIdDescImprovementProposalDesc(idIni,improvementProposalRepository.findByImprovementPlanIn(improvementPlanRepository.findBySpecialtyId(i.getIdSpecialty())),i.getStates());
-		else if(idIni == null && idFin == null)
-			activities = activityRepository.findByImprovementProposalInAndStateInOrderByImprovementProposalImprovementPlanIdDescImprovementProposalDesc(improvementProposalRepository.findByImprovementPlanIn(improvementPlanRepository.findBySpecialtyId(i.getIdSpecialty())),i.getStates());
+
+		Semester semesterIni = semesterRepository.findById(idIni).get();
+		Semester semesterFin = semesterRepository.findById(idFin).get();
+
+		activities = activityRepository.listByActivityStatesAndSemesters(semesterIni.getYear()*10+semesterIni.getNumber(),semesterFin.getYear()*10+semesterFin.getNumber(),improvementProposalRepository.findByImprovementPlanIn(improvementPlanRepository.findBySpecialtyId(i.getIdSpecialty())),i.getStates());
 		
 		//hell
 		Integer idProAnt = 0;
