@@ -122,7 +122,10 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 				}
 				
 				//Suma las notas necesarias
-				nota=me.getMeasurementLevel().getOrden();
+				if (me.getMeasurementLevel()==null)
+					nota=0;
+				else
+					nota=me.getMeasurementLevel().getOrden();
 				if (nota==3 || nota==4)
 					total34++;
 				total+=nota;
