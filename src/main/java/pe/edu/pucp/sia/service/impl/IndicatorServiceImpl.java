@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pe.edu.pucp.sia.model.Indicator;
 import pe.edu.pucp.sia.model.LevelDetail;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
+import pe.edu.pucp.sia.model.comparators.LevelDetailComparator;
 import pe.edu.pucp.sia.repository.IndicatorRepository;
 import pe.edu.pucp.sia.repository.LevelDetailRepository;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
@@ -79,6 +80,10 @@ public class IndicatorServiceImpl implements IndicatorService {
 		Iterable<Indicator> lista = indicatorRepository.findBystudentResultSpecialtyId(id);
 		for (Indicator indicator: lista) {
 			indicator.getStudentResult().setSpecialty(null);
+			indicator.getLevelDetails().sort(new LevelDetailComparator());
+			for(LevelDetail ld: indicator.getLevelDetails()){
+				ld.getMeasurementLevel().setSpecialty(null);
+			}
 		}
 		return lista;
 	}
@@ -88,7 +93,7 @@ public class IndicatorServiceImpl implements IndicatorService {
 		List<Indicator> lista = indicatorRepository.findBystudentResultIdOrderByCode(id);
 		for (Indicator indicator: lista) {
 			indicator.setStudentResult(null);
-			indicator.setLevelDetails(null);
+			indicator.setLevelDetails(null);	
 		}
 		return lista;
 	}

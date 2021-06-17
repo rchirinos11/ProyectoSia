@@ -2,14 +2,18 @@ package pe.edu.pucp.sia.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.var;
 import pe.edu.pucp.sia.model.Measurement;
+import pe.edu.pucp.sia.model.MeasurementLevel;
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Role;
+import pe.edu.pucp.sia.repository.MeasurementLevelRepository;
 import pe.edu.pucp.sia.repository.MeasurementRepository;
 import pe.edu.pucp.sia.repository.PersonRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
@@ -30,6 +34,8 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	@Autowired
 	private RoleRepository roleRepository;
 
+	@Autowired
+	private MeasurementLevelRepository measurementLevelRepository;
 	
 	@Override
 	public Iterable<ResultsPerCard> listAll() {
@@ -83,8 +89,9 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	@Override
 	public Integer registerStudentMeditions(ResultsPerCard r) {
 		Integer response = 0;
-		Integer nota;
+		Integer nota,notaMin=0,idSpecialty=0;
 		Integer total=0,total34=0,cantidad=0;
+		MeasurementLevel ml=null;
 		float media, porcentaje;
 		try {
 			Integer idResult = r.getId();
@@ -92,12 +99,15 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 			Measurement meFound;
 			ResultsPerCard result = new ResultsPerCard();
 			Person student,found;
+			//Rol de alumno
 			List<Role> listaRoles = new ArrayList<>();
 			Role rol = new Role();
 			idProfesor = roleRepository.findByDescription("Alumno").getId();
 			rol.setId(idProfesor);
 			listaRoles.add(rol);
 			result.setId(idResult);
+			//Busca especialidad para sacar minimo successul
+			//idSpecialty = r.get
 			for (Measurement me : r.getMeasurements()) {
 				me.setResultsPerCard(result); //Le coloca el FK del resultPerCard
 				
@@ -107,9 +117,9 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 				if (found==null) {  //si no existe
 					student.setRoleList(listaRoles); 
 					idStudent = personRepository.save(student).getId();
+					me.getPerson().setId(idStudent);	//Le coloca el idStudent a su student
 				}else
 					idStudent = found.getId();
-				me.getPerson().setId(idStudent);	//Le coloca el idStudent a su student
 				
 				//Guarda en BD
 				meFound = measurementRepository.findByPersonIdAndResultsPerCardId(idStudent, idResult);
@@ -122,16 +132,37 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 				}
 				
 				//Suma las notas necesarias
-				nota=me.getMeasurementLevel().getOrden();
-				if (nota==3 || nota==4)
-					total34++;
+				ml = me.getMeasurementLevel();
+				if (ml==null)
+					nota=0;
+				else {
+					nota=ml.getOrden();
+					//Halla la nota minima una vez
+					if (notaMin==0) {
+						var val = measurementLevelRepository.findById(ml.getId());	//Para obtener el dato completo con especialidad
+						if (val.isPresent())
+							idSpecialty = val.get().getSpecialty().getId(); 
+						ml = measurementLevelRepository.findBySpecialtyIdAndIsMinimum(idSpecialty, 1);
+						if (ml!=null)
+							notaMin = ml.getOrden();
+					}
+					if (nota>=notaMin && notaMin>0)
+						total34++;
+				}
 				total+=nota;
 				cantidad++;
 			}
 			//Calcula resultados totales
-			media = (float)total/cantidad;
-			porcentaje = (float)total34/total;
-			resultsPerCardRepository.registerResultsPerCard(idResult,cantidad,media,porcentaje);
+			if (cantidad == 0)
+				media = 0;
+			else
+				media = (float)total/cantidad;
+			
+			if (total==0)
+				porcentaje = 0;
+			else
+				porcentaje = (float)total34/total;
+			resultsPerCardRepository.registerResultsPerCard(idResult,cantidad,total34,media,porcentaje);
 			response = 1;
 		}catch(Exception ex) {
 			System.out.println(ex.getMessage());

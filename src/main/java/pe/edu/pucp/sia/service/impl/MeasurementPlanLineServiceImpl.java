@@ -1,7 +1,9 @@
 package pe.edu.pucp.sia.service.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,10 +12,12 @@ import pe.edu.pucp.sia.model.Indicator;
 import pe.edu.pucp.sia.model.LevelDetail;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
+import pe.edu.pucp.sia.model.Role;
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Section;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
+import pe.edu.pucp.sia.repository.RoleRepository;
 import pe.edu.pucp.sia.repository.SectionRepository;
 import pe.edu.pucp.sia.response.MeasurementPlanResponse;
 import pe.edu.pucp.sia.service.MeasurementPlanLineService;
@@ -27,6 +31,9 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	private SectionRepository sectionRepository;
 	@Autowired
 	private ResultsPerCardRepository resultsPerCardRepository;
+	@Autowired
+	private RoleRepository roleRepository;
+	
 
 	@Override
 	public Iterable<MeasurementPlanLine> listAll() {
@@ -36,11 +43,15 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	@Override
 	public Integer createMeasurementPlanLine(MeasurementPlanLine m) {
 		Integer response = null;
+		Integer idRoleProfesor;
 		try {
+			//Obtiene rol profesor
+			idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
+			
 			if(m.getSections()!=null) {
 				List<ResultsPerCard> lista= new ArrayList<ResultsPerCard>();
 				for(Section s : m.getSections()) {
-					Integer idSection;//
+					Integer idSection;
 					idSection=sectionRepository.save(s).getId();
 					s.setId(idSection);
 					
@@ -48,6 +59,11 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 					r.setSection(s);
 					r.setId(resultsPerCardRepository.save(r).getId());
 					lista.add(r);
+					
+					//Asigna rol profesor
+					for(Person p : s.getTeachers()) {
+						roleRepository.assignRole(idRoleProfesor, p.getId());
+					}
 				}
 				m.setResultsPerCards(lista);
 			}		
@@ -122,11 +138,27 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	{
 		Iterable<MeasurementPlanLine> list = null;
 		try {
-			Person p = new Person();
-			p.setId(idPerson);
+			Person person = new Person();
+			person.setId(idPerson);
 			List<Person> personList = new ArrayList<Person>();
-			personList.add(p);
+			personList.add(person);
 			list = mPlanLineRepository.findByCourseIdAndSemesterIdAndSectionsTeachersIn(idCourse, idSemester, personList);
+			for(MeasurementPlanLine m : list) {
+				List<Section> newSectionList = new ArrayList<Section>();
+				List<ResultsPerCard> newResultspercardList = new ArrayList<ResultsPerCard>();
+				Iterator<ResultsPerCard> i = m.getResultsPerCards().iterator();
+				for(Section s : m.getSections()) {
+					ResultsPerCard r = i.next();
+					for(Person p : s.getTeachers())
+						if(p.getId().equals(idPerson)) {
+							newSectionList.add(s);
+							r.setSection(null);
+							newResultspercardList.add(r);
+					}
+				}
+				m.setSections(newSectionList);
+				m.setResultsPerCards(newResultspercardList);
+			}
 			for(MeasurementPlanLine mpl : list) {	
 				mpl.setCourse(null);
 				mpl.setSemester(null);
@@ -164,6 +196,8 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			for(MeasurementPlanLine mpl : list) {
 				mpl.setIndicator(null);
 				mpl.setSemester(null);
+				for(ResultsPerCard r : mpl.getResultsPerCards())
+					r.setSection(null);
 			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
@@ -173,22 +207,56 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	}
 
 	@Override
-	public Iterable<MeasurementPlanLine> listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection) {
-		Iterable<MeasurementPlanLine> list = null;
-		
+	public Iterable<MeasurementPlanLine> listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer code) {
+		Iterable<MeasurementPlanLine> list = null;		
+		List<MeasurementPlanLine> listMpl = new ArrayList<MeasurementPlanLine>();	
 		try {
 			list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
 			for(MeasurementPlanLine mpl : list) {		
 				mpl.setCourse(null);
 				mpl.setSemester(null);	
-				
-				(mpl.getSections()).remove(sectionRepository.findById(idSection).get());			
-				(mpl.getResultsPerCards()).remove(resultsPerCardRepository.findBySectionId(idSection).get(0));
 
+				List<Section> ss=new ArrayList<Section>();
+				List<Section> a=sectionRepository.findByCode(code);
+				if(!a.isEmpty()) {
+					for(Section b: a ) {
+						for(Section sec : mpl.getSections()) {
+							if(sec.equals(b)) {
+								ss.add(b);			
+							}
+						}
+					}
+				}		
+				/*if(s!=null) {
+					for(Section sec : mpl.getSections()) {
+						if(sec.equals(s)) {
+							ss.add(s);
+						}
+					}
+				}*/
+				mpl.setSections(ss);	
+				
+				List<ResultsPerCard> rr=new ArrayList<ResultsPerCard>();
+				if(!(resultsPerCardRepository.findBySectionCodeAndMeasurementPlanLineId(code,mpl.getId())).isEmpty()) {
+					ResultsPerCard r=resultsPerCardRepository.findBySectionCodeAndMeasurementPlanLineId(code,mpl.getId()).get(0);
+					if(r!=null) {
+						for(ResultsPerCard res : mpl.getResultsPerCards()) {
+							if(res.equals(r)) {
+								rr.add(r);
+							}
+						}
+					}
+				}				
+				mpl.setResultsPerCards(rr);
+				
+				List<Section> sections=mpl.getSections();
+				if (!sections.isEmpty()) {
+					listMpl.add(mpl);
+				}			
 			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
-		return list;
+		return listMpl;
 	}
 }
