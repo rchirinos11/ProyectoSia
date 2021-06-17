@@ -1,5 +1,7 @@
 package pe.edu.pucp.sia.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
@@ -11,6 +13,8 @@ public interface LevelDetailRepository extends CrudRepository <LevelDetail,Integ
 	@Query(value = "call sp_list_level_detail_by_specialty(:in_id_specialty)", nativeQuery = true)
 	public Iterable<LevelDetail> listLevelDetailBySpecialty(@Param("in_id_specialty") Integer idSpecialty);
 	
+	public List<LevelDetail> findByMeasurementLevelId(Integer id);
+	public Iterable<LevelDetail> findByIndicatorId(Integer id);
 	
 	@Procedure("sp_delete_level_detail")
 	public void deleteLevelDetail(Integer id);

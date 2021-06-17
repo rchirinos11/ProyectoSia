@@ -101,4 +101,16 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 		}
 		return response;
 	}
+
+	@Override
+	public String updatePercentage(Integer idSpecialty, Integer percentage){
+		String response = "";
+		try {
+			specialtyRepository.setPercentage(idSpecialty,percentage);
+			response = "Updated";
+		} catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		return response;
+	}
 }

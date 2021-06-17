@@ -13,7 +13,7 @@ import org.hibernate.annotations.Where;
 import lombok.Getter;
 import lombok.Setter;
 
-@Where(clause="active=true")
+@Where(clause = "active=true")
 @Entity @Getter @Setter
 public class Course {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
@@ -21,7 +21,9 @@ public class Course {
 	private Integer id;
 	private String code;
 	private String name;
-	@ManyToOne @JoinColumn(name="id_specialty")
+
+	@ManyToOne
+	@JoinColumn(name="id_specialty")
 	private Specialty specialty;
-	private boolean active=true;
+	
 }

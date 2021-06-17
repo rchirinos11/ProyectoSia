@@ -7,5 +7,6 @@ public interface MeasurementService {
 	public Integer createMeasurement(Measurement m);
 	public Integer updateMeasurement(Measurement m);
 	public String deleteMeasurement(Integer id);
+	public String deleteByResultsPerCard(Integer idResultsPerCard);
 
 }

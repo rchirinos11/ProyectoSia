@@ -50,9 +50,15 @@ public class MeasurementLevelController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(measurementLevelService.updateMeasurementLevel(ml));
 	}
 	
-	@PostMapping("/delete/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Object> deleteMeasurementLevel(@PathVariable Integer id){
 		logger.info("Entered method deleteMeasurementLevel()");
 		return ResponseEntity.status(HttpStatus.CREATED).body(measurementLevelService.deleteMeasurementLevel(id));
+	}
+	
+	@PostMapping("/updateCurrent/{id}")
+	public ResponseEntity<Object> updateCurrentMeasurementLevel(@PathVariable Integer id){
+		logger.info("Entered method updateCurrentMeasurementLevel()");
+		return ResponseEntity.status(HttpStatus.CREATED).body(measurementLevelService.updateCurrentMeasurementLevel(id));
 	}
 }

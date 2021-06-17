@@ -1,5 +1,7 @@
 package pe.edu.pucp.sia.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Where;
 
@@ -40,8 +43,15 @@ public class ResultsPerCard {
 	@ManyToOne
 	private MeasurementPlanLine measurementPlanLine;	
 	
-	private Float average;
-	private Float percentage;
-	private Integer totalStudents;	
+	@OneToMany()
+    @JoinColumn(name="id_results_per_card") 
+	private List<Measurement> measurements;
+	
+	@ManyToOne @JoinColumn(name="id_section")
+	private Section section;
+	
+	private float average;
+	private float percentage;
+	private int totalStudents;	
 	private boolean active=true;
 }

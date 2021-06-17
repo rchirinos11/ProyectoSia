@@ -33,4 +33,9 @@ public class Section {
 
     private boolean active=true;
     
+
+	@ManyToMany @JoinTable(name="section_person_list",
+			joinColumns = @JoinColumn(name = "id_section"), 
+			inverseJoinColumns = @JoinColumn(name = "id_teacher"))
+	private List<Person> teachers;
 }

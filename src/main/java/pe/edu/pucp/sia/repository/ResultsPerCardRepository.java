@@ -9,7 +9,12 @@ import pe.edu.pucp.sia.model.ResultsPerCard;
 
 public interface ResultsPerCardRepository extends CrudRepository <ResultsPerCard,Integer>{
 	public List<ResultsPerCard> findByMeasurementPlanLineId(Integer id);
+	public List<ResultsPerCard> findBySectionId(Integer id);
 	
 	@Procedure("sp_delete_results_per_card")
 	public void deleteResultsPerCard(Integer id);
+	
+	@Procedure("sp_register_results_per_card")
+	public void registerResultsPerCard(Integer id, Integer total, float average, float percentage);
+	
 }

@@ -1,6 +1,7 @@
 package pe.edu.pucp.sia.service.impl;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class IndicatorServiceImpl implements IndicatorService {
 	public Integer createIndicator(Indicator i) {
 		Integer response = 0;
 		try {
-			for(LevelDetail l : i.getLevelDetailList()) 
+			for(LevelDetail l : i.getLevelDetails()) 
 				levelDetailRepository.save(l);
 			
 			response = indicatorRepository.save(i).getId(); 
@@ -46,7 +47,7 @@ public class IndicatorServiceImpl implements IndicatorService {
     public Integer updateIndicator(Indicator i) {
         Integer response = 0;
 		try {
-			for(LevelDetail l : i.getLevelDetailList()) 
+			for(LevelDetail l : i.getLevelDetails()) 
 				levelDetailRepository.save(l);
 			response = indicatorRepository.save(i).getId();
 		} catch(Exception ex) {
@@ -60,7 +61,8 @@ public class IndicatorServiceImpl implements IndicatorService {
         String response = "";
 		try {
 			Iterator<MeasurementPlanLine> i = mplRepository.findByIndicatorId(id).iterator();
-			if(!i.hasNext()) {
+			Iterator<LevelDetail> l = levelDetailRepository.findByIndicatorId(id).iterator();
+			if(!i.hasNext() && !l.hasNext()) {
 				indicatorRepository.deleteIndicator(id);
 				response = "Deleted";
 			} else {
@@ -77,6 +79,16 @@ public class IndicatorServiceImpl implements IndicatorService {
 		Iterable<Indicator> lista = indicatorRepository.findBystudentResultSpecialtyId(id);
 		for (Indicator indicator: lista) {
 			indicator.getStudentResult().setSpecialty(null);
+		}
+		return lista;
+	}
+
+	@Override
+	public List<Indicator> listByStudentResult(Integer id) {
+		List<Indicator> lista = indicatorRepository.findBystudentResultIdOrderByCode(id);
+		for (Indicator indicator: lista) {
+			indicator.setStudentResult(null);
+			indicator.setLevelDetails(null);
 		}
 		return lista;
 	}

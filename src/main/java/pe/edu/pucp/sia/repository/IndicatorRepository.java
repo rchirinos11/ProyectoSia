@@ -10,6 +10,7 @@ import pe.edu.pucp.sia.model.Indicator;
 public interface IndicatorRepository extends CrudRepository<Indicator,Integer>{
     
     public List<Indicator> findBystudentResultSpecialtyId(Integer id);
+    public List<Indicator> findBystudentResultIdOrderByCode(Integer id);
     
     @Procedure("sp_delete_indicator")
 	public void deleteIndicator(Integer id);

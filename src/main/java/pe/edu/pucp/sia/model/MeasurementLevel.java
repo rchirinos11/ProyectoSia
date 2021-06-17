@@ -25,7 +25,12 @@ public class MeasurementLevel {
 	private Specialty specialty;
 	private Integer orden;
 	private String name;	
+	private Integer isMinimum=0;
+
+	
+	
+	
 	//@Column(name="success_rate")
 	//private Float successRate;	
-	private boolean active=true;
+	//private boolean active=true;
 }

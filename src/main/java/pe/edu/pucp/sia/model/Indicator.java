@@ -32,7 +32,7 @@ public class Indicator {
 
     @OneToMany()
     @JoinColumn(name="id_indicator") 
-    private List<LevelDetail> levelDetailList;
+    private List<LevelDetail> levelDetails;
 
 
 }

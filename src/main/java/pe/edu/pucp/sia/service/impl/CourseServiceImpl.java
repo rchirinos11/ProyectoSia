@@ -64,4 +64,16 @@ public class CourseServiceImpl implements CourseService{
 		}
 		return lista;
 	}
+
+	@Override
+	public Iterable<Course> listBySpecialty(Integer id) {
+		Iterable<Course> lista = courseRepository.findBySpecialtyId(id);
+		for (Course course: lista) {
+			course.setSpecialty(null);
+		}
+		return lista;
+		
+
+	}
+
 }

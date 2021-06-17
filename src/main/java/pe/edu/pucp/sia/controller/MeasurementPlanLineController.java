@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.requests.MPlanLineCourseSemesterRequest;
+import pe.edu.pucp.sia.requests.MPlanLineCourseSemesterTeacherRequest;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.requests.MPlanLineTeacherSemesterRequest;
 import pe.edu.pucp.sia.service.MeasurementPlanLineService;
@@ -54,9 +55,9 @@ public class MeasurementPlanLineController {
 		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listBySpecialtyAndSemester(mplRequest.getIdSpecialty(),mplRequest.getIdSemester()));
 	}
 	
-	@GetMapping("/listByCourseSemesterTeacher/{idCourse}/{idSemester}/{idPerson}")
-	public ResponseEntity<Object> listByCourseSemesterTeacher(@PathVariable Integer idCourse,@PathVariable Integer idSemester,@PathVariable Integer idPerson){
-		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listByCourseSemesterTeacher(idCourse,idSemester,idPerson));
+	@PostMapping("/listByCourseSemesterTeacher")
+	public ResponseEntity<Object> listByCourseSemesterTeacher(@RequestBody MPlanLineCourseSemesterTeacherRequest mplRequest){
+		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listByCourseSemesterTeacher(mplRequest.getIdCourse(),mplRequest.getIdSemester(),mplRequest.getIdTeacher()));
 	}
 	
 	@PostMapping("/listByCourseSemester")
@@ -67,6 +68,11 @@ public class MeasurementPlanLineController {
 	@PostMapping("/listByTeacherSemester")
 	public ResponseEntity<Object> listByTeacherSemester(@RequestBody MPlanLineTeacherSemesterRequest mplRequest){
 		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listBySemesterAndTeachers(mplRequest.getIdSemester(), mplRequest.getIdTeacher()));
+	}
+	
+	@GetMapping("/listByCourseSemesterSection/{idC}/{idSem}/{idSec}")
+	public ResponseEntity<Object> listByCourseSemesterSection(@PathVariable Integer idC,@PathVariable Integer idSem,@PathVariable Integer idSec){
+		return ResponseEntity.status(HttpStatus.OK).body(mPlanLineService.listByCourseAndSemesterAndSchedule(idC, idSem, idSec));
 	}
 	
 }

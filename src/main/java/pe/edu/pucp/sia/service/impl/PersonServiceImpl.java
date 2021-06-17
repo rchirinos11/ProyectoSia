@@ -31,11 +31,10 @@ public class PersonServiceImpl implements PersonService{
 	}
 
 	@Override
-	public String createPerson(Person p) {
-		String response = "";
+	public Integer createPerson(Person p) {
+		Integer response = 0;
 		try {
-			personRepository.save(p);
-			response = "Created"; 
+			response = personRepository.save(p).getId();
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
@@ -117,5 +116,24 @@ public class PersonServiceImpl implements PersonService{
 			System.out.println(ex.getMessage());
 		}
 		return null;
+	}
+
+	@Override
+	public Iterable<Person> listWorkers() {
+		Iterable<Person> list=personRepository.findByEmailIsNotNull();
+		return list;		
+	}
+
+	@Override
+	public Iterable<Role> listRoleByPerson(Integer id) {
+		Iterable<Role> lista=null;
+		try {
+			Person p=personRepository.findById(id).get();
+			if(p.getRoleList()!=null)
+				lista=p.getRoleList();			
+		}catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}	
+		return lista;		
 	}
 }

@@ -8,5 +8,5 @@ public interface ResultsPerCardService {
 	public Integer createResultsPerCard(ResultsPerCard r);
 	public Integer updateResultsPerCard(ResultsPerCard r);
 	public String deleteResultsPerCard(Integer id);
-
+	public Integer registerStudentMeditions(ResultsPerCard r);
 }
