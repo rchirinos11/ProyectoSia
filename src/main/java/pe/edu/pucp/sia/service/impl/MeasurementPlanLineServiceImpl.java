@@ -3,6 +3,7 @@ package pe.edu.pucp.sia.service.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -214,14 +215,35 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			for(MeasurementPlanLine mpl : list) {		
 				mpl.setCourse(null);
 				mpl.setSemester(null);	
+
+				List<Section> ss=new ArrayList<Section>();
+				Section s=sectionRepository.findById(idSection).get();
+				if(s!=null) {
+					for(Section sec : mpl.getSections()) {
+						if(sec.equals(s)) {
+							ss.add(s);
+						}
+					}
+				}
+				mpl.setSections(ss);	
 				
-				(mpl.getSections()).remove(sectionRepository.findById(idSection).get());			
-				(mpl.getResultsPerCards()).remove(resultsPerCardRepository.findBySectionId(idSection).get(0));
+				List<ResultsPerCard> rr=new ArrayList<ResultsPerCard>();
+				if(!(resultsPerCardRepository.findBySectionIdAndMeasurementPlanLineId(idSection,mpl.getId())).isEmpty()) {
+					ResultsPerCard r=resultsPerCardRepository.findBySectionIdAndMeasurementPlanLineId(idSection,mpl.getId()).get(0);
+					if(r!=null) {
+						for(ResultsPerCard res : mpl.getResultsPerCards()) {
+							if(res.equals(r)) {
+								rr.add(r);
+							}
+						}
+					}
+				}				
+				mpl.setResultsPerCards(rr);
+				
 				List<Section> sections=mpl.getSections();
 				if (!sections.isEmpty()) {
 					listMpl.add(mpl);
-				}
-				
+				}			
 			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
