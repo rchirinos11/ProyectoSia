@@ -11,10 +11,12 @@ import pe.edu.pucp.sia.model.Indicator;
 import pe.edu.pucp.sia.model.LevelDetail;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
+import pe.edu.pucp.sia.model.Role;
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Section;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
+import pe.edu.pucp.sia.repository.RoleRepository;
 import pe.edu.pucp.sia.repository.SectionRepository;
 import pe.edu.pucp.sia.response.MeasurementPlanResponse;
 import pe.edu.pucp.sia.service.MeasurementPlanLineService;
@@ -28,6 +30,9 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	private SectionRepository sectionRepository;
 	@Autowired
 	private ResultsPerCardRepository resultsPerCardRepository;
+	@Autowired
+	private RoleRepository roleRepository;
+	
 
 	@Override
 	public Iterable<MeasurementPlanLine> listAll() {
@@ -37,11 +42,15 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	@Override
 	public Integer createMeasurementPlanLine(MeasurementPlanLine m) {
 		Integer response = null;
+		Integer idRoleProfesor;
 		try {
+			//Obtiene rol profesor
+			idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
+			
 			if(m.getSections()!=null) {
 				List<ResultsPerCard> lista= new ArrayList<ResultsPerCard>();
 				for(Section s : m.getSections()) {
-					Integer idSection;//
+					Integer idSection;
 					idSection=sectionRepository.save(s).getId();
 					s.setId(idSection);
 					
@@ -49,6 +58,11 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 					r.setSection(s);
 					r.setId(resultsPerCardRepository.save(r).getId());
 					lista.add(r);
+					
+					//Asigna rol profesor
+					for(Person p : s.getTeachers()) {
+						roleRepository.assignRole(idRoleProfesor, p.getId());
+					}
 				}
 				m.setResultsPerCards(lista);
 			}		
