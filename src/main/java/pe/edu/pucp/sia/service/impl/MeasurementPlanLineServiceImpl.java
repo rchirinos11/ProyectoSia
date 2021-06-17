@@ -193,8 +193,8 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 
 	@Override
 	public Iterable<MeasurementPlanLine> listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection) {
-		Iterable<MeasurementPlanLine> list = null;
-		
+		Iterable<MeasurementPlanLine> list = null;		
+		List<MeasurementPlanLine> listMpl = new ArrayList<MeasurementPlanLine>();	
 		try {
 			list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
 			for(MeasurementPlanLine mpl : list) {		
@@ -203,11 +203,15 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 				
 				(mpl.getSections()).remove(sectionRepository.findById(idSection).get());			
 				(mpl.getResultsPerCards()).remove(resultsPerCardRepository.findBySectionId(idSection).get(0));
-
+				List<Section> sections=mpl.getSections();
+				if (!sections.isEmpty()) {
+					listMpl.add(mpl);
+				}
+				
 			}
 		} catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
-		return list;
+		return listMpl;
 	}
 }
