@@ -52,6 +52,7 @@ public class ResultsPerCard {
 	
 	private float average;
 	private float percentage;
-	private int totalStudents;	
+	private int totalStudents;
+	private int totalSuccessful;
 	private boolean active=true;
 }

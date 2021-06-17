@@ -15,6 +15,6 @@ public interface ResultsPerCardRepository extends CrudRepository <ResultsPerCard
 	public void deleteResultsPerCard(Integer id);
 	
 	@Procedure("sp_register_results_per_card")
-	public void registerResultsPerCard(Integer id, Integer total, float average, float percentage);
+	public void registerResultsPerCard(Integer id, Integer cantidad, Integer total34, float average, float percentage);
 	
 }
