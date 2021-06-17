@@ -3,16 +3,19 @@ package pe.edu.pucp.sia.service.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
+import pe.edu.pucp.sia.model.Role;
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Section;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
+import pe.edu.pucp.sia.repository.RoleRepository;
 import pe.edu.pucp.sia.repository.SectionRepository;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementPlanLineService;
@@ -26,6 +29,9 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	private SectionRepository sectionRepository;
 	@Autowired
 	private ResultsPerCardRepository resultsPerCardRepository;
+	@Autowired
+	private RoleRepository roleRepository;
+	
 
 	@Override
 	public ApiResponse listAll() {
@@ -44,6 +50,9 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	public ApiResponse createMeasurementPlanLine(MeasurementPlanLine m) {
 		ApiResponse response = null;
 		try {
+			//Obtiene rol profesor
+			Integer idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
+			
 			if(m.getSections()!=null) {
 				List<ResultsPerCard> lista= new ArrayList<ResultsPerCard>();
 				for(Section s : m.getSections()) {
@@ -55,6 +64,11 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 					r.setSection(s);
 					r.setId(resultsPerCardRepository.save(r).getId());
 					lista.add(r);
+					
+					//Asigna rol profesor
+					for(Person p : s.getTeachers()) {
+						roleRepository.assignRole(idRoleProfesor, p.getId());
+					}
 				}
 				m.setResultsPerCards(lista);
 			}		
@@ -211,15 +225,42 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	public ApiResponse listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection) {
 		ApiResponse response = null;
 		try {
+			List<MeasurementPlanLine> listMpl = new ArrayList<MeasurementPlanLine>();	
 			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
 			for(MeasurementPlanLine mpl : list) {
 				mpl.setCourse(null);
 				mpl.setSemester(null);
+
+				List<Section> ss=new ArrayList<Section>();
+				Section s=sectionRepository.findById(idSection).get();
+				if(s!=null) {
+					for(Section sec : mpl.getSections()) {
+						if(sec.equals(s)) {
+							ss.add(s);
+						}
+					}
+				}
+				mpl.setSections(ss);	
 				
-				(mpl.getSections()).remove(sectionRepository.findById(idSection).get());
-				(mpl.getResultsPerCards()).remove(resultsPerCardRepository.findBySectionId(idSection).get(0));
+				List<ResultsPerCard> rr=new ArrayList<ResultsPerCard>();
+				if(!(resultsPerCardRepository.findBySectionIdAndMeasurementPlanLineId(idSection,mpl.getId())).isEmpty()) {
+					ResultsPerCard r=resultsPerCardRepository.findBySectionIdAndMeasurementPlanLineId(idSection,mpl.getId()).get(0);
+					if(r!=null) {
+						for(ResultsPerCard res : mpl.getResultsPerCards()) {
+							if(res.equals(r)) {
+								rr.add(r);
+							}
+						}
+					}
+				}				
+				mpl.setResultsPerCards(rr);
+				
+				List<Section> sections=mpl.getSections();
+				if (!sections.isEmpty()) {
+					listMpl.add(mpl);
+				}			
 			}
-			response = new ApiResponse(list,200);
+			response = new ApiResponse(listMpl,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}

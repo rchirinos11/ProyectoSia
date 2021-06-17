@@ -92,6 +92,9 @@ public class IndicatorServiceImpl implements IndicatorService {
 			for (Indicator indicator: list) {
 				indicator.getStudentResult().setSpecialty(null);
 				indicator.getLevelDetails().sort(new LevelDetailComparator());
+				for(LevelDetail ld: indicator.getLevelDetails()){
+					ld.getMeasurementLevel().setSpecialty(null);
+				}
 			}
 			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
