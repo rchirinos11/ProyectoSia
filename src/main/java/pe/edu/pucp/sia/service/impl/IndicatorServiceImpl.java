@@ -81,6 +81,9 @@ public class IndicatorServiceImpl implements IndicatorService {
 		for (Indicator indicator: lista) {
 			indicator.getStudentResult().setSpecialty(null);
 			indicator.getLevelDetails().sort(new LevelDetailComparator());
+			for(LevelDetail ld: indicator.getLevelDetails()){
+				ld.getMeasurementLevel().setSpecialty(null);
+			}
 		}
 		return lista;
 	}
@@ -90,7 +93,7 @@ public class IndicatorServiceImpl implements IndicatorService {
 		List<Indicator> lista = indicatorRepository.findBystudentResultIdOrderByCode(id);
 		for (Indicator indicator: lista) {
 			indicator.setStudentResult(null);
-			indicator.setLevelDetails(null);
+			indicator.setLevelDetails(null);	
 		}
 		return lista;
 	}
