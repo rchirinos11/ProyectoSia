@@ -1,7 +1,6 @@
 package pe.edu.pucp.sia.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,10 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Section;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.SectionService;
 import pe.edu.pucp.sia.service.impl.SectionServiceImpl;
 
@@ -23,28 +22,33 @@ public class SectionController {
 	private SectionService sectionService = new SectionServiceImpl(); 
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listSection(){
-		return ResponseEntity.status(HttpStatus.OK).body(sectionService.listAll());
+	public ResponseEntity<ApiResponse> listSection(){
+		ApiResponse response = sectionService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createSection(@RequestBody Section s){
-		return ResponseEntity.status(HttpStatus.CREATED).body(sectionService.createSection(s));
+	public ResponseEntity<ApiResponse> createSection(@RequestBody Section s){
+		ApiResponse response = sectionService.createSection(s);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateSection(@RequestBody Section s){
-		return ResponseEntity.status(HttpStatus.CREATED).body(sectionService.updateSection(s));
+	public ResponseEntity<ApiResponse> updateSection(@RequestBody Section s){
+		ApiResponse response = sectionService.updateSection(s);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteSection(@PathVariable Integer id){
-		return ResponseEntity.status(HttpStatus.CREATED).body(sectionService.deleteSection(id));
+	public ResponseEntity<ApiResponse> deleteSection(@PathVariable Integer id){
+		ApiResponse response = sectionService.deleteSection(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/listbymeasurementplanline/{id}")
-	public ResponseEntity<Object> listByMeasurementPlanLine(@PathVariable Integer id){
-		return ResponseEntity.status(HttpStatus.OK).body(sectionService.listByMeasurementPlanLine(id));
+	public ResponseEntity<ApiResponse> listByMeasurementPlanLine(@PathVariable Integer id){
+		ApiResponse response = sectionService.listByMeasurementPlanLine(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 }

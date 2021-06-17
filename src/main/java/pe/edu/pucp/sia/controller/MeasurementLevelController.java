@@ -3,7 +3,6 @@ package pe.edu.pucp.sia.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.MeasurementLevel;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementLevelService;
 import pe.edu.pucp.sia.service.impl.MeasurementLevelServiceImpl;
 
@@ -26,39 +26,45 @@ public class MeasurementLevelController {
 	MeasurementLevelService measurementLevelService= new MeasurementLevelServiceImpl();
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listAll(){
+	public ResponseEntity<ApiResponse> listAll(){
 		logger.info("Entered method listMeasurementLevel()");
-		return ResponseEntity.status(HttpStatus.OK).body(measurementLevelService.listAll());
+		ApiResponse response = measurementLevelService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/listbyspecialty/{id}")
-	public ResponseEntity<Object> listByFaculty(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> listByFaculty(@PathVariable Integer id){
 		logger.info("Entered method listBySpecialty()");
-		return ResponseEntity.status(HttpStatus.OK).body(measurementLevelService.listBySpecialty(id));
+		ApiResponse response = measurementLevelService.listBySpecialty(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createMeasurementLevel(@RequestBody MeasurementLevel ml){
+	public ResponseEntity<ApiResponse> createMeasurementLevel(@RequestBody MeasurementLevel ml){
 		logger.info("Entered method createMeasurementLevel()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(measurementLevelService.createMeasurementLevel(ml));
+		ApiResponse response = measurementLevelService.createMeasurementLevel(ml);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateMeasurementLevel(@RequestBody MeasurementLevel ml){
+	public ResponseEntity<ApiResponse> updateMeasurementLevel(@RequestBody MeasurementLevel ml){
 		logger.info("Entered method updateMeasurementLevel()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(measurementLevelService.updateMeasurementLevel(ml));
+		ApiResponse response = measurementLevelService.updateMeasurementLevel(ml);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteMeasurementLevel(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> deleteMeasurementLevel(@PathVariable Integer id){
 		logger.info("Entered method deleteMeasurementLevel()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(measurementLevelService.deleteMeasurementLevel(id));
+		ApiResponse response = measurementLevelService.deleteMeasurementLevel(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/updateCurrent/{id}")
-	public ResponseEntity<Object> updateCurrentMeasurementLevel(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> updateCurrentMeasurementLevel(@PathVariable Integer id){
 		logger.info("Entered method updateCurrentMeasurementLevel()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(measurementLevelService.updateCurrentMeasurementLevel(id));
+		ApiResponse response = measurementLevelService.updateCurrentMeasurementLevel(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

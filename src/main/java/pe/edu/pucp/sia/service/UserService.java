@@ -1,11 +1,12 @@
 package pe.edu.pucp.sia.service;
 
 import pe.edu.pucp.sia.model.User;
+import pe.edu.pucp.sia.response.ApiResponse;
 
 public interface UserService {
-    public Iterable<User> listAll();
-	public int createUser(User u);
-	public int updateUser(User u);
-	public String deleteUser(Integer id);
-	public int authenticate(User u);
+    public ApiResponse listAll();
+	public ApiResponse createUser(User u);
+	public ApiResponse updateUser(User u);
+	public ApiResponse deleteUser(Integer id);
+	public ApiResponse authenticate(User u);
 }

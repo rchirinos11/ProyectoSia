@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.EducationalObjective;
 import pe.edu.pucp.sia.repository.EducationalObjectiveRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.EducationalObjectiveService;
 
 @Service
@@ -13,40 +14,49 @@ public class EducationalObjectiveServiceImpl implements EducationalObjectiveServ
 	private EducationalObjectiveRepository educationalObjectiveRepository;
 	
 	@Override
-	public Iterable<EducationalObjective> listAll() {
-		return educationalObjectiveRepository.findAll();
-	}
-
-	@Override
-	public Integer createEducationalObjective(EducationalObjective eo) {
-		Integer response = 0;
+	public ApiResponse listAll() {
+		ApiResponse response = null;
 		try {
-			response = educationalObjectiveRepository.save(eo).getId();
+			Iterable<EducationalObjective> list = educationalObjectiveRepository.findAll();
+			response = new ApiResponse(list, 200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer updateEducationalObjective(EducationalObjective eo) {
-		Integer response = 0;
+	public ApiResponse createEducationalObjective(EducationalObjective eo) {
+		ApiResponse response = null;
 		try {
-			educationalObjectiveRepository.save(eo).getId();
+			Integer id = educationalObjectiveRepository.save(eo).getId();
+			response = new ApiResponse(id, 201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteEducationalObjective(Integer id) {
-		String response = "";
+	public ApiResponse updateEducationalObjective(EducationalObjective eo) {
+		ApiResponse response = null;
+		try {
+			Integer id = educationalObjectiveRepository.save(eo).getId();
+			response = new ApiResponse(id, 200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse deleteEducationalObjective(Integer id) {
+		ApiResponse response = null;
 		try {
 			educationalObjectiveRepository.deleteById(id);
-			response = "Deleted"; 
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}

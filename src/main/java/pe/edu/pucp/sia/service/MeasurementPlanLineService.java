@@ -1,18 +1,17 @@
 package pe.edu.pucp.sia.service;
 
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
-import pe.edu.pucp.sia.response.MeasurementPlanResponse;
+import pe.edu.pucp.sia.response.ApiResponse;
 
 public interface MeasurementPlanLineService {
-	public Iterable<MeasurementPlanLine> listAll();
-	public Integer createMeasurementPlanLine(MeasurementPlanLine m);
-	public Integer updateMeasurementPlanLine(MeasurementPlanLine m);
-	public String deleteMeasurementPlanLine(Integer id);
-	public Iterable<MeasurementPlanLine> listByCourse(Integer idFaculty);
-	public Iterable<MeasurementPlanLine> listBySpecialtyAndSemester(Integer idSpecialty, Integer idSemester);
-	public Iterable<MeasurementPlanLine> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson);
-	//public Iterable<MeasurementPlanResponse> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson);
-	public Iterable<MeasurementPlanLine> listByCourseAndSemester(Integer idCourse, Integer idSemester);
-	public Iterable<MeasurementPlanLine> listBySemesterAndTeachers(Integer idSemester, Integer idPerson);
-	public Iterable<MeasurementPlanLine> listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection);
+	public ApiResponse listAll();
+	public ApiResponse createMeasurementPlanLine(MeasurementPlanLine m);
+	public ApiResponse updateMeasurementPlanLine(MeasurementPlanLine m);
+	public ApiResponse deleteMeasurementPlanLine(Integer id);
+	public ApiResponse listByCourse(Integer idFaculty);
+	public ApiResponse listBySpecialtyAndSemester(Integer idSpecialty, Integer idSemester);
+	public ApiResponse listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson);
+	public ApiResponse listByCourseAndSemester(Integer idCourse, Integer idSemester);
+	public ApiResponse listBySemesterAndTeachers(Integer idSemester, Integer idPerson);
+	public ApiResponse listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection);
 }

@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.LevelDetail;
-import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.repository.LevelDetailRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.LevelDetailService;
 
 @Service
@@ -14,52 +14,67 @@ public class LevelDetailServiceImpl implements LevelDetailService{
 	private LevelDetailRepository levelDetailRepository;
 	
 	@Override
-	public Iterable<LevelDetail> listAll() {
-		return levelDetailRepository.findAll();
-	}
-
-	@Override
-	public Integer createLevelDetail(LevelDetail ld) {
-		Integer response =0;
+	public ApiResponse listAll() {
+		ApiResponse response = null;
 		try {
-			response=levelDetailRepository.save(ld).getId();
-					} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			Iterable<LevelDetail> list = levelDetailRepository.findAll();
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer updateLevelDetail(LevelDetail ld) {
-		Integer response =0;
+	public ApiResponse createLevelDetail(LevelDetail ld) {
+		ApiResponse response = null;
 		try {
-			response=levelDetailRepository.save(ld).getId();
-					} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			Integer id = levelDetailRepository.save(ld).getId();
+			response = new ApiResponse(id,201);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteLevelDetail(Integer id) {
-	String response = "";
+	public ApiResponse updateLevelDetail(LevelDetail ld) {
+		ApiResponse response = null;
+		try {
+			Integer id = levelDetailRepository.save(ld).getId();
+			response = new ApiResponse(id,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse deleteLevelDetail(Integer id) {
+	ApiResponse response = null;
 		try {
 			levelDetailRepository.deleteLevelDetail(id);
-			response = "Deleted";
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Iterable<LevelDetail> listBySpecialty(Integer idSpecialty) {
-		Iterable<LevelDetail> lista =levelDetailRepository.listLevelDetailBySpecialty(idSpecialty);
-		for(LevelDetail l : lista) {	
-			l.setMeasurementLevel(null);
-			l.setIndicator(null);
+	public ApiResponse listBySpecialty(Integer idSpecialty) {
+		ApiResponse response = null;
+		try {
+			Iterable<LevelDetail> list =levelDetailRepository.listLevelDetailBySpecialty(idSpecialty);
+			for(LevelDetail l : list) {	
+				l.setMeasurementLevel(null);
+				l.setIndicator(null);
+			}
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return lista;
+		return response;
 	}
 
 }

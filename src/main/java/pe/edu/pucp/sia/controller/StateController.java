@@ -3,7 +3,6 @@ package pe.edu.pucp.sia.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.State;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.StateService;
 import pe.edu.pucp.sia.service.impl.StateServiceImpl;
 
@@ -27,26 +27,30 @@ public class StateController {
 	private StateService stateService = new StateServiceImpl(); 
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listState(){
+	public ResponseEntity<ApiResponse> listState(){
 		logger.info("Entered method listState()");
-		return ResponseEntity.status(HttpStatus.OK).body(stateService.listAll());
+		ApiResponse response = stateService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createState(@RequestBody State s){
+	public ResponseEntity<ApiResponse> createState(@RequestBody State s){
 		logger.info("Entered method createState()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(stateService.createState(s));
+		ApiResponse response = stateService.createState(s);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateState(@RequestBody State s){
+	public ResponseEntity<ApiResponse> updateState(@RequestBody State s){
 		logger.info("Entered method updateState()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(stateService.updateState(s));
+		ApiResponse response = stateService.updateState(s);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteState(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> deleteState(@PathVariable Integer id){
 		logger.info("Entered method deleteState()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(stateService.deleteState(id));
+		ApiResponse response = stateService.deleteState(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

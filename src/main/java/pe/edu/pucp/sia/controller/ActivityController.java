@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Activity;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.ActivityService;
 import pe.edu.pucp.sia.service.impl.ActivityServiceImpl;
 
@@ -27,32 +28,37 @@ public class ActivityController {
 	private ActivityService activityService = new ActivityServiceImpl(); 
 	
 	@GetMapping("/listbyimprovementproposal/{id}")
-	public ResponseEntity<Object> listByImprovementProposal(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> listByImprovementProposal(@PathVariable Integer id){
 		logger.info("Entered method listByImprovementProposal()");
-		return ResponseEntity.status(HttpStatus.OK).body(activityService.listByImprovementProposal(id));
+		ApiResponse response = activityService.listByImprovementProposal(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listActivity(){
+	public ResponseEntity<ApiResponse> listActivity(){
 		logger.info("Entered method listActivity()");
-		return ResponseEntity.status(HttpStatus.OK).body(activityService.listAll());
+		ApiResponse response = activityService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createActivity(@RequestBody Activity a){
+	public ResponseEntity<ApiResponse> createActivity(@RequestBody Activity a){
 		logger.info("Entered method createActivity()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(activityService.createActivity(a));
+		ApiResponse response = activityService.createActivity(a);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateActivity(@RequestBody Activity a){
+	public ResponseEntity<ApiResponse> updateActivity(@RequestBody Activity a){
 		logger.info("Entered method updateActivity()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(activityService.updateActivity(a));
+		ApiResponse response = activityService.updateActivity(a);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteActivity(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> deleteActivity(@PathVariable Integer id){
 		logger.info("Entered method deleteActivity()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(activityService.deleteActivity(id));
+		ApiResponse response = activityService.deleteActivity(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

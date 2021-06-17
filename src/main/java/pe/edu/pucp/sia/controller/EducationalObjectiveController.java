@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.EducationalObjective;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.EducationalObjectiveService;
 import pe.edu.pucp.sia.service.impl.EducationalObjectiveServiceImpl;
 
@@ -26,26 +27,30 @@ public class EducationalObjectiveController {
 	private EducationalObjectiveService educationalObjectiveService = new EducationalObjectiveServiceImpl();
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listEducationalObjective(){
+	public ResponseEntity<ApiResponse> listEducationalObjective(){
 		logger.info("Entered method listEducationalObjective()");
-		return ResponseEntity.status(HttpStatus.OK).body(educationalObjectiveService.listAll());
+		ApiResponse response = educationalObjectiveService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createEducationalObjective(@RequestBody EducationalObjective eo){
+	public ResponseEntity<ApiResponse> createEducationalObjective(@RequestBody EducationalObjective eo){
 		logger.info("Entered method createEducationalObjective()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(educationalObjectiveService.createEducationalObjective(eo));
+		ApiResponse response = educationalObjectiveService.createEducationalObjective(eo);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateEducationalObjective(@RequestBody EducationalObjective eo){
+	public ResponseEntity<ApiResponse> updateEducationalObjective(@RequestBody EducationalObjective eo){
 		logger.info("Entered method updateEducationalObjective()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(educationalObjectiveService.updateEducationalObjective(eo));
+		ApiResponse response = educationalObjectiveService.updateEducationalObjective(eo);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteEducationalObjective(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> deleteEducationalObjective(@PathVariable Integer id){
 		logger.info("Entered method deleteEducationalObjective()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(educationalObjectiveService.deleteEducationalObjective(id));
+		ApiResponse response = educationalObjectiveService.deleteEducationalObjective(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

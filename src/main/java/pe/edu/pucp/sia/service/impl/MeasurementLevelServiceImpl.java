@@ -9,6 +9,7 @@ import pe.edu.pucp.sia.model.LevelDetail;
 import pe.edu.pucp.sia.model.MeasurementLevel;
 import pe.edu.pucp.sia.repository.LevelDetailRepository;
 import pe.edu.pucp.sia.repository.MeasurementLevelRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementLevelService;
 @Service
 public class MeasurementLevelServiceImpl implements MeasurementLevelService {
@@ -19,79 +20,94 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 	private LevelDetailRepository levelDetailRepository;
 
 	@Override
-	public Iterable<MeasurementLevel> listAll() {
-		return measurementLevelRepository.findAllByOrderByOrdenAsc();
+	public ApiResponse listAll() {
+		ApiResponse response = null;
+		try {
+			Iterable<MeasurementLevel> list = measurementLevelRepository.findAllByOrderByOrdenAsc();
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
-	public Integer createMeasurementLevel(MeasurementLevel ml) {
-		Integer response =0;
+	public ApiResponse createMeasurementLevel(MeasurementLevel ml) {
+		ApiResponse response = null;
 		try {
-			response=measurementLevelRepository.save(ml).getId();
+			Integer id = measurementLevelRepository.save(ml).getId();
+			response = new ApiResponse(id,201);
 			
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer updateMeasurementLevel(MeasurementLevel ml) {
-		Integer response =0;
+	public ApiResponse updateMeasurementLevel(MeasurementLevel ml) {
+		ApiResponse response = null;
 		try {
-			response=measurementLevelRepository.save(ml).getId();
+			Integer id = measurementLevelRepository.save(ml).getId();
+			response = new ApiResponse(id,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteMeasurementLevel(Integer id) {
-		String response = "";
-		List<LevelDetail> lista = null;
+	public ApiResponse deleteMeasurementLevel(Integer id) {
+		ApiResponse response = null;
 		try {
-			lista = levelDetailRepository.findByMeasurementLevelId(id);
-			for (LevelDetail ld : lista) {
+			List<LevelDetail> list = levelDetailRepository.findByMeasurementLevelId(id);
+			for (LevelDetail ld : list) {
 				levelDetailRepository.deleteLevelDetail(ld.getId());
 			}
 			measurementLevelRepository.deleteMeasurementLevel(id);
-			response = "Deleted"; 
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Iterable<MeasurementLevel> listBySpecialty(Integer id) {
-		Iterable<MeasurementLevel> lista = measurementLevelRepository.findBySpecialtyIdOrderByOrdenAsc(id);
-		for (MeasurementLevel ml : lista) {
-			ml.setSpecialty(null);
+	public ApiResponse listBySpecialty(Integer id) {
+		ApiResponse response = null;
+		try {
+			Iterable<MeasurementLevel> list = measurementLevelRepository.findBySpecialtyIdOrderByOrdenAsc(id);
+			for (MeasurementLevel ml : list) {
+				ml.setSpecialty(null);
+			}
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return lista;
+		return response;
 	}
 
 	@Override
-	public Integer updateCurrentMeasurementLevel(Integer id) {
-		Integer response =0;
-		Integer specialtyId=0;
+	public ApiResponse updateCurrentMeasurementLevel(Integer idMeasurement) {
+		ApiResponse response = null;
 		try {
-			MeasurementLevel ml = measurementLevelRepository.findById(id).get();
+			Integer specialtyId = 0;
+			MeasurementLevel ml = measurementLevelRepository.findById(idMeasurement).get();
 			ml.setIsMinimum(1);		
-			response=measurementLevelRepository.save(ml).getId();
+			Integer id = measurementLevelRepository.save(ml).getId();
 			
 			specialtyId=ml.getSpecialty().getId();			
 			Iterable<MeasurementLevel> lista = measurementLevelRepository.findAll();
 			for(MeasurementLevel m : lista) {
 				if(m.getSpecialty()!=null)				
-					if (m.getSpecialty().getId()==specialtyId && (m.getId())!=response) {
+					if (m.getSpecialty().getId()==specialtyId && (m.getId())!=id) {
 							m.setIsMinimum(0);
 							measurementLevelRepository.save(m);
 					}
 			}
+			response = new ApiResponse(id,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}

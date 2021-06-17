@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.requests.CreateImprovementPlanRequest;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.ResultsPerCardService;
 import pe.edu.pucp.sia.service.impl.ResultsPerCardServiceImpl;
 
@@ -26,38 +27,44 @@ public class ResultsPerCardController {
 	ResultsPerCardService resultsPerCardService= new ResultsPerCardServiceImpl();
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listAll(){
+	public ResponseEntity<ApiResponse> listAll(){
 		logger.info("Entered method listResultsPerCard()");
-		return ResponseEntity.status(HttpStatus.OK).body(resultsPerCardService.listAll());
+		ApiResponse response = resultsPerCardService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/listbymeasurementplanline/{id}")
-	public ResponseEntity<Object> listByFaculty(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> listByFaculty(@PathVariable Integer id){
 		logger.info("Entered method listByMeasurementPlanLine()");
-		return ResponseEntity.status(HttpStatus.OK).body(resultsPerCardService.listByMeasurementPlanLine(id));
+		ApiResponse response = resultsPerCardService.listByMeasurementPlanLine(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createResultsPerCard(@RequestBody ResultsPerCard r){
+	public ResponseEntity<ApiResponse> createResultsPerCard(@RequestBody ResultsPerCard r){
 		logger.info("Entered method createResultsPerCard()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(resultsPerCardService.createResultsPerCard(r));
+		ApiResponse response = resultsPerCardService.createResultsPerCard(r);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateResultsPerCard(@RequestBody ResultsPerCard r){
+	public ResponseEntity<ApiResponse> updateResultsPerCard(@RequestBody ResultsPerCard r){
 		logger.info("Entered method updateResultsPerCard()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(resultsPerCardService.updateResultsPerCard(r));
+		ApiResponse response = resultsPerCardService.updateResultsPerCard(r);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteResultsPerCard(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> deleteResultsPerCard(@PathVariable Integer id){
 		logger.info("Entered method deleteResultsPerCard()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(resultsPerCardService.deleteResultsPerCard(id));
+		ApiResponse response = resultsPerCardService.deleteResultsPerCard(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 
 	@PostMapping("/registerstudentmeditions")
-	public ResponseEntity<Object> registerStudentMeditions(@RequestBody ResultsPerCard r){
+	public ResponseEntity<ApiResponse> registerStudentMeditions(@RequestBody ResultsPerCard r){
 		logger.info("Entered method registerStudentMeditions()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(resultsPerCardService.registerStudentMeditions(r));
+		ApiResponse response = resultsPerCardService.registerStudentMeditions(r);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

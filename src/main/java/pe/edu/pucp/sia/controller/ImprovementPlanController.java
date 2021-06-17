@@ -3,7 +3,6 @@ package pe.edu.pucp.sia.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import pe.edu.pucp.sia.model.ImprovementPlan;
 import pe.edu.pucp.sia.requests.CreateImprovementPlanRequest;
 import pe.edu.pucp.sia.requests.ImprovementPlanActivityRequest;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.ImprovementPlanService;
 import pe.edu.pucp.sia.service.impl.ImprovementPlanServiceImpl;
 
@@ -29,38 +28,44 @@ public class ImprovementPlanController {
 	private ImprovementPlanService improvementPlanService = new ImprovementPlanServiceImpl(); 
 	
 	@GetMapping("/listbyspecialty/{id}")
-	public ResponseEntity<Object> listBySpecialty(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> listBySpecialty(@PathVariable Integer id){
 		logger.info("Entered method listBySpecialty()");
-		return ResponseEntity.status(HttpStatus.OK).body(improvementPlanService.listBySpecialty(id));
+		ApiResponse response = improvementPlanService.listBySpecialty(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/listbyactivitystatesandsemesters")
 	public ResponseEntity<Object> listByActivityStatesAndSemesters(@RequestBody ImprovementPlanActivityRequest i){
 		logger.info("Entered method listByActivityStatesAndSemesters()");
-		return ResponseEntity.status(HttpStatus.OK).body(improvementPlanService.listByActivityStatesAndSemesters(i));
+		ApiResponse response = improvementPlanService.listByActivityStatesAndSemesters(i);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listImprovementPlan(){
+	public ResponseEntity<ApiResponse> listImprovementPlan(){
 		logger.info("Entered method listImprovementPlan()");
-		return ResponseEntity.status(HttpStatus.OK).body(improvementPlanService.listAll());
+		ApiResponse response = improvementPlanService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createImprovementPlan(@RequestBody CreateImprovementPlanRequest i){
+	public ResponseEntity<ApiResponse> createImprovementPlan(@RequestBody CreateImprovementPlanRequest i){
 		logger.info("Entered method createImprovementPlan()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(improvementPlanService.createImprovementPlan(i));
+		ApiResponse response = improvementPlanService.createImprovementPlan(i);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateImprovementPlan(@RequestBody CreateImprovementPlanRequest i){
+	public ResponseEntity<ApiResponse> updateImprovementPlan(@RequestBody CreateImprovementPlanRequest i){
 		logger.info("Entered method updateImprovementPlan()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(improvementPlanService.updateImprovementPlan(i));
+		ApiResponse response = improvementPlanService.updateImprovementPlan(i);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteImprovementPlan(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> deleteImprovementPlan(@PathVariable Integer id){
 		logger.info("Entered method deleteImprovementPlan()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(improvementPlanService.deleteImprovementPlan(id));
+		ApiResponse response = improvementPlanService.deleteImprovementPlan(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

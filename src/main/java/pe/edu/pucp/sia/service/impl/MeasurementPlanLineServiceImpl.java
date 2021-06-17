@@ -7,8 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pe.edu.pucp.sia.model.Indicator;
-import pe.edu.pucp.sia.model.LevelDetail;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Person;
@@ -16,7 +14,7 @@ import pe.edu.pucp.sia.model.Section;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.SectionRepository;
-import pe.edu.pucp.sia.response.MeasurementPlanResponse;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementPlanLineService;
 
 
@@ -30,18 +28,26 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	private ResultsPerCardRepository resultsPerCardRepository;
 
 	@Override
-	public Iterable<MeasurementPlanLine> listAll() {
-		return mPlanLineRepository.findAll();
+	public ApiResponse listAll() {
+		ApiResponse response = null;
+		try {
+			Iterable<MeasurementPlanLine> list =  mPlanLineRepository.findAll();
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+		
 	}
 
 	@Override
-	public Integer createMeasurementPlanLine(MeasurementPlanLine m) {
-		Integer response = null;
+	public ApiResponse createMeasurementPlanLine(MeasurementPlanLine m) {
+		ApiResponse response = null;
 		try {
 			if(m.getSections()!=null) {
 				List<ResultsPerCard> lista= new ArrayList<ResultsPerCard>();
 				for(Section s : m.getSections()) {
-					Integer idSection;//
+					Integer idSection;
 					idSection=sectionRepository.save(s).getId();
 					s.setId(idSection);
 					
@@ -52,16 +58,17 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 				}
 				m.setResultsPerCards(lista);
 			}		
-			response = mPlanLineRepository.save(m).getId();
+			Integer id = mPlanLineRepository.save(m).getId();
+			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer updateMeasurementPlanLine(MeasurementPlanLine m) {
-		Integer response = null;
+	public ApiResponse updateMeasurementPlanLine(MeasurementPlanLine m) {
+		ApiResponse response = null;
 		try {
 			if(m.getSections()!=null) {
 				for(Section s : m.getSections())
@@ -72,62 +79,68 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 					resultsPerCardRepository.save(r);
 			}
 			
-			response = mPlanLineRepository.save(m).getId();
+			Integer id = mPlanLineRepository.save(m).getId();
+			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteMeasurementPlanLine(Integer id) {
-		String response = "";
+	public ApiResponse deleteMeasurementPlanLine(Integer id) {
+		ApiResponse response = null;
 		try {
 			MeasurementPlanLine m=mPlanLineRepository.findById(id).get();
 			for(ResultsPerCard r:m.getResultsPerCards()) {
 				resultsPerCardRepository.deleteById(r.getId());
 			}
 			mPlanLineRepository.deleteById(id);
-			response = "Deleted";
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 	
-	public Iterable<MeasurementPlanLine> listByCourse(Integer idFaculty){
-		return mPlanLineRepository.findByCourseId(idFaculty);
+	public ApiResponse listByCourse(Integer idFaculty){
+		ApiResponse response = null;
+		try {
+			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findByCourseId(idFaculty);
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
-	public Iterable<MeasurementPlanLine> listBySpecialtyAndSemester(Integer idSpecialty, Integer idSemester) {
-		Iterable<MeasurementPlanLine> list = null;
+	public ApiResponse listBySpecialtyAndSemester(Integer idSpecialty, Integer idSemester) {
+		ApiResponse response = null;
 		try {
-			list = mPlanLineRepository.findByIndicatorStudentResultSpecialtyIdAndSemesterId(idSpecialty, idSemester);
+			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findByIndicatorStudentResultSpecialtyIdAndSemesterId(idSpecialty, idSemester);
 			for(MeasurementPlanLine mpl : list) {
 				mpl.getCourse().setSpecialty(null);			
 				mpl.setSemester(null);
-				//mpl.setMeasurementType(null);
 				mpl.setResultsPerCards(null);
-				//mpl.getIndicator().getStudentResult().setSpecialty(null);			
 			}
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		
-		return list;
+		return response;
 	}
 
 	@Override
-	public Iterable<MeasurementPlanLine> listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson) 
-	{
-		Iterable<MeasurementPlanLine> list = null;
+	public ApiResponse listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson) {
+		ApiResponse response = null;
 		try {
 			Person person = new Person();
 			person.setId(idPerson);
 			List<Person> personList = new ArrayList<Person>();
 			personList.add(person);
-			list = mPlanLineRepository.findByCourseIdAndSemesterIdAndSectionsTeachersIn(idCourse, idSemester, personList);
+			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findByCourseIdAndSemesterIdAndSectionsTeachersIn(idCourse, idSemester, personList);
 			for(MeasurementPlanLine m : list) {
 				List<Section> newSectionList = new ArrayList<Section>();
 				List<ResultsPerCard> newResultspercardList = new ArrayList<ResultsPerCard>();
@@ -148,66 +161,68 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 				mpl.setCourse(null);
 				mpl.setSemester(null);
 			}
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return list;
+		return response;
 	}
 
 	@Override
-	public Iterable<MeasurementPlanLine> listByCourseAndSemester(Integer idCourse, Integer idSemester) {
-		Iterable<MeasurementPlanLine> list = null;
+	public ApiResponse listByCourseAndSemester(Integer idCourse, Integer idSemester) {
+		ApiResponse response = null;
 		try {
-			list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
+			Iterable<MeasurementPlanLine>  list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
 			for(MeasurementPlanLine mpl : list) {	
 				mpl.setCourse(null);
 				mpl.setSemester(null);
 			}
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return list;
+		return response;
 	}
 
 	@Override
-	public Iterable<MeasurementPlanLine> listBySemesterAndTeachers(Integer idSemester, Integer idPerson) {
-		Iterable<MeasurementPlanLine> list = null;
+	public ApiResponse listBySemesterAndTeachers(Integer idSemester, Integer idPerson) {
+		ApiResponse response = null;
 		try {
 			Person p = new Person();
 			p.setId(idPerson);
 			List<Person> personList = new ArrayList<Person>();
 			personList.add(p);
-			list = mPlanLineRepository.findBySemesterIdAndSectionsTeachersIn(idSemester, personList);
+			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findBySemesterIdAndSectionsTeachersIn(idSemester, personList);
 			for(MeasurementPlanLine mpl : list) {
 				mpl.setIndicator(null);
 				mpl.setSemester(null);
 				for(ResultsPerCard r : mpl.getResultsPerCards())
 					r.setSection(null);
 			}
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		
-		return list;
+		return response;
 	}
 
 	@Override
-	public Iterable<MeasurementPlanLine> listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection) {
-		Iterable<MeasurementPlanLine> list = null;
-		
+	public ApiResponse listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection) {
+		ApiResponse response = null;
 		try {
-			list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
-			for(MeasurementPlanLine mpl : list) {		
+			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
+			for(MeasurementPlanLine mpl : list) {
 				mpl.setCourse(null);
-				mpl.setSemester(null);	
+				mpl.setSemester(null);
 				
-				(mpl.getSections()).remove(sectionRepository.findById(idSection).get());			
+				(mpl.getSections()).remove(sectionRepository.findById(idSection).get());
 				(mpl.getResultsPerCards()).remove(resultsPerCardRepository.findBySectionId(idSection).get(0));
-
 			}
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return list;
+		return response;
 	}
 }

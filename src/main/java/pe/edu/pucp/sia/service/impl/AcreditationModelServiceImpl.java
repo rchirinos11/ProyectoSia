@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.AcreditationModel;
 import pe.edu.pucp.sia.repository.AcreditationModelRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.AcreditationModelService;
 
 @Service
@@ -14,40 +15,49 @@ public class AcreditationModelServiceImpl implements AcreditationModelService {
     private AcreditationModelRepository acreditationModelRepository;
 
     @Override
-    public Iterable<AcreditationModel> listAll() {
-        return acreditationModelRepository.findAll();
+    public ApiResponse listAll() {
+    	ApiResponse response = null;
+    	try {
+    		Iterable<AcreditationModel> list = acreditationModelRepository.findAll();
+    		response = new ApiResponse(list, 200);
+    	} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+        return response;
     }
 
     @Override
-	public Integer createAcreditationModel(AcreditationModel a) {
-		Integer response = 0;
+	public ApiResponse createAcreditationModel(AcreditationModel a) {
+    	ApiResponse response = null;
 		try {
-			response = acreditationModelRepository.save(a).getId(); 
+			Integer id = acreditationModelRepository.save(a).getId();
+			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
     @Override
-	public Integer updateAcreditationModel(AcreditationModel a) {
-		Integer response = 0;
+	public ApiResponse updateAcreditationModel(AcreditationModel a) {
+    	ApiResponse response = null;
 		try {
-			response = acreditationModelRepository.save(a).getId();
+			Integer id = acreditationModelRepository.save(a).getId();
+			response = new ApiResponse(id,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
     @Override
-    public String deleteAcreditationModel(Integer id) {
-        String response = "";
+    public ApiResponse deleteAcreditationModel(Integer id) {
+    	ApiResponse response = null;
 		try {
 			acreditationModelRepository.deleteAcreditationModel(id);
-			response = "Deleted";
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
     }

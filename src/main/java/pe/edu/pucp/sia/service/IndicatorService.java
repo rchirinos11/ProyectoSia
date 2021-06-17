@@ -3,12 +3,13 @@ package pe.edu.pucp.sia.service;
 import java.util.List;
 
 import pe.edu.pucp.sia.model.Indicator;
+import pe.edu.pucp.sia.response.ApiResponse;
 
 public interface IndicatorService {
-    public Iterable<Indicator>  listAll();
-	public Iterable<Indicator> listBySpecialty(Integer id);
-	public List<Indicator> listByStudentResult(Integer id);
-	public Integer createIndicator(Indicator i);
-	public Integer updateIndicator(Indicator i);
-	public String deleteIndicator(Integer id);
+    public ApiResponse listAll();
+	public ApiResponse listBySpecialty(Integer id);
+	public ApiResponse listByStudentResult(Integer id);
+	public ApiResponse createIndicator(Indicator i);
+	public ApiResponse updateIndicator(Indicator i);
+	public ApiResponse deleteIndicator(Integer id);
 }

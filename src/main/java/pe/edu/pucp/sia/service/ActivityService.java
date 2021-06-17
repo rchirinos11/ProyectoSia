@@ -1,11 +1,12 @@
 package pe.edu.pucp.sia.service;
 
 import pe.edu.pucp.sia.model.Activity;
+import pe.edu.pucp.sia.response.ApiResponse;
 
 public interface ActivityService {
-	public Iterable<Activity>  listAll();
-	public Iterable<Activity> listByImprovementProposal(Integer id);
-	public Integer createActivity(Activity a);
-	public Integer updateActivity(Activity a);
-	public String deleteActivity(Integer id);
+	public ApiResponse listAll();
+	public ApiResponse listByImprovementProposal(Integer id);
+	public ApiResponse createActivity(Activity a);
+	public ApiResponse updateActivity(Activity a);
+	public ApiResponse deleteActivity(Integer id);
 }

@@ -1,10 +1,11 @@
 package pe.edu.pucp.sia.service;
 
 import pe.edu.pucp.sia.model.Evidence;
+import pe.edu.pucp.sia.response.ApiResponse;
 
 public interface EvidenceService {
-    public Iterable<Evidence> listAll();
-	public int createEvidence(Evidence e);
-	public int deleteEvidence(Integer id);
-	public int updateEvidence(Evidence e);    
+    public ApiResponse listAll();
+	public ApiResponse createEvidence(Evidence e);
+	public ApiResponse deleteEvidence(Integer id);
+	public ApiResponse updateEvidence(Evidence e);    
 }

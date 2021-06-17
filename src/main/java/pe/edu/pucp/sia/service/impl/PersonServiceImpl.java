@@ -10,6 +10,7 @@ import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.repository.FacultyRepository;
 import pe.edu.pucp.sia.repository.PersonRepository;
 import pe.edu.pucp.sia.repository.SpecialtyRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.response.PersonDataResponse;
 import pe.edu.pucp.sia.service.PersonService;
 
@@ -26,57 +27,61 @@ public class PersonServiceImpl implements PersonService{
 	private SpecialtyRepository specialtyRepository;
 	
 	@Override
-	public Iterable<Person> listAll() {
-		return personRepository.findAll();
-	}
-
-	@Override
-	public Integer createPerson(Person p) {
-		Integer response = 0;
+	public ApiResponse listAll() {
+		ApiResponse response = null;
 		try {
-			response = personRepository.save(p).getId();
+			Iterable<Person> list = personRepository.findAll();
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deletePerson(Integer id) {
-		String response = "";
+	public ApiResponse createPerson(Person p) {
+		ApiResponse response = null;
+		try {
+			Integer id = personRepository.save(p).getId();
+			response = new ApiResponse(id,201);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse deletePerson(Integer id) {
+		ApiResponse response = null;
 		try {
 			personRepository.deleteById(id);
-			response = "Deleted"; 
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String updatePerson(Person p) {
-		String response = "";
+	public ApiResponse updatePerson(Person p) {
+		ApiResponse response = null;
 		try {
-			personRepository.save(p);
-			response = "Updated"; 
+			Integer id = personRepository.save(p).getId();
+			response = new ApiResponse(id,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 	
 	@Override
-	public PersonDataResponse listFacultiesSpecialties(String email) {
-		PersonDataResponse response = null;
-		Person person;
-		Iterable<Faculty> facultyList;
-		Iterable<Specialty> cSpecialtyList;
-		Iterable<Specialty> aSpecialtyList;
+	public ApiResponse listFacultiesSpecialties(String email) {
+		ApiResponse response = null;
 		try {
-			facultyList = facultyRepository.findByCoordinatorEmail(email);
-			cSpecialtyList = specialtyRepository.findByCoordinatorEmail(email);
-			aSpecialtyList = specialtyRepository.findByAssistantEmail(email);
-			person = personRepository.findByEmail(email);
+			Iterable<Faculty> facultyList = facultyRepository.findByCoordinatorEmail(email);
+			Iterable<Specialty> cSpecialtyList = specialtyRepository.findByCoordinatorEmail(email);
+			Iterable<Specialty> aSpecialtyList = specialtyRepository.findByAssistantEmail(email);
+			Person person = personRepository.findByEmail(email);
 			
 			for(Faculty f : facultyList)
 				f.setCoordinator(null);
@@ -91,49 +96,58 @@ public class PersonServiceImpl implements PersonService{
 				s.getFaculty().setCoordinator(null);
 			}
 			
-			response = new PersonDataResponse();
-			response.setCoordinatingSpecialtyList(cSpecialtyList);
-			response.setAssistingSpecialtyList(aSpecialtyList);
-			response.setCoordinatingFacultyList(facultyList);
-			response.setPerson(person);
-			response.setAdmin(false);
+			PersonDataResponse pDataResponse = new PersonDataResponse();
+			pDataResponse.setCoordinatingSpecialtyList(cSpecialtyList);
+			pDataResponse.setAssistingSpecialtyList(aSpecialtyList);
+			pDataResponse.setCoordinatingFacultyList(facultyList);
+			pDataResponse.setPerson(person);
+			pDataResponse.setAdmin(false);
 			
 			for(Role r : person.getRoleList())
 				if(r.getId()==1)
-					response.setAdmin(true);
+					pDataResponse.setAdmin(true);
 			
+			response = new ApiResponse(pDataResponse,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;		
 	}
 
 	@Override
-	public Person loginPerson(String email) {
+	public ApiResponse loginPerson(String email) {
+		ApiResponse response = null;
 		try {
-			return personRepository.findByEmail(email);
+			Person p = personRepository.findByEmail(email);
+			response = new ApiResponse(p,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return null;
+		return response;
 	}
 
 	@Override
-	public Iterable<Person> listWorkers() {
-		Iterable<Person> list=personRepository.findByEmailIsNotNull();
-		return list;		
+	public ApiResponse listWorkers() {
+		ApiResponse response = null;
+		try {
+			Iterable<Person> list=personRepository.findByEmailIsNotNull();
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;		
 	}
 
 	@Override
-	public Iterable<Role> listRoleByPerson(Integer id) {
-		Iterable<Role> lista=null;
+	public ApiResponse listRoleByPerson(Integer id) {
+		ApiResponse response = null;
 		try {
 			Person p=personRepository.findById(id).get();
-			if(p.getRoleList()!=null)
-				lista=p.getRoleList();			
+			Iterable<Role> list = p.getRoleList();
+			response = new ApiResponse(list,200);			
 		}catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}	
-		return lista;		
+		return response;		
 	}
 }

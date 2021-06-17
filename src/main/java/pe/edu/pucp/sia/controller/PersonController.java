@@ -3,7 +3,6 @@ package pe.edu.pucp.sia.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Person;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.PersonService;
 import pe.edu.pucp.sia.service.impl.PersonServiceImpl;
 
@@ -27,50 +27,58 @@ public class PersonController {
 	private PersonService personService = new PersonServiceImpl();
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listPerson(){
+	public ResponseEntity<ApiResponse> listPerson(){
 		logger.info("Entered method listPerson()");
-		return ResponseEntity.status(HttpStatus.OK).body(personService.listAll());
+		ApiResponse response = personService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 
 	@GetMapping("/listRolesByPerson/{id}")
-	public ResponseEntity<Object> listRolesByPerson(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> listRolesByPerson(@PathVariable Integer id){
 		logger.info("Entered method listRolesByPerson()");
-		return ResponseEntity.status(HttpStatus.OK).body(personService.listRoleByPerson(id));
+		ApiResponse response = personService.listRoleByPerson(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/listWorkers")
-	public ResponseEntity<Object> listWorkers(){
+	public ResponseEntity<ApiResponse> listWorkers(){
 		logger.info("Entered method listWorkers()");
-		return ResponseEntity.status(HttpStatus.OK).body(personService.listWorkers());
+		ApiResponse response = personService.listWorkers();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createPerson(@RequestBody Person p){
+	public ResponseEntity<ApiResponse> createPerson(@RequestBody Person p){
 		logger.info("Entered method createPerson()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(personService.createPerson(p));
+		ApiResponse response = personService.createPerson(p);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updatePerson(@RequestBody Person p){
+	public ResponseEntity<ApiResponse> updatePerson(@RequestBody Person p){
 		logger.info("Entered method updatePerson()");
-		return ResponseEntity.status(HttpStatus.OK).body(personService.updatePerson(p));
+		ApiResponse response = personService.updatePerson(p);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deletePerson(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> deletePerson(@PathVariable Integer id){
 		logger.info("Entered method deletePerson()");
-		return ResponseEntity.status(HttpStatus.OK).body(personService.deletePerson(id));
+		ApiResponse response = personService.deletePerson(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/login/{email}")
-	public ResponseEntity<Object> loginPerson(@PathVariable String email){
+	public ResponseEntity<ApiResponse> loginPerson(@PathVariable String email){
 		logger.info("Entered method loginPerson()");
-		return ResponseEntity.status(HttpStatus.OK).body(personService.loginPerson(email));
+		ApiResponse response = personService.loginPerson(email);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 		
 	@PostMapping("/getPersonData")
-	public ResponseEntity<Object> getPersonData(@RequestBody Person p){
+	public ResponseEntity<ApiResponse> getPersonData(@RequestBody Person p){
 		logger.info("Entered method getPersonData()");
-		return ResponseEntity.status(HttpStatus.OK).body(personService.listFacultiesSpecialties(p.getEmail()));
+		ApiResponse response = personService.listFacultiesSpecialties(p.getEmail());
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

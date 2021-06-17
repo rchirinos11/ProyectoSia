@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.User;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.UserService;
 import pe.edu.pucp.sia.service.impl.UserServiceImpl;
 
@@ -23,27 +24,32 @@ public class UserController {
 	private UserService userService = new UserServiceImpl(); 
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listUser(){
-		return ResponseEntity.status(HttpStatus.OK).body(userService.listAll());
+	public ResponseEntity<ApiResponse> listUser(){
+		ApiResponse response = userService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<Object> createUser(@RequestBody User u){
-		return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(u));
+	public ResponseEntity<ApiResponse> createUser(@RequestBody User u){
+		ApiResponse response = userService.createUser(u);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateUser(@RequestBody User u){
-		return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(u));
+	public ResponseEntity<ApiResponse> updateUser(@RequestBody User u){
+		ApiResponse response = userService.updateUser(u);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteUser(@PathVariable Integer id){
-		return ResponseEntity.status(HttpStatus.OK).body(userService.deleteUser(id));
+	public ResponseEntity<ApiResponse> deleteUser(@PathVariable Integer id){
+		ApiResponse response = userService.deleteUser(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/authenticate")
-	public ResponseEntity<Object> authenticateUser(@RequestBody User u){
-		return ResponseEntity.status(HttpStatus.OK).body(userService.authenticate(u));
+	public ResponseEntity<ApiResponse> authenticateUser(@RequestBody User u){
+		ApiResponse response = userService.authenticate(u);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }
