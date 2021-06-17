@@ -26,6 +26,9 @@ public class MeasurementLevel {
 	private Integer orden;
 	private String name;	
 	private Integer isMinimum=0;
+
+	
+	
 	
 	//@Column(name="success_rate")
 	//private Float successRate;	

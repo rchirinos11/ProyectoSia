@@ -8,8 +8,8 @@ import org.springframework.data.repository.CrudRepository;
 import pe.edu.pucp.sia.model.MeasurementLevel;
 
 public interface MeasurementLevelRepository extends CrudRepository <MeasurementLevel,Integer>{
-	public List<MeasurementLevel> findBySpecialtyId(Integer id);
-	
+	public List<MeasurementLevel> findBySpecialtyIdOrderByOrdenAsc(Integer id);
+	public List<MeasurementLevel> findAllByOrderByOrdenAsc();
 	@Procedure("sp_delete_measurement_level")
 	public void deleteMeasurementLevel(Integer id);
 }

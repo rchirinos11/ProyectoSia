@@ -7,5 +7,6 @@ public interface MeasurementLevelService {
 	public Iterable<MeasurementLevel> listBySpecialty(Integer id);
 	public Integer createMeasurementLevel(MeasurementLevel ml);
 	public Integer updateMeasurementLevel(MeasurementLevel ml);
+	public Integer updateCurrentMeasurementLevel(Integer id);
 	public String deleteMeasurementLevel(Integer id);
 }
