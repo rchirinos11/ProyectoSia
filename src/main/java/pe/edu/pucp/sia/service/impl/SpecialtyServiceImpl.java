@@ -7,8 +7,6 @@ import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.repository.SpecialtyRepository;
 import pe.edu.pucp.sia.service.SpecialtyService;
 
-import pe.edu.pucp.sia.model.Person;
-
 @Service
 public class SpecialtyServiceImpl implements SpecialtyService{
 	@Autowired
@@ -114,11 +112,5 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 			System.out.println(ex.getMessage());
 		}
 		return response;
-	}
-
-	@Override
-	public  Iterable<Person> listTeachersBySpecialty(Integer idSpecialty){
-		Iterable <Person> lista = specialtyRepository.listTeachersBySpecialty(idSpecialty);
-		return lista;
 	}
 }

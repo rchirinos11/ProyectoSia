@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Specialty;
-import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.requests.SpecialtyUpdateAssistantRequest;
 import pe.edu.pucp.sia.requests.SpecialtyUpdateCoordinatorRequest;
 import pe.edu.pucp.sia.requests.SpecialtyUpdatePercentageRequest;
@@ -89,11 +88,4 @@ public class SpecialtyController {
 		logger.info("Entered method updateSuccessPercentage()");
 		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updatePercentage(s.getIdSpecialty(),s.getSuccessPercentage()));
 	}
-
-	@GetMapping("/listTeachersBySpecialty/{id}")
-	public ResponseEntity<Object> listTeachersBySpecialty(@PathVariable Integer id){
-		logger.info("Entered method listTeachersBySpecialty()");
-		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.listTeachersBySpecialty(id));
-	}
-
 }
