@@ -1,6 +1,7 @@
 package pe.edu.pucp.sia.service;
 
 import pe.edu.pucp.sia.model.Specialty;
+import pe.edu.pucp.sia.model.Person;
 
 public interface SpecialtyService {
 	public Iterable<Specialty> listAll();
@@ -13,4 +14,5 @@ public interface SpecialtyService {
 	public String updateCoordinator(Integer idSpecialty, Integer idCoordinator);
 	public String updateAssitant(Integer idSpecialty, Integer idAssistant);
 	public String updatePercentage(Integer idSpecialty, Integer successPercentage);
+	public Iterable<Person> listTeachersBySpecialty(Integer idSpecialty);
 }
