@@ -78,6 +78,9 @@ public class IndicatorServiceImpl implements IndicatorService {
 		Iterable<Indicator> lista = indicatorRepository.findBystudentResultSpecialtyId(id);
 		for (Indicator indicator: lista) {
 			indicator.getStudentResult().setSpecialty(null);
+			for(LevelDetail ld: indicator.getLevelDetails()){
+				ld.getMeasurementLevel().setSpecialty(null);
+			}
 		}
 		return lista;
 	}

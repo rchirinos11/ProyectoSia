@@ -34,7 +34,7 @@ public class IndicatorController {
 
 	@GetMapping("/listbyspecialty/{id}")
 	public ResponseEntity<Object> listBySpecialty(@PathVariable Integer id){
-		logger.info("Entered method listbyspecialty()");
+		logger.info("Entered method listBySpecialty()");
 		return ResponseEntity.status(HttpStatus.OK).body(indicatorService.listBySpecialty(id));
 	}
 
