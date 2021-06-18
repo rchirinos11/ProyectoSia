@@ -133,9 +133,9 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 				if (found==null) {  //si no existe
 					student.setRoleList(listaRoles); 
 					idStudent = personRepository.save(student).getId();
-					me.getPerson().setId(idStudent);	//Le coloca el idStudent a su student
 				}else
 					idStudent = found.getId();
+				me.getPerson().setId(idStudent);	//Le coloca el idStudent a su student
 				
 				//Guarda en BD
 				meFound = measurementRepository.findByPersonIdAndResultsPerCardId(idStudent, idResult);
