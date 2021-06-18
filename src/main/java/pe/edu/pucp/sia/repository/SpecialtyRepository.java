@@ -30,5 +30,5 @@ public interface SpecialtyRepository extends CrudRepository<Specialty,Integer>{
 	public void setPercentage(Integer idSpecialty,Integer percentage);
 
 	@Query(value = "call sp_list_teachers_by_specialty(:in_id_specialty)", nativeQuery = true)
-	public Iterable<Person> listTeachersBySpecialty(Integer idSpecialty);
+	public Iterable<Person> listTeachersBySpecialty(@Param("in_id_specialty")Integer idSpecialty);
 }
