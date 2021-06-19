@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.var;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Role;
@@ -83,10 +84,35 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	@Override
 	public ApiResponse updateMeasurementPlanLine(MeasurementPlanLine m) {
 		ApiResponse response = null;
+		List<Person> teachersOld=null;
 		try {
+			//Obtiene rol profesor
+			Integer idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
+			
 			if(m.getSections()!=null) {
-				for(Section s : m.getSections())
+				for(Section s : m.getSections()) {
+					//Busca profesores a cargo originalmente
+					var val = sectionRepository.findById(s.getId());
+					if (val.isPresent()) {
+						teachersOld = val.get().getTeachers();
+					}
+					//Registra las secciones
 					sectionRepository.save(s);
+					
+					//Asigna rol a profesores agregados
+					for(Person p : s.getTeachers()) {
+						roleRepository.assignRole(idRoleProfesor, p.getId());
+					}
+					
+					//Verifica si fueron removidos los originales
+					if (teachersOld!=null)
+						for(Person p : teachersOld){
+							//roleRepository.assignRole(idRoleProfesor, p.getId());
+						}
+					
+					//Busca si es profesor de otro curso
+						//Si no los es, se le quita el rol profesor
+				}
 			}
 			if(m.getResultsPerCards()!=null) {
 				for(ResultsPerCard r : m.getResultsPerCards())
@@ -109,6 +135,11 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			for(ResultsPerCard r:m.getResultsPerCards()) {
 				resultsPerCardRepository.deleteById(r.getId());
 			}
+			//Recorre horarios
+				//Busca profesores a cargo
+				//Busca si es profesor de otro curso
+					//Si no los es, se le quita el rol profesor
+			
 			mPlanLineRepository.deleteById(id);
 			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
