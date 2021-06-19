@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.LevelDetail;
+import lombok.var;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Role;
@@ -86,9 +87,46 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	public ApiResponse updateMeasurementPlanLine(MeasurementPlanLine m) {
 		ApiResponse response = null;
 		try {
+			//Obtiene rol profesor
+			Integer idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
+			
 			if(m.getSections()!=null) {
-				for(Section s : m.getSections())
+				for(Section s : m.getSections()) {
+					//Busca profesores a cargo originalmente
+					List<Integer> teachersOld = new ArrayList<>();
+					var val = sectionRepository.findById(s.getId());
+					if (val.isPresent()) {
+						for (Person p : val.get().getTeachers())
+							teachersOld.add(p.getId());
+					}
+					//Registra las secciones
 					sectionRepository.save(s);
+					
+					//Asigna rol a profesores agregados
+					for(Person p : s.getTeachers()) {
+						roleRepository.assignRole(idRoleProfesor, p.getId());
+					}
+					
+					//Verifica si fueron removidos los originales
+					if (teachersOld!=null) {
+						List<Integer> teachersRemove = new ArrayList<>();
+						boolean find=false;
+						for(Integer idTeacher : teachersOld){
+							for(Person t : s.getTeachers()) {
+								if (idTeacher.compareTo(t.getId())==0) {
+									find=true;
+									break;
+								}
+							}
+							if (find==false)
+								teachersRemove.add(idTeacher);
+						}
+						//Busca si no es profesor de otro curso para quitarle el rol
+						for(Integer idT : teachersRemove){
+							roleRepository.unassignTeacher(idT);
+						}
+					}
+				}
 			}
 			if(m.getResultsPerCards()!=null) {
 				for(ResultsPerCard r : m.getResultsPerCards())
@@ -110,6 +148,29 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			MeasurementPlanLine m=mPlanLineRepository.findById(id).get();
 			for(ResultsPerCard r:m.getResultsPerCards()) {
 				resultsPerCardRepository.deleteById(r.getId());
+			}
+			//Recorre horarios
+			if(m.getSections()!=null) {
+				for(Section s : m.getSections()) {
+					//Busca profesores a cargo originalmente
+					List<Integer> teachersOld = new ArrayList<>();
+					for (Person p : s.getTeachers())
+						teachersOld.add(p.getId());
+					
+					//Elimina las secciones
+					//s.setTeachers(null);
+					//sectionRepository.save(s);
+					sectionRepository.deleteById(s.getId());
+					
+					//Busca profesores a cargo
+					if (teachersOld != null) {
+						//Busca si no es profesor de otro curso para quitarle el rol
+						for(Integer idT : teachersOld){
+							roleRepository.unassignTeacher(idT);
+						}
+					}
+					
+				}
 			}
 			mPlanLineRepository.deleteById(id);
 			response = new ApiResponse("Success",200);

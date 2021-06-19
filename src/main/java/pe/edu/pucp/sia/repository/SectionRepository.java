@@ -3,6 +3,7 @@ package pe.edu.pucp.sia.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -15,4 +16,7 @@ public interface SectionRepository extends CrudRepository<Section,Integer>{
 	public Iterable<Section> listSectionByMeasurementPlanLine(@Param("in_id_measurement_plan_line") Integer idMeasurementPlanLine);
 	
 	public List<Section> findByCode(Integer code);
+	
+	@Procedure("sp_delete_section")
+	public int deleteSection(Integer id);
 }

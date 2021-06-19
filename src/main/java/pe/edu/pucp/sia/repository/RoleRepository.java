@@ -9,4 +9,6 @@ public interface RoleRepository extends CrudRepository<Role, Integer>{
 	
 	@Procedure("sp_assign_role")
 	public void assignRole(Integer idRole,Integer idPerson);
+	@Procedure("sp_unassign_teacher")
+	public void unassignTeacher(Integer idTeacher);
 }
