@@ -71,8 +71,8 @@ public class IndicatorServiceImpl implements IndicatorService {
     	ApiResponse response = null;
 		try {
 			Iterator<MeasurementPlanLine> i = mplRepository.findByIndicatorId(id).iterator();
-			Iterator<LevelDetail> l = levelDetailRepository.findByIndicatorId(id).iterator();
-			if(!i.hasNext() && !l.hasNext()) {
+			//Iterator<LevelDetail> l = levelDetailRepository.findByIndicatorId(id).iterator();
+			if(!i.hasNext()) {
 				indicatorRepository.deleteIndicator(id);
 				response = new ApiResponse("Success",200);
 			} else {
