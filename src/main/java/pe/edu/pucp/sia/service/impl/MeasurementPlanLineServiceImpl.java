@@ -84,7 +84,6 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	@Override
 	public ApiResponse updateMeasurementPlanLine(MeasurementPlanLine m) {
 		ApiResponse response = null;
-		List<Person> teachersOld=null;
 		try {
 			//Obtiene rol profesor
 			Integer idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
@@ -92,9 +91,11 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			if(m.getSections()!=null) {
 				for(Section s : m.getSections()) {
 					//Busca profesores a cargo originalmente
+					List<Integer> teachersOld = new ArrayList<>();
 					var val = sectionRepository.findById(s.getId());
 					if (val.isPresent()) {
-						teachersOld = val.get().getTeachers();
+						for (Person p : val.get().getTeachers())
+							teachersOld.add(p.getId());
 					}
 					//Registra las secciones
 					sectionRepository.save(s);
@@ -105,13 +106,24 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 					}
 					
 					//Verifica si fueron removidos los originales
-					if (teachersOld!=null)
-						for(Person p : teachersOld){
-							//roleRepository.assignRole(idRoleProfesor, p.getId());
+					if (teachersOld!=null) {
+						List<Integer> teachersRemove = new ArrayList<>();
+						boolean find=false;
+						for(Integer idTeacher : teachersOld){
+							for(Person t : s.getTeachers()) {
+								if (idTeacher.compareTo(t.getId())==0) {
+									find=true;
+									break;
+								}
+							}
+							if (find==false)
+								teachersRemove.add(idTeacher);
 						}
-					
-					//Busca si es profesor de otro curso
-						//Si no los es, se le quita el rol profesor
+						//Busca si no es profesor de otro curso para quitarle el rol
+						for(Integer idT : teachersRemove){
+							roleRepository.unassignTeacher(idT);
+						}
+					}
 				}
 			}
 			if(m.getResultsPerCards()!=null) {
@@ -136,10 +148,28 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 				resultsPerCardRepository.deleteById(r.getId());
 			}
 			//Recorre horarios
-				//Busca profesores a cargo
-				//Busca si es profesor de otro curso
-					//Si no los es, se le quita el rol profesor
-			
+			if(m.getSections()!=null) {
+				for(Section s : m.getSections()) {
+					//Busca profesores a cargo originalmente
+					List<Integer> teachersOld = new ArrayList<>();
+					for (Person p : s.getTeachers())
+						teachersOld.add(p.getId());
+					
+					//Elimina las secciones
+					//s.setTeachers(null);
+					//sectionRepository.save(s);
+					sectionRepository.deleteById(s.getId());
+					
+					//Busca profesores a cargo
+					if (teachersOld != null) {
+						//Busca si no es profesor de otro curso para quitarle el rol
+						for(Integer idT : teachersOld){
+							roleRepository.unassignTeacher(idT);
+						}
+					}
+					
+				}
+			}
 			mPlanLineRepository.deleteById(id);
 			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {

@@ -43,7 +43,7 @@ public class SectionServiceImpl implements SectionService{
 	public ApiResponse deleteSection(Integer id) {
 		ApiResponse response = null;
 		try {
-			sectionRepository.deleteById(id);;
+			sectionRepository.deleteSection(id);;
 			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
