@@ -10,6 +10,7 @@ import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.repository.FacultyRepository;
 import pe.edu.pucp.sia.repository.PersonRepository;
 import pe.edu.pucp.sia.repository.SpecialtyRepository;
+import pe.edu.pucp.sia.requests.UnfinishedTeachersRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.response.PersonDataResponse;
 import pe.edu.pucp.sia.service.PersonService;
@@ -149,5 +150,17 @@ public class PersonServiceImpl implements PersonService{
 			response = new ApiResponse(500, ex.getMessage());
 		}	
 		return response;		
+	}
+
+	@Override
+	public ApiResponse listUnfinishedTeachers(UnfinishedTeachersRequest u) {
+		ApiResponse response = null;
+		try {
+			Iterable<Person> teachers = personRepository.listUnfinishedTeachers(u.getIdSemester(),u.getIdSpecialty());
+			response = new ApiResponse(teachers,200);			
+		}catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}	
+		return response;
 	}
 }

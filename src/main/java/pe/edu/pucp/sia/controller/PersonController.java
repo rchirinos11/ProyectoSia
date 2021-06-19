@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Person;
+import pe.edu.pucp.sia.requests.UnfinishedTeachersRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.PersonService;
 import pe.edu.pucp.sia.service.impl.PersonServiceImpl;
@@ -79,6 +80,13 @@ public class PersonController {
 	public ResponseEntity<ApiResponse> getPersonData(@RequestBody Person p){
 		logger.info("Entered method getPersonData()");
 		ApiResponse response = personService.listFacultiesSpecialties(p.getEmail());
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/listunfinishedteachers")
+	public ResponseEntity<ApiResponse> listunfinishedteachers(@RequestBody UnfinishedTeachersRequest u){
+		logger.info("Entered method listUnfinishedTeachers()");
+		ApiResponse response = personService.listUnfinishedTeachers(u);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }
