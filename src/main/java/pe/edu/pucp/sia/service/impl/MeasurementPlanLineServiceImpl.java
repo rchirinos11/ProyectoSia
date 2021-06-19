@@ -8,11 +8,13 @@ import java.util.function.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.edu.pucp.sia.model.LevelDetail;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Role;
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Section;
+import pe.edu.pucp.sia.model.comparators.LevelDetailComparator;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.RoleRepository;
@@ -154,7 +156,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			person.setId(idPerson);
 			List<Person> personList = new ArrayList<Person>();
 			personList.add(person);
-			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findByCourseIdAndSemesterIdAndSectionsTeachersIn(idCourse, idSemester, personList);
+			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findByCourseIdAndSemesterIdAndSectionsTeachersInOrderByIndicatorCodeAsc(idCourse, idSemester, personList);
 			for(MeasurementPlanLine m : list) {
 				List<Section> newSectionList = new ArrayList<Section>();
 				List<ResultsPerCard> newResultspercardList = new ArrayList<ResultsPerCard>();
@@ -170,6 +172,8 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 				}
 				m.setSections(newSectionList);
 				m.setResultsPerCards(newResultspercardList);
+				
+				m.getIndicator().getLevelDetails().sort(new LevelDetailComparator());
 			}
 			for(MeasurementPlanLine mpl : list) {	
 				mpl.setCourse(null);
