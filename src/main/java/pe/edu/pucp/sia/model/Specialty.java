@@ -30,6 +30,7 @@ public class Specialty {
 	@JoinColumn(name="id_assistant")
 	private Person assistant;
 	private Integer successPercentage=70;
+	private boolean estado;
 	
 	
 	//private boolean active=true;

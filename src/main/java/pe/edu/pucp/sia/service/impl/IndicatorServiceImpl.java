@@ -74,6 +74,10 @@ public class IndicatorServiceImpl implements IndicatorService {
 			//Iterator<LevelDetail> l = levelDetailRepository.findByIndicatorId(id).iterator();
 			if(!i.hasNext()) {
 				indicatorRepository.deleteIndicator(id);
+				for(LevelDetail l: levelDetailRepository.findAll() ) {
+					if(l.getIndicatorId()==id)
+						levelDetailRepository.deleteLevelDetail(l.getId());
+				}				
 				response = new ApiResponse("Success",200);
 			} else {
 				response = new ApiResponse(409,"Cannot Delete due to dependency");
