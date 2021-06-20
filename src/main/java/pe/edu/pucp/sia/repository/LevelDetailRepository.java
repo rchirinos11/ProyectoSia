@@ -13,6 +13,10 @@ public interface LevelDetailRepository extends CrudRepository <LevelDetail,Integ
 	@Query(value = "call sp_list_level_detail_by_specialty(:in_id_specialty)", nativeQuery = true)
 	public Iterable<LevelDetail> listLevelDetailBySpecialty(@Param("in_id_specialty") Integer idSpecialty);
 	
+	@Query(value = "call sp_list_level_detail_by_indicator(:in_id_indicator)", nativeQuery = true)
+	public Iterable<LevelDetail> listLevelDetailByIndicator(@Param("in_id_indicator") Integer idIndicator);
+	
+	
 	public List<LevelDetail> findByMeasurementLevelId(Integer id);
 	public Iterable<LevelDetail> findByIndicatorId(Integer id);
 	
