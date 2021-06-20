@@ -75,7 +75,7 @@ public class IndicatorServiceImpl implements IndicatorService {
 			if(!i.hasNext()) {
 				indicatorRepository.deleteIndicator(id);
 				for(LevelDetail l: levelDetailRepository.findAll() ) {
-					if(l.getIndicatorId()==id)
+					if(l.getIndicator().getId()==id)
 						levelDetailRepository.deleteLevelDetail(l.getId());
 				}				
 				response = new ApiResponse("Success",200);
