@@ -123,7 +123,6 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 			listaRoles.add(rol);
 			result.setId(idResult);
 			//Busca especialidad para sacar minimo successul
-			//idSpecialty = r.get
 			for (Measurement me : r.getMeasurements()) {
 				me.setResultsPerCard(result); //Le coloca el FK del resultPerCard
 				

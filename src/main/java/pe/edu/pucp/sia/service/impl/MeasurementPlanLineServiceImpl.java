@@ -277,7 +277,6 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			personList.add(p);
 			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findBySemesterIdAndSectionsTeachersIn(idSemester, personList);
 			for(MeasurementPlanLine mpl : list) {
-				mpl.setIndicator(null);
 				mpl.setSemester(null);
 				for(ResultsPerCard r : mpl.getResultsPerCards())
 					r.setSection(null);
