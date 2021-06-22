@@ -67,4 +67,12 @@ public class ResultsPerCardController {
 		ApiResponse response = resultsPerCardService.registerStudentMeditions(r);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
+
+	@GetMapping("/prompercentagebystudentresult/{id}")
+	public ResponseEntity<ApiResponse> promPercentageByStudentResult(@PathVariable Integer id){
+		logger.info("Entered method promPercentageByStudentResult()");
+		ApiResponse response = resultsPerCardService.promPercentageByStudentResult(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+
 }

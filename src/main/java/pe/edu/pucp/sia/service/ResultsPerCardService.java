@@ -10,4 +10,5 @@ public interface ResultsPerCardService {
 	public ApiResponse updateResultsPerCard(ResultsPerCard r);
 	public ApiResponse deleteResultsPerCard(Integer id);
 	public ApiResponse registerStudentMeditions(ResultsPerCard r);
+	public ApiResponse promPercentageByStudentResult(Integer id);
 }
