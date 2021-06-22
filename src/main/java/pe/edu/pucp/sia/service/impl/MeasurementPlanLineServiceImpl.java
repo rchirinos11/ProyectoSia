@@ -13,6 +13,7 @@ import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Section;
 import pe.edu.pucp.sia.model.comparators.LevelDetailComparator;
+import pe.edu.pucp.sia.model.comparators.MeasurementPlanLineComparator;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.RoleRepository;
@@ -330,6 +331,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 					listMpl.add(mpl);
 				}			
 			}
+			listMpl.sort(new MeasurementPlanLineComparator());
 			response = new ApiResponse(listMpl,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());

@@ -185,4 +185,23 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 		return response;
 	}
 
+	@Override
+	public ApiResponse promPercentageByStudentResult(Integer id) {
+		ApiResponse response = null;
+		try {
+			float prom=0;
+			int cant =0;
+			Iterable<ResultsPerCard> list = resultsPerCardRepository.findByMeasurementPlanLineIndicatorStudentResultId(id);
+			for (ResultsPerCard rc : list) {
+				prom += rc.getPercentage();
+				cant +=1;
+			}
+			if(cant!=0)prom = prom/cant;
+			response = new ApiResponse(prom,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
 }
