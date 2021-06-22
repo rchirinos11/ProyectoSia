@@ -8,11 +8,19 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.edu.pucp.sia.model.MeasurementLevel;
+import pe.edu.pucp.sia.model.MeasurementPlanLine;
+import pe.edu.pucp.sia.model.ResultsPerCard;
+import pe.edu.pucp.sia.model.Indicator;
 import pe.edu.pucp.sia.model.StudentResult;
 import pe.edu.pucp.sia.model.dozers.StudentResultDozer;
 import pe.edu.pucp.sia.repository.IndicatorRepository;
+import pe.edu.pucp.sia.repository.MeasurementLevelRepository;
+import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
+import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.StudentResultRepository;
 import pe.edu.pucp.sia.response.ApiResponse;
+import pe.edu.pucp.sia.response.StudentResultPercentageDataResponse;
 import pe.edu.pucp.sia.service.IndicatorService;
 import pe.edu.pucp.sia.service.StudentResultService;
 
@@ -27,6 +35,18 @@ public class StudentResultServiceImpl implements StudentResultService{
 
 	@Autowired
 	private StudentResultRepository studentResultRepository;
+	
+	@Autowired
+	private MeasurementLevelRepository measurementLevelRepository;
+	
+	@Autowired
+	private MeasurementPlanLineRepository measurementPlanLineRepository;
+	
+	@Autowired
+	private ResultsPerCardRepository resultsPerCardRepository;
+	
+
+	
 	
 	@Override
 	public ApiResponse listAll() {
@@ -122,4 +142,32 @@ public class StudentResultServiceImpl implements StudentResultService{
 		}
 		return response;
     }
+
+	@Override
+	public ApiResponse listBySpecialtyPlusAchievementPercentage(Integer id) {
+		ApiResponse response = null;
+		try {
+			List<StudentResult> listSr = studentResultRepository.findBySpecialtyIdOrderByOrderNumber(id);
+			List<StudentResultPercentageDataResponse> list= new ArrayList<StudentResultPercentageDataResponse>();
+			Float percentage=100f;
+			for(StudentResult studentResult : listSr) {
+				StudentResultPercentageDataResponse sr= new StudentResultPercentageDataResponse();
+				for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
+					Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
+					if(p!=null) {
+						if(p<percentage)
+							percentage=p;	
+					}									
+				}
+				sr.setStudentResult(studentResult);
+				sr.setAchievementPercentage(percentage);
+				list.add(sr);
+				percentage=100f;
+			}
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
 }

@@ -38,6 +38,13 @@ public class StudentResultController {
 		ApiResponse response = studentResultService.listBySpecialty(id);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
+	
+	@GetMapping("/listbyspecialtypluspercentage/{id}")
+	public ResponseEntity<ApiResponse> listBySpecialtyPlusAchievementPercentage(@PathVariable Integer id){
+		logger.info("Entered method listBySpecialtyPlusAchievementPercentage()");
+		ApiResponse response = studentResultService.listBySpecialtyPlusAchievementPercentage(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
 
 	@GetMapping("/listbyspecialtyplusindicator/{id}")
 	public ResponseEntity<ApiResponse> listBySpecialtyPlusIndicator(@PathVariable Integer id){
