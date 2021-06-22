@@ -150,15 +150,19 @@ public class StudentResultServiceImpl implements StudentResultService{
 			List<StudentResult> listSr = studentResultRepository.findBySpecialtyIdOrderByOrderNumber(id);
 			List<StudentResultPercentageDataResponse> list= new ArrayList<StudentResultPercentageDataResponse>();
 			Float percentage=100f;
+			Integer contador;
 			for(StudentResult studentResult : listSr) {
 				StudentResultPercentageDataResponse sr= new StudentResultPercentageDataResponse();
+				contador=0;
 				for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
 					Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
 					if(p!=null) {
+						contador++;
 						if(p<percentage)
 							percentage=p;	
 					}									
 				}
+				if(contador==0) percentage=-1f;
 				sr.setStudentResult(studentResult);
 				sr.setAchievementPercentage(percentage);
 				list.add(sr);
