@@ -24,4 +24,6 @@ public interface SpecialtyRepository extends CrudRepository<Specialty,Integer>{
 	
 	@Procedure("sp_set_specialty_percentage")
 	public void setPercentage(Integer idSpecialty,Integer percentage);
+	@Procedure("sp_archive_specialty")
+	public void archiveSpecialty(Integer idSpecialty,boolean state);
 }

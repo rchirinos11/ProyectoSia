@@ -68,4 +68,18 @@ public class FacultyController {
 		ApiResponse response = facultyService.updateCoordinator(f.getIdFaculty(),f.getIdCoordinator());
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
+	
+	@PostMapping("/archive/{id}")
+	public ResponseEntity<ApiResponse> archiveFaculty(@PathVariable Integer id){
+		logger.info("Entered method archiveFaculty()");
+		ApiResponse response = facultyService.archiveFaculty(id,true);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/disarchive/{id}")
+	public ResponseEntity<ApiResponse> disarchiveFaculty(@PathVariable Integer id){
+		logger.info("Entered method disarchiveFaculty()");
+		ApiResponse response = facultyService.archiveFaculty(id,false);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
 }

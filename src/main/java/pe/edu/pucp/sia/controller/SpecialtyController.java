@@ -97,4 +97,18 @@ public class SpecialtyController {
 		ApiResponse response = specialtyService.updatePercentage(s.getIdSpecialty(),s.getSuccessPercentage());
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
+	
+	@PostMapping("archive/{id}")
+	public ResponseEntity<ApiResponse> archiveSpecialty(@PathVariable Integer id){
+		logger.info("Entered method archiveSpecialty()");
+		ApiResponse response = specialtyService.archiveSpecialty(id,true);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("disarchive/{id}")
+	public ResponseEntity<ApiResponse> disarchiveSpecialty(@PathVariable Integer id){
+		logger.info("Entered method disarchiveSpecialty()");
+		ApiResponse response = specialtyService.archiveSpecialty(id,false);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
 }

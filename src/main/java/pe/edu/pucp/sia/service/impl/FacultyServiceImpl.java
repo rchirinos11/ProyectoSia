@@ -172,4 +172,16 @@ public class FacultyServiceImpl implements FacultyService{
 		}
 		return response;
 	}
+
+	@Override
+	public ApiResponse archiveFaculty(Integer idFaculty, boolean state) {
+		ApiResponse response = null;
+		try {
+			facultyRepository.archiveFaculty(idFaculty,state);
+			response = new ApiResponse("Success", 200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
 }
