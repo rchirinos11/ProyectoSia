@@ -40,7 +40,7 @@ public class MeasurementLevelController {
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
-	@GetMapping("/listbyspecialtysemester")
+	@PostMapping("/listbyspecialtysemester")
 	public ResponseEntity<ApiResponse> listBySpecialtySemester(@RequestBody MPlanLineSpecialtySemesterRequest lss){
 		logger.info("Entered method listBySpecialtySemester()");
 		ApiResponse response = measurementLevelService.listBySpecialtySemester(lss);
