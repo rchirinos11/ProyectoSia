@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.StudentResult;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
+import pe.edu.pucp.sia.requests.StudentResultCopyRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.StudentResultService;
 import pe.edu.pucp.sia.service.impl.StudentResultServiceImpl;
@@ -79,6 +80,13 @@ public class StudentResultController {
 	public ResponseEntity<ApiResponse> deleteStudentResult(@PathVariable Integer id){
 		logger.info("Entered method deleteStudentResult()");
 		ApiResponse response = studentResultService.deleteStudentResult(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/copyBySpecialtySemester")
+	public ResponseEntity<ApiResponse> copyBySpecialtySemester(@RequestBody StudentResultCopyRequest srRequest){
+		logger.info("Entered method copyBySpecialtySemester()");
+		ApiResponse response = studentResultService.copyBySpecialtySemester(srRequest.getIdSpecialtyFrom(),srRequest.getIdSemesterFrom(),srRequest.getIdSpecialtyTo(),srRequest.getIdSemesterTo());
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

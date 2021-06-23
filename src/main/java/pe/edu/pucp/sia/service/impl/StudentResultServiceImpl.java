@@ -179,4 +179,19 @@ public class StudentResultServiceImpl implements StudentResultService{
 		}
 		return response;
 	}
+
+	@Override
+	public ApiResponse copyBySpecialtySemester(Integer idSpecialtyFrom, Integer idSemesterFrom, Integer idSpecialtyTo, Integer idSemesterTo) {
+		ApiResponse response = null;
+		try {
+			Integer count = studentResultRepository.cloneStudentResults(idSpecialtyFrom, idSemesterFrom, idSpecialtyTo, idSemesterTo);
+			if(count>0)
+				response = new ApiResponse(count, 200);
+			else
+				response = new ApiResponse(400,"Nothing was updated");
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
 }
