@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.MeasurementLevel;
+import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementLevelService;
 import pe.edu.pucp.sia.service.impl.MeasurementLevelServiceImpl;
@@ -32,10 +33,17 @@ public class MeasurementLevelController {
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
-	@GetMapping("/listbyspecialty/{id}")
-	public ResponseEntity<ApiResponse> listByFaculty(@PathVariable Integer id){
-		logger.info("Entered method listBySpecialty()");
-		ApiResponse response = measurementLevelService.listBySpecialty(id);
+	@GetMapping("/listbysemester/{idSemester}")
+	public ResponseEntity<ApiResponse> listBySemester(@PathVariable Integer idSemester){
+		logger.info("Entered method listBySemester()");
+		ApiResponse response = measurementLevelService.listBySemester(idSemester);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@GetMapping("/listbyspecialtysemester")
+	public ResponseEntity<ApiResponse> listBySpecialtySemester(@RequestBody MPlanLineSpecialtySemesterRequest lss){
+		logger.info("Entered method listBySpecialtySemester()");
+		ApiResponse response = measurementLevelService.listBySpecialtySemester(lss);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	

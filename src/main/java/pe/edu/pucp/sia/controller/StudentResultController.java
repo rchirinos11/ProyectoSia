@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.StudentResult;
+import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.StudentResultService;
 import pe.edu.pucp.sia.service.impl.StudentResultServiceImpl;
@@ -32,24 +33,31 @@ public class StudentResultController {
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
-	@GetMapping("/listbyspecialty/{id}")
-	public ResponseEntity<ApiResponse> listBySpecialty(@PathVariable Integer id){
-		logger.info("Entered method listBySpecialty()");
-		ApiResponse response = studentResultService.listBySpecialty(id);
+	@GetMapping("/listbysemester/{idSemester}")
+	public ResponseEntity<ApiResponse> listSBySemester(@PathVariable Integer idSemester){
+		logger.info("Entered method listBySemester()");
+		ApiResponse response = studentResultService.listBySemester(idSemester);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
-	@GetMapping("/listbyspecialtypluspercentage/{id}")
-	public ResponseEntity<ApiResponse> listBySpecialtyPlusAchievementPercentage(@PathVariable Integer id){
+	@GetMapping("/listbyspecialtysemester")
+	public ResponseEntity<ApiResponse> listBySpecialtySemester(@RequestBody MPlanLineSpecialtySemesterRequest lss){
+		logger.info("Entered method listBySpecialtySemester()");
+		ApiResponse response = studentResultService.listBySpecialtySemester(lss);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@GetMapping("/listbyspecialtysemesterpluspercentage")
+	public ResponseEntity<ApiResponse> listBySpecialtySemesterPlusAchievementPercentage(@RequestBody MPlanLineSpecialtySemesterRequest lss){
 		logger.info("Entered method listBySpecialtyPlusAchievementPercentage()");
-		ApiResponse response = studentResultService.listBySpecialtyPlusAchievementPercentage(id);
+		ApiResponse response = studentResultService.listBySpecialtySemesterPlusAchievementPercentage(lss);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 
-	@GetMapping("/listbyspecialtyplusindicator/{id}")
-	public ResponseEntity<ApiResponse> listBySpecialtyPlusIndicator(@PathVariable Integer id){
+	@GetMapping("/listbyspecialtysemesterplusindicator")
+	public ResponseEntity<ApiResponse> listBySpecialtySemesterPlusIndicator(@RequestBody MPlanLineSpecialtySemesterRequest lss){
 		logger.info("Entered method listBySpecialtyPlusIndicator()");
-		ApiResponse response = studentResultService.listBySpecialtyPlusIndicator(id);
+		ApiResponse response = studentResultService.listBySpecialtySemesterPlusIndicator(lss);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	

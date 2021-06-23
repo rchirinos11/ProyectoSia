@@ -9,6 +9,7 @@ import pe.edu.pucp.sia.model.LevelDetail;
 import pe.edu.pucp.sia.model.MeasurementLevel;
 import pe.edu.pucp.sia.repository.LevelDetailRepository;
 import pe.edu.pucp.sia.repository.MeasurementLevelRepository;
+import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementLevelService;
 @Service
@@ -24,6 +25,18 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 		ApiResponse response = null;
 		try {
 			Iterable<MeasurementLevel> list = measurementLevelRepository.findAllByOrderByOrdenAsc();
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+	
+	@Override
+	public ApiResponse listBySemester(Integer idSemester) {
+		ApiResponse response = null;
+		try {
+			Iterable<MeasurementLevel> list = measurementLevelRepository.findBySemesterIdOrderByOrdenAsc(idSemester);
 			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
@@ -73,10 +86,10 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 	}
 
 	@Override
-	public ApiResponse listBySpecialty(Integer id) {
+	public ApiResponse listBySpecialtySemester(MPlanLineSpecialtySemesterRequest lss) {
 		ApiResponse response = null;
 		try {
-			Iterable<MeasurementLevel> list = measurementLevelRepository.findBySpecialtyIdOrderByOrdenAsc(id);
+			Iterable<MeasurementLevel> list = measurementLevelRepository.findBySpecialtyIdAndSemesterIdOrderByOrdenAsc(lss.getIdSpecialty(),lss.getIdSemester());
 			for (MeasurementLevel ml : list) {
 				ml.setSpecialty(null);
 			}

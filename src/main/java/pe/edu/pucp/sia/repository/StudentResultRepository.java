@@ -7,5 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import pe.edu.pucp.sia.model.StudentResult;
 
 public interface StudentResultRepository extends CrudRepository<StudentResult,Integer>{
-	public List<StudentResult> findBySpecialtyIdOrderByOrderNumber(Integer id);
+	public List<StudentResult> findBySpecialtyIdAndSemesterIdOrderByOrderNumber(Integer idSpecialty, Integer idSemester);
+	public Iterable<StudentResult> findBySemesterId(Integer idSemester);
 }

@@ -23,12 +23,12 @@ public class MeasurementLevel {
 	@JoinColumn(name="id_specialty", referencedColumnName = "id_specialty")
 	@ManyToOne
 	private Specialty specialty;
+	@ManyToOne
+	@JoinColumn(name="id_semester")
+	private Semester semester;
 	private Integer orden;
 	private String name;	
 	private Integer isMinimum=0;
-
-	
-	
 	
 	//@Column(name="success_rate")
 	//private Float successRate;	

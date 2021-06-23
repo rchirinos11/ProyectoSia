@@ -19,6 +19,7 @@ import pe.edu.pucp.sia.repository.MeasurementLevelRepository;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.StudentResultRepository;
+import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.response.StudentResultPercentageDataResponse;
 import pe.edu.pucp.sia.service.IndicatorService;
@@ -37,15 +38,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 	private StudentResultRepository studentResultRepository;
 	
 	@Autowired
-	private MeasurementLevelRepository measurementLevelRepository;
-	
-	@Autowired
-	private MeasurementPlanLineRepository measurementPlanLineRepository;
-	
-	@Autowired
 	private ResultsPerCardRepository resultsPerCardRepository;
-	
-
 	
 	
 	@Override
@@ -53,6 +46,18 @@ public class StudentResultServiceImpl implements StudentResultService{
 		ApiResponse response = null;
 		try {
 			Iterable<StudentResult> list = studentResultRepository.findAll();
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+	
+	@Override
+	public ApiResponse listBySemester(Integer idSemester) {
+		ApiResponse response = null;
+		try {
+			Iterable<StudentResult> list = studentResultRepository.findBySemesterId(idSemester);
 			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
@@ -97,10 +102,10 @@ public class StudentResultServiceImpl implements StudentResultService{
 	}
 
 	@Override
-	public ApiResponse listBySpecialty(Integer id) {
+	public ApiResponse listBySpecialtySemester(MPlanLineSpecialtySemesterRequest lss) {
 		ApiResponse response = null;
 		try {
-			Iterable<StudentResult> list = studentResultRepository.findBySpecialtyIdOrderByOrderNumber(id);
+			Iterable<StudentResult> list = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByOrderNumber(lss.getIdSpecialty(),lss.getIdSemester());
 			for (StudentResult studentResult : list) {
 				studentResult.setSpecialty(null);
 			}
@@ -112,10 +117,10 @@ public class StudentResultServiceImpl implements StudentResultService{
 	}
 
 	@Override
-	public ApiResponse listBySpecialtyPlusIndicator(Integer id) {
+	public ApiResponse listBySpecialtySemesterPlusIndicator(MPlanLineSpecialtySemesterRequest lss) {
 		ApiResponse response = null;
 		try {
-			List<StudentResult> list = studentResultRepository.findBySpecialtyIdOrderByOrderNumber(id);
+			List<StudentResult> list = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByOrderNumber(lss.getIdSpecialty(),lss.getIdSemester());
 			for (StudentResult studentResult : list) {
 				studentResult.setSpecialty(null);
 			}
@@ -144,10 +149,10 @@ public class StudentResultServiceImpl implements StudentResultService{
     }
 
 	@Override
-	public ApiResponse listBySpecialtyPlusAchievementPercentage(Integer id) {
+	public ApiResponse listBySpecialtySemesterPlusAchievementPercentage(MPlanLineSpecialtySemesterRequest lss) {
 		ApiResponse response = null;
 		try {
-			List<StudentResult> listSr = studentResultRepository.findBySpecialtyIdOrderByOrderNumber(id);
+			List<StudentResult> listSr = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByOrderNumber(lss.getIdSpecialty(),lss.getIdSemester());
 			List<StudentResultPercentageDataResponse> list= new ArrayList<StudentResultPercentageDataResponse>();
 			Float percentage=100f;
 			Integer contador;

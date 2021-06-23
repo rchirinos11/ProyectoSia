@@ -25,11 +25,8 @@ public class StudentResult {
 	@JoinColumn(name="id_educational_objective")
 	private EducationalObjective educationalObjective;
 	@ManyToOne
-	@JoinColumn(name="id_semester_start")
-	private Semester semesterStart;
-	@ManyToOne
-	@JoinColumn(name="id_semester_end")
-	private Semester semesterEnd;
+	@JoinColumn(name="id_semester")
+	private Semester semester;
 	private int orderNumber;
 	private String description;
 	//private boolean active=true;
