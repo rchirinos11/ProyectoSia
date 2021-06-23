@@ -64,6 +64,13 @@ public class MeasurementPlanLineController {
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
+	@GetMapping("/listByCourseSemesterPlusSchedule/{idCourse}/{idSemester}")
+	public ResponseEntity<ApiResponse> listByCourseAndSemesterPlusCode(@PathVariable Integer idCourse,@PathVariable Integer idSemester){
+		logger.info("Entered method listByCourseAndSemesterPlusCode()");
+		ApiResponse response = mPlanLineService.listByCourseAndSemesterPlusCode(idCourse,idSemester);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
 	@PostMapping("/listBySpecialtySemester")
 	public ResponseEntity<ApiResponse> listBySpecialtySemester(@RequestBody MPlanLineSpecialtySemesterRequest mplRequest){
 		logger.info("Entered method listBySpecialtySemester()");

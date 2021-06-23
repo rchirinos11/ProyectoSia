@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.var;
+import pe.edu.pucp.sia.model.Indicator;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Person;
@@ -19,6 +20,8 @@ import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.RoleRepository;
 import pe.edu.pucp.sia.repository.SectionRepository;
 import pe.edu.pucp.sia.response.ApiResponse;
+import pe.edu.pucp.sia.response.ResultsPerCardScheduleDataResponse;
+import pe.edu.pucp.sia.response.ResultsPerCardScheduleListDataResponse;
 import pe.edu.pucp.sia.service.MeasurementPlanLineService;
 
 
@@ -333,6 +336,36 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			}
 			listMpl.sort(new MeasurementPlanLineComparator());
 			response = new ApiResponse(listMpl,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse listByCourseAndSemesterPlusCode(Integer idCourse, Integer idSemester) {
+		ApiResponse response = null;
+		try {
+			List<ResultsPerCardScheduleListDataResponse> list = new ArrayList<ResultsPerCardScheduleListDataResponse>();
+			Iterable<MeasurementPlanLine>  listMpl = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
+			for(MeasurementPlanLine mpl : listMpl) {	
+				ResultsPerCardScheduleListDataResponse rs = new ResultsPerCardScheduleListDataResponse();
+				Indicator ind=mpl.getIndicator();
+				ind.setStudentResult(null);
+				ind.setLevelDetails(null);
+				rs.setIndicator(ind);				
+				List<ResultsPerCardScheduleDataResponse> listr = new ArrayList<ResultsPerCardScheduleDataResponse>();
+				for(ResultsPerCard rc : mpl.getResultsPerCards()) {
+					ResultsPerCardScheduleDataResponse r= new ResultsPerCardScheduleDataResponse();			
+					r.setCode(resultsPerCardRepository.findById(rc.getId()).get().getSection().getCode());
+					rc.setSection(null);
+					r.setResultsPerCard(rc);	
+					listr.add(r);
+				}
+				rs.setResultsPerCardScheduleDataResponses(listr); 
+				list.add(rs);
+			}
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
