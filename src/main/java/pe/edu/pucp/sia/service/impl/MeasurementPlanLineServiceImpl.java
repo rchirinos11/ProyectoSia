@@ -59,20 +59,18 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 				for(Section s : m.getSections()) {
 					if(s.getId()==null) {
 						s.setId(sectionRepository.save(s).getId());
-					} else {
-						sectionRepository.save(s);
-					}
-					
-					ResultsPerCard r= new ResultsPerCard();
-					r.setSection(s);
-					r.setId(resultsPerCardRepository.save(r).getId());
-					list.add(r);
-					
-					//Asigna rol profesor
-					if(s.getTeachers()!=null)
-						for(Person p : s.getTeachers()) {
-							roleRepository.assignRole(idRoleProfesor, p.getId());
+
+						ResultsPerCard r= new ResultsPerCard();
+						r.setSection(s);
+						r.setId(resultsPerCardRepository.save(r).getId());
+						list.add(r);
+
+						//Asigna rol profesor
+						if(s.getTeachers()!=null) {
+							for(Person p : s.getTeachers()) 
+								roleRepository.assignRole(idRoleProfesor, p.getId());
 						}
+					}
 				}
 				m.setResultsPerCards(list);
 			}		
@@ -90,52 +88,50 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 		try {
 			//Obtiene rol profesor
 			Integer idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
-			List<ResultsPerCard> rPerCardList = new ArrayList<>();
+			List<ResultsPerCard> rPerCardList = m.getResultsPerCards();
 			if(m.getSections()!=null) {
 				for(Section s : m.getSections()) {
 					if(s.getId()==null) {
 						s.setId(sectionRepository.save(s).getId());
+						
+						ResultsPerCard r= new ResultsPerCard();
+						r.setSection(s);
+						r.setId(resultsPerCardRepository.save(r).getId());
+						rPerCardList.add(r);
 					} else {
+						//Busca profesores a cargo originalmente
+						List<Integer> teachersOld = new ArrayList<>();
+						var val = sectionRepository.findById(s.getId());
+						if (val.isPresent() && val.get().getTeachers()!=null) {
+							for (Person p : val.get().getTeachers())
+								teachersOld.add(p.getId());
+						}
+						
+						//Verifica si fueron removidos los originales
+						if (!teachersOld.isEmpty()) {
+							List<Integer> teachersRemove = new ArrayList<>();
+							boolean find=false;
+							for(Integer idTeacher : teachersOld){
+								for(Person t : s.getTeachers()) {
+									if (idTeacher.equals(t.getId())) {
+										find=true;
+										break;
+									}
+								}
+								if (find==false)
+									teachersRemove.add(idTeacher);
+							}
+							//Busca si no es profesor de otro curso para quitarle el rol
+							for(Integer idT : teachersRemove){
+								roleRepository.unassignTeacher(idT);
+							}
+						}
 						sectionRepository.save(s);
 					}
-					//Busca profesores a cargo originalmente
-					List<Integer> teachersOld = new ArrayList<>();
-					var val = sectionRepository.findById(s.getId());
-					if (val.isPresent() && val.get().getTeachers()!=null) {
-						for (Person p : val.get().getTeachers())
-							teachersOld.add(p.getId());
-					}
-					
-					//Registra las secciones
-					ResultsPerCard r= new ResultsPerCard();
-					r.setSection(s);
-					r.setId(resultsPerCardRepository.save(r).getId());
-					rPerCardList.add(r);
-					
 					//Asigna rol a profesores agregados
-					if(s.getTeachers()!=null)
-						for(Person p : s.getTeachers()) {
+					if(s.getTeachers()!=null) {
+						for(Person p : s.getTeachers())
 							roleRepository.assignRole(idRoleProfesor, p.getId());
-						}						
-					
-					//Verifica si fueron removidos los originales
-					if (!teachersOld.isEmpty()) {
-						List<Integer> teachersRemove = new ArrayList<>();
-						boolean find=false;
-						for(Integer idTeacher : teachersOld){
-							for(Person t : s.getTeachers()) {
-								if (idTeacher.equals(t.getId())) {
-									find=true;
-									break;
-								}
-							}
-							if (find==false)
-								teachersRemove.add(idTeacher);
-						}
-						//Busca si no es profesor de otro curso para quitarle el rol
-						for(Integer idT : teachersRemove){
-							roleRepository.unassignTeacher(idT);
-						}
 					}
 				}
 				m.setResultsPerCards(rPerCardList);
