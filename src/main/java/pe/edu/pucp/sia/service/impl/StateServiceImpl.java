@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.State;
 import pe.edu.pucp.sia.repository.StateRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.StateService;
 
 @Service
@@ -13,40 +14,49 @@ public class StateServiceImpl implements StateService{
 	private StateRepository stateRepository;
 	
 	@Override
-	public Iterable<State> listAll() {
-		 return stateRepository.findAll();
-	}
-
-	@Override
-	public Integer createState(State s) {
-		Integer response = 0;
+	public ApiResponse listAll() {
+		ApiResponse response = null;
 		try {
-			response = stateRepository.save(s).getId();
+			Iterable<State> list = stateRepository.findAll();
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer updateState(State s) {
-		Integer response = 0;
+	public ApiResponse createState(State s) {
+		ApiResponse response = null;
 		try {
-			response = stateRepository.save(s).getId();
+			Integer id = stateRepository.save(s).getId();
+			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteState(Integer id) {
-		String response = "";
+	public ApiResponse updateState(State s) {
+		ApiResponse response = null;
+		try {
+			Integer id = stateRepository.save(s).getId();
+			response = new ApiResponse(id,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse deleteState(Integer id) {
+		ApiResponse response = null;
 		try {
 			stateRepository.deleteState(id);
-			response = "Deleted";
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}

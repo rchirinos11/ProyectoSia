@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.Program;
 import pe.edu.pucp.sia.repository.ProgramRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.ProgramService;
 
 @Service
@@ -14,40 +15,49 @@ public class ProgramServiceImpl implements ProgramService {
     private ProgramRepository programRepository;
 
     @Override
-    public Iterable<Program> listAll() {
-        return programRepository.findAll();
-    }
-
-    @Override
-    public Integer createProgram(Program p) {
-        Integer response = 0;
+    public ApiResponse listAll() {
+		ApiResponse response = null;
 		try {
-			response = programRepository.save(p).getId(); 
+			Iterable<Program> list = programRepository.findAll();
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
     }
 
     @Override
-    public Integer updateProgram(Program p) {
-        Integer response = 0;
+    public ApiResponse createProgram(Program p) {
+        ApiResponse response = null;
 		try {
-			response = programRepository.save(p).getId();
+			Integer id = programRepository.save(p).getId(); 
+			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
     }
 
     @Override
-    public String deleteProgram(Integer id) {
-        String response = "";
+    public ApiResponse updateProgram(Program p) {
+        ApiResponse response = null;
+		try {
+			Integer id = programRepository.save(p).getId();
+			response = new ApiResponse(id,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+    }
+
+    @Override
+    public ApiResponse deleteProgram(Integer id) {
+        ApiResponse response = null;
 		try {
 			programRepository.deleteProgram(id);
-			response = "Deleted";
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
     }

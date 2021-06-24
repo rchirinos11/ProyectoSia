@@ -1,12 +1,13 @@
 package pe.edu.pucp.sia.service;
 
 import pe.edu.pucp.sia.model.LevelDetail;
+import pe.edu.pucp.sia.response.ApiResponse;
 
 public interface LevelDetailService {
-	public Iterable<LevelDetail>  listAll();
-	public Iterable<LevelDetail>  listBySpecialty(Integer idSpecialty);
-	public Integer createLevelDetail(LevelDetail ld);
-	public Integer updateLevelDetail(LevelDetail ld);
-	public String deleteLevelDetail(Integer id);
+	public ApiResponse  listAll();
+	public ApiResponse  listBySpecialty(Integer idSpecialty);
+	public ApiResponse createLevelDetail(LevelDetail ld);
+	public ApiResponse updateLevelDetail(LevelDetail ld);
+	public ApiResponse deleteLevelDetail(Integer id);
 
 }

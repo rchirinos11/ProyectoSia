@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.Section;
 import pe.edu.pucp.sia.repository.SectionRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.SectionService;
 
 @Service
@@ -15,57 +16,61 @@ public class SectionServiceImpl implements SectionService{
 	private SectionRepository sectionRepository;
 	
 	@Override
-	public Iterable<Section> listAll() {
-		Iterable<Section> response = null;
+	public ApiResponse listAll() {
+		ApiResponse response = null;
 		try {
-			response = sectionRepository.findAll(); 
+			Iterable<Section> list = sectionRepository.findAll(); 
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer createSection(Section s) {
-		Integer response = null;
+	public ApiResponse createSection(Section s) {
+		ApiResponse response = null;
 		try {
-			response = sectionRepository.save(s).getId();
+			Integer id = sectionRepository.save(s).getId();
+			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteSection(Integer id) {
-		String response = null;
+	public ApiResponse deleteSection(Integer id) {
+		ApiResponse response = null;
 		try {
-			sectionRepository.deleteById(id);;
-			response = "Deleted";
+			sectionRepository.deleteSection(id);;
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer updateSection(Section s) {
-		Integer response = null;
+	public ApiResponse updateSection(Section s) {
+		ApiResponse response = null;
 		try {
-			response = sectionRepository.save(s).getId();
+			Integer id = sectionRepository.save(s).getId();
+			response = new ApiResponse(id,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Iterable<Section> listByMeasurementPlanLine(Integer idMeasurementPlanLine) {
-		Iterable<Section> response = null;
+	public ApiResponse listByMeasurementPlanLine(Integer idMeasurementPlanLine) {
+		ApiResponse response = null;
 		try {
-			response = sectionRepository.listSectionByMeasurementPlanLine(idMeasurementPlanLine); 
+			Iterable<Section> list = sectionRepository.listSectionByMeasurementPlanLine(idMeasurementPlanLine); 
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}		
 		return response;
 	}

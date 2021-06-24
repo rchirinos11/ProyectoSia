@@ -15,4 +15,6 @@ public interface FacultyRepository extends CrudRepository<Faculty,Integer>{
 	public int deleteFaculty(Integer id);
 	@Procedure("sp_set_faculty_coordinator")
 	public void setCoordinator(Integer idFaculty,Integer idCoordinator);
+	@Procedure("sp_archive_faculty")
+	public void archiveFaculty(Integer idFaculty,boolean state);
 }

@@ -8,9 +8,21 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.edu.pucp.sia.model.MeasurementLevel;
+import pe.edu.pucp.sia.model.MeasurementPlanLine;
+import pe.edu.pucp.sia.model.ResultsPerCard;
+import pe.edu.pucp.sia.model.Indicator;
 import pe.edu.pucp.sia.model.StudentResult;
 import pe.edu.pucp.sia.model.dozers.StudentResultDozer;
+import pe.edu.pucp.sia.repository.IndicatorRepository;
+import pe.edu.pucp.sia.repository.MeasurementLevelRepository;
+import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
+import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.StudentResultRepository;
+import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
+import pe.edu.pucp.sia.response.ApiResponse;
+import pe.edu.pucp.sia.response.StudentResultPercentageDataResponse;
+import pe.edu.pucp.sia.service.IndicatorService;
 import pe.edu.pucp.sia.service.StudentResultService;
 
 @Service
@@ -18,78 +30,168 @@ public class StudentResultServiceImpl implements StudentResultService{
 
 	
 	private Mapper mapper = new DozerBeanMapper();
-
+	
 	@Autowired
-	private IndicatorServiceImpl indicatorServiceImpl;
+	private IndicatorRepository indicatorRepository;
 
 	@Autowired
 	private StudentResultRepository studentResultRepository;
 	
+	@Autowired
+	private ResultsPerCardRepository resultsPerCardRepository;
+	
+	
 	@Override
-	public Iterable<StudentResult> listAll() {
-		return studentResultRepository.findAll();
-	}
-
-	@Override
-	public Integer createStudentResult(StudentResult sr) {
-		Integer response = 0;
+	public ApiResponse listAll() {
+		ApiResponse response = null;
 		try {
-			response = studentResultRepository.save(sr).getId();
+			Iterable<StudentResult> list = studentResultRepository.findAll();
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+	
+	@Override
+	public ApiResponse listBySemester(Integer idSemester) {
+		ApiResponse response = null;
+		try {
+			Iterable<StudentResult> list = studentResultRepository.findBySemesterId(idSemester);
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer updateStudentResult(StudentResult sr) {
-		Integer response = 0;
+	public ApiResponse createStudentResult(StudentResult sr) {
+		ApiResponse response = null;
 		try {
-			response = studentResultRepository.save(sr).getId();
+			Integer id = studentResultRepository.save(sr).getId();
+			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteStudentResult(Integer id) {
-		String response = "";
+	public ApiResponse updateStudentResult(StudentResult sr) {
+		ApiResponse response = null;
+		try {
+			Integer id = studentResultRepository.save(sr).getId();
+			response = new ApiResponse(id,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse deleteStudentResult(Integer id) {
+		ApiResponse response = null;
 		try {
 			studentResultRepository.deleteById(id);
-			response = "Deleted"; 
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Iterable<StudentResult> listBySpecialty(Integer id) {
-		Iterable<StudentResult> lista = studentResultRepository.findBySpecialtyIdOrderByOrderNumber(id);
-		for (StudentResult studentResult : lista) {
-			studentResult.setSpecialty(null);
+	public ApiResponse listBySpecialtySemester(MPlanLineSpecialtySemesterRequest lss) {
+		ApiResponse response = null;
+		try {
+			Iterable<StudentResult> list = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByOrderNumber(lss.getIdSpecialty(),lss.getIdSemester());
+			for (StudentResult studentResult : list) {
+				studentResult.setSpecialty(null);
+			}
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return lista;
+		return response;
 	}
 
 	@Override
-	public Iterable<StudentResultDozer> listBySpecialtyPlusIndicator(Integer id) {
-		List<StudentResult> lista = studentResultRepository.findBySpecialtyIdOrderByOrderNumber(id);
-		for (StudentResult studentResult : lista) {
-			studentResult.setSpecialty(null);
+	public ApiResponse listBySpecialtySemesterPlusIndicator(MPlanLineSpecialtySemesterRequest lss) {
+		ApiResponse response = null;
+		try {
+			List<StudentResult> list = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByOrderNumber(lss.getIdSpecialty(),lss.getIdSemester());
+			for (StudentResult studentResult : list) {
+				studentResult.setSpecialty(null);
+			}
+			response = mapListDTO(list);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return mapListDTO(lista);
+		return response;
 	}
 
-	private List<StudentResultDozer> mapListDTO(List<StudentResult> studentResults){
-        List<StudentResultDozer> studentResultDozers = new ArrayList<>();
-        for(StudentResult s: studentResults){
-            StudentResultDozer studentResultDozer = new StudentResultDozer();
-			mapper.map(s,studentResultDozer);
-			studentResultDozer.setIndicators(indicatorServiceImpl.listByStudentResult(studentResultDozer.getId()));
-            studentResultDozers.add(studentResultDozer);
-        }
-        return studentResultDozers;
+	private ApiResponse mapListDTO(List<StudentResult> studentResults){
+		ApiResponse response = null;
+		try{
+			List<StudentResultDozer> studentResultDozers = new ArrayList<>();
+			for(StudentResult s: studentResults){
+				StudentResultDozer studentResultDozer = new StudentResultDozer();
+				mapper.map(s,studentResultDozer);
+				studentResultDozer.setIndicators(indicatorRepository.findBystudentResultIdOrderByCode(studentResultDozer.getId()));
+				studentResultDozers.add(studentResultDozer);
+			}
+			response = new ApiResponse(studentResultDozers,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
     }
+
+	@Override
+	public ApiResponse listBySpecialtySemesterPlusAchievementPercentage(MPlanLineSpecialtySemesterRequest lss) {
+		ApiResponse response = null;
+		try {
+			List<StudentResult> listSr = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByOrderNumber(lss.getIdSpecialty(),lss.getIdSemester());
+			List<StudentResultPercentageDataResponse> list= new ArrayList<StudentResultPercentageDataResponse>();
+			Float percentage=100f;
+			Integer contador;
+			for(StudentResult studentResult : listSr) {
+				StudentResultPercentageDataResponse sr= new StudentResultPercentageDataResponse();
+				contador=0;
+				for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
+					Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
+					if(p!=null) {
+						contador++;
+						if(p<percentage)
+							percentage=p;	
+					}									
+				}
+				if(contador==0) percentage=-1f;
+				sr.setStudentResult(studentResult);
+				sr.setAchievementPercentage(percentage);
+				list.add(sr);
+				percentage=100f;
+			}
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse copyBySpecialtySemester(Integer idSpecialtyFrom, Integer idSemesterFrom, Integer idSpecialtyTo, Integer idSemesterTo) {
+		ApiResponse response = null;
+		try {
+			Integer count = studentResultRepository.cloneStudentResults(idSpecialtyFrom, idSemesterFrom, idSpecialtyTo, idSemesterTo);
+			if(count>0)
+				response = new ApiResponse(count, 200);
+			else
+				response = new ApiResponse(400,"Nothing was updated");
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
 }

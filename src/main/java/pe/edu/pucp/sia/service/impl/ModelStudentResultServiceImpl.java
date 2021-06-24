@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.ModelStudentResult;
 import pe.edu.pucp.sia.repository.ModelStudentResultRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.ModelStudentResultService;
 
 @Service
@@ -14,40 +15,49 @@ public class ModelStudentResultServiceImpl implements ModelStudentResultService 
     private ModelStudentResultRepository modelStudentResultRepository;
 
     @Override
-    public Iterable<ModelStudentResult> listAll() {
-        return modelStudentResultRepository.findAll();
+    public ApiResponse listAll() {
+		ApiResponse response = null;
+		try {
+			Iterable<ModelStudentResult> list = modelStudentResultRepository.findAll();
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
     }
 
     @Override
-	public Integer createModelStudentResult(ModelStudentResult m) {
-		Integer response = 0;
+	public ApiResponse createModelStudentResult(ModelStudentResult m) {
+		ApiResponse response = null;
 		try {
-			response = modelStudentResultRepository.save(m).getId(); 
+			Integer id = modelStudentResultRepository.save(m).getId(); 
+			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
     @Override
-	public Integer updateModelStudentResult(ModelStudentResult m) {
-		Integer response = 0;
+	public ApiResponse updateModelStudentResult(ModelStudentResult m) {
+		ApiResponse response = null;
 		try {
-			response = modelStudentResultRepository.save(m).getId();
+			Integer id = modelStudentResultRepository.save(m).getId();
+			response = new ApiResponse(id,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
     @Override
-    public String deleteModelStudentResult(Integer id) {
-        String response = "";
+    public ApiResponse deleteModelStudentResult(Integer id) {
+        ApiResponse response = null;
 		try {
 			modelStudentResultRepository.deleteModelStudentResult(id);
-			response = "Deleted";
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
     }

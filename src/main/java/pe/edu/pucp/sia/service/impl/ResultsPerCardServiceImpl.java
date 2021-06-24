@@ -18,6 +18,7 @@ import pe.edu.pucp.sia.repository.MeasurementRepository;
 import pe.edu.pucp.sia.repository.PersonRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.RoleRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.ResultsPerCardService;
 
 @Service
@@ -38,62 +39,77 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	private MeasurementLevelRepository measurementLevelRepository;
 	
 	@Override
-	public Iterable<ResultsPerCard> listAll() {
-		return resultsPerCardRepository.findAll();
+	public ApiResponse listAll() {
+		ApiResponse response = null;
+		try {
+			Iterable<ResultsPerCard> list = resultsPerCardRepository.findAll();
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
-	public Integer createResultsPerCard(ResultsPerCard r) {
-		Integer response =0;
+	public ApiResponse createResultsPerCard(ResultsPerCard r) {
+		ApiResponse response = null;
 		try {
-			response=resultsPerCardRepository.save(r).getId();
+			Integer id = resultsPerCardRepository.save(r).getId();
+			response = new ApiResponse(id,201);
 			
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer updateResultsPerCard(ResultsPerCard r) {
-		Integer response =0;
+	public ApiResponse updateResultsPerCard(ResultsPerCard r) {
+		ApiResponse response = null;
 		try {
-			response=resultsPerCardRepository.save(r).getId();
-					} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			Integer id = resultsPerCardRepository.save(r).getId();
+			response = new ApiResponse(id,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteResultsPerCard(Integer id) {
-		String response = "";
+	public ApiResponse deleteResultsPerCard(Integer id) {
+		ApiResponse response = null;
 		try {
 			resultsPerCardRepository.deleteResultsPerCard(id);
-			response = "Deleted"; 
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Iterable<ResultsPerCard> listByMeasurementPlanLine(Integer id) {
-		Iterable<ResultsPerCard> lista = resultsPerCardRepository.findByMeasurementPlanLineId(id);
-		for (ResultsPerCard rc : lista) {
-			rc.setMeasurementPlanLine(null);
+	public ApiResponse listByMeasurementPlanLine(Integer id) {
+		ApiResponse response = null;
+		try {
+			Iterable<ResultsPerCard> list = resultsPerCardRepository.findByMeasurementPlanLineId(id);
+			for (ResultsPerCard rc : list) {
+				rc.setMeasurementPlanLine(null);
+			}
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return lista;
+		return response;
 	}
 
 	@Override
-	public Integer registerStudentMeditions(ResultsPerCard r) {
-		Integer response = 0;
-		Integer nota,notaMin=0,idSpecialty=0;
-		Integer total=0,total34=0,cantidad=0;
-		MeasurementLevel ml=null;
-		float media, porcentaje;
+	public ApiResponse registerStudentMeditions(ResultsPerCard r) {
+		ApiResponse response = null;
 		try {
+			Integer nota,notaMin=0;
+			Integer total=0,total34=0,cantidad=0;
+			MeasurementLevel ml=null;
+			float media, porcentaje;
 			Integer idResult = r.getId();
 			Integer idStudent,idProfesor;
 			Measurement meFound;
@@ -107,7 +123,6 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 			listaRoles.add(rol);
 			result.setId(idResult);
 			//Busca especialidad para sacar minimo successul
-			//idSpecialty = r.get
 			for (Measurement me : r.getMeasurements()) {
 				me.setResultsPerCard(result); //Le coloca el FK del resultPerCard
 				
@@ -139,10 +154,13 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 					nota=ml.getOrden();
 					//Halla la nota minima una vez
 					if (notaMin==0) {
+						Integer idSpecialty=0,idSemester=0;
 						var val = measurementLevelRepository.findById(ml.getId());	//Para obtener el dato completo con especialidad
-						if (val.isPresent())
-							idSpecialty = val.get().getSpecialty().getId(); 
-						ml = measurementLevelRepository.findBySpecialtyIdAndIsMinimum(idSpecialty, 1);
+						if (val.isPresent()) {
+							idSpecialty = val.get().getSpecialty().getId();
+							idSemester = val.get().getSemester().getId();
+						}
+						ml = measurementLevelRepository.findBySpecialtyIdAndSemesterIdAndIsMinimum(idSpecialty,idSemester, 1);
 						if (ml!=null)
 							notaMin = ml.getOrden();
 					}
@@ -163,9 +181,28 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 			else
 				porcentaje = (float)total34/total;
 			resultsPerCardRepository.registerResultsPerCard(idResult,cantidad,total34,media,porcentaje);
-			response = 1;
+			response = new ApiResponse("Success",200);
 		}catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse promPercentageByStudentResult(Integer id) {
+		ApiResponse response = null;
+		try {
+			float prom=0;
+			int cant =0;
+			Iterable<ResultsPerCard> list = resultsPerCardRepository.findByMeasurementPlanLineIndicatorStudentResultId(id);
+			for (ResultsPerCard rc : list) {
+				prom += rc.getPercentage();
+				cant +=1;
+			}
+			if(cant!=0)prom = prom/cant;
+			response = new ApiResponse(prom,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}

@@ -2,14 +2,10 @@ package pe.edu.pucp.sia.repository;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 
 import pe.edu.pucp.sia.model.Specialty;
-import pe.edu.pucp.sia.model.Person;
 
 public interface SpecialtyRepository extends CrudRepository<Specialty,Integer>{
 	public List<Specialty> findByFacultyId(Integer id);
@@ -28,7 +24,6 @@ public interface SpecialtyRepository extends CrudRepository<Specialty,Integer>{
 	
 	@Procedure("sp_set_specialty_percentage")
 	public void setPercentage(Integer idSpecialty,Integer percentage);
-
-	@Query(value = "call sp_list_teachers_by_specialty(:in_id_specialty)", nativeQuery = true)
-	public Iterable<Person> listTeachersBySpecialty(@Param("in_id_specialty")Integer idSpecialty);
+	@Procedure("sp_archive_specialty")
+	public void archiveSpecialty(Integer idSpecialty,boolean state);
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.ImprovementProposal;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.ImprovementProposalService;
 import pe.edu.pucp.sia.service.impl.ImprovementProposalServiceImpl;
 
@@ -27,32 +28,37 @@ public class ImprovementProposalController {
 	private ImprovementProposalService improvementProposalService = new ImprovementProposalServiceImpl(); 
 	
 	@GetMapping("/listbyimprovementplan/{id}")
-	public ResponseEntity<Object> listByImprovementPlan(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> listByImprovementPlan(@PathVariable Integer id){
 		logger.info("Entered method listByImprovementPlan()");
-		return ResponseEntity.status(HttpStatus.OK).body(improvementProposalService.listByImprovementPlan(id));
+		ApiResponse response = improvementProposalService.listByImprovementPlan(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listImprovementProposal(){
+	public ResponseEntity<ApiResponse> listImprovementProposal(){
 		logger.info("Entered method listImprovementProposal()");
-		return ResponseEntity.status(HttpStatus.OK).body(improvementProposalService.listAll());
+		ApiResponse response = improvementProposalService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createImprovementProposal(@RequestBody ImprovementProposal i){
+	public ResponseEntity<ApiResponse> createImprovementProposal(@RequestBody ImprovementProposal i){
 		logger.info("Entered method createImprovementProposal()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(improvementProposalService.createImprovementProposal(i));
+		ApiResponse response = improvementProposalService.createImprovementProposal(i);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateImprovementProposal(@RequestBody ImprovementProposal i){
+	public ResponseEntity<ApiResponse> updateImprovementProposal(@RequestBody ImprovementProposal i){
 		logger.info("Entered method updateImprovementProposal()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(improvementProposalService.updateImprovementProposal(i));
+		ApiResponse response = improvementProposalService.updateImprovementProposal(i);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteImprovementProposal(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> deleteImprovementProposal(@PathVariable Integer id){
 		logger.info("Entered method deleteImprovementProposal()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(improvementProposalService.deleteImprovementProposal(id));
+		ApiResponse response = improvementProposalService.deleteImprovementProposal(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

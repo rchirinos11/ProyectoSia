@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.MeasurementType;
 import pe.edu.pucp.sia.repository.MeasurementTypeRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementTypeService;
 
 @Service
@@ -14,26 +15,33 @@ public class MeasurementTypeServiceImpl implements MeasurementTypeService{
 	private MeasurementTypeRepository measurementTypeRepository;
 	
 	@Override
-	public Iterable<MeasurementType> listAll() {
-		return measurementTypeRepository.findAll();
+	public ApiResponse listAll() {
+		ApiResponse response = null;
+		try {
+			Iterable<MeasurementType> list = measurementTypeRepository.findAll();
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
-	public int createMeasurementType(MeasurementType m) {
+	public ApiResponse createMeasurementType(MeasurementType m) {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
 	}
 
 	@Override
-	public int deleteMeasurementType(Integer id) {
+	public ApiResponse deleteMeasurementType(Integer id) {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
 	}
 
 	@Override
-	public int updateMeasurementType(MeasurementType m) {
+	public ApiResponse updateMeasurementType(MeasurementType m) {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
 	}
 
 }

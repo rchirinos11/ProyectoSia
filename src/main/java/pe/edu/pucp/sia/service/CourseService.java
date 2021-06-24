@@ -1,15 +1,14 @@
 package pe.edu.pucp.sia.service;
 
-import java.util.List;
-
 import pe.edu.pucp.sia.model.Course;
+import pe.edu.pucp.sia.response.ApiResponse;
 
 public interface CourseService {
-  public Iterable<Course> listAll();
-	public int createCourse(Course c);
-	public String deleteCourse(Integer id);
-	public int updateCourse(Course c);   
-	public List<Course> listCoursesByTeacherSpecialty(Integer idPerson,Integer idSpeciality);
-	public Iterable<Course> listBySpecialty(Integer id);
+	public ApiResponse listAll();
+    public ApiResponse createCourse(Course c);
+	public ApiResponse deleteCourse(Integer id);
+	public ApiResponse updateCourse(Course c);   
+	public ApiResponse listCoursesByTeacherSpecialty(Integer idPerson,Integer idSpeciality);
+	public ApiResponse listBySpecialty(Integer id);
 	
 }

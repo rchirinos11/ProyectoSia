@@ -1,11 +1,19 @@
 package pe.edu.pucp.sia.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.Faculty;
+import pe.edu.pucp.sia.model.Person;
+import pe.edu.pucp.sia.model.Role;
 import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.repository.FacultyRepository;
+import pe.edu.pucp.sia.repository.PersonRepository;
+import pe.edu.pucp.sia.repository.RoleRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.FacultyService;
 
 @Service
@@ -14,65 +22,165 @@ public class FacultyServiceImpl implements FacultyService{
 	@Autowired
 	private FacultyRepository facultyRepository;
 	
+	@Autowired
+	private PersonRepository personRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
 	@Override
-	public Iterable<Faculty> listAll() {
-		return facultyRepository.findAll();
-	}
-
-	@Override
-	public Integer createFaculty(Faculty f) {
-		Integer response = 0;
+	public ApiResponse listAll() {
+		ApiResponse response = null;
 		try {
-			response = facultyRepository.save(f).getId();
+			Iterable<Faculty> list = facultyRepository.findAll();
+			response = new ApiResponse(list, 200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer updateFaculty(Faculty f) {
-		Integer response = 0;
+	public ApiResponse createFaculty(Faculty f) {
+		ApiResponse response = null;
 		try {
-			response = facultyRepository.save(f).getId();
+			List<Role> roleList=new ArrayList<Role>();
+			Integer evaluaSiCoordinador=0;
+			if(f.getCoordinator()!=null){
+				Person person =personRepository.findById(f.getCoordinator().getId()).get();
+				roleList=person.getRoleList();
+				for(Role r: roleList) {
+					if(r.getId()==2) {
+						evaluaSiCoordinador=1;
+					}					
+				}		
+				if(evaluaSiCoordinador==0) {
+					roleList.add(roleRepository.findById(2).get());
+					person.setRoleList(roleList);
+					personRepository.save(person);
+				}
+			}		
+			Integer id = facultyRepository.save(f).getId();
+			response = new ApiResponse(id, 201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteFaculty(Integer id) {
-		String response = "";
+	public ApiResponse updateFaculty(Faculty f) {
+		ApiResponse response = null;
+		try {
+			Person cord=facultyRepository.findById(f.getId()).get().getCoordinator();	
+			List<Role> roleList=new ArrayList<Role>();
+			Integer evaluaSiCoordinador=0;
+			if(f.getCoordinator()!=null){
+				Person person =personRepository.findById(f.getCoordinator().getId()).get();				
+				if(cord!=null) {
+					if(person!=cord) {
+						roleList=person.getRoleList();
+						for(Role r: roleList) {
+							if(r.getId()==2) {
+								evaluaSiCoordinador=1;
+							}					
+						}		
+						if(evaluaSiCoordinador==0) {
+							roleList.add(roleRepository.findById(2).get());
+							person.setRoleList(roleList);
+							personRepository.save(person);
+						}	
+						List <Faculty> fs=facultyRepository.findByCoordinatorId(cord.getId());
+						if(fs.size()==1) {
+							List<Role> cordRoleList=cord.getRoleList();
+							cordRoleList.removeIf(r -> r.getId()==2);
+							cord.setRoleList(cordRoleList);
+							personRepository.save(cord);
+						}
+					}
+				}
+				else {
+					roleList=person.getRoleList();
+					for(Role r: roleList) {
+						if(r.getId()==2) {
+							evaluaSiCoordinador=1;
+						}					
+					}		
+					if(evaluaSiCoordinador==0) {
+						roleList.add(roleRepository.findById(2).get());
+						person.setRoleList(roleList);
+						personRepository.save(person);
+					}	
+				}											
+			}
+			else {
+				if(cord!=null) {
+					List <Faculty> fs=facultyRepository.findByCoordinatorId(cord.getId());
+					if(fs.size()==1) {
+						List<Role> cordRoleList=cord.getRoleList();
+						cordRoleList.removeIf(r -> r.getId()==2);
+						cord.setRoleList(cordRoleList);
+						personRepository.save(cord);
+					}
+				}
+			}			
+			Integer id = facultyRepository.save(f).getId();
+			response = new ApiResponse(id, 200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse deleteFaculty(Integer id) {
+		ApiResponse response = null;
 		try {
 			int x = facultyRepository.deleteFaculty(id);
 			if(x==0)
-				response = "Deleted";
+				response = new ApiResponse("Success", 200);
 			else
-				response = "Cannot delete due to dependency";
+				response = new ApiResponse(409,"Cannot delete due to dependency");
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Iterable<Faculty> listByCoordinator(Integer id) {
-		Iterable<Faculty> lista = facultyRepository.findByCoordinatorId(id);
-		for (Faculty faculty : lista) {
-			faculty.setCoordinator(null);
+	public ApiResponse listByCoordinator(Integer id) {
+		ApiResponse response = null;
+		try {
+			Iterable<Faculty> list = facultyRepository.findByCoordinatorId(id);
+			for (Faculty faculty : list)
+				faculty.setCoordinator(null);
+			response = new ApiResponse(list, 200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return lista;
+		return response;
 	}
 
 	@Override
-	public String updateCoordinator(Integer idFaculty, Integer idCoordinator) {
-		String response = "";
+	public ApiResponse updateCoordinator(Integer idFaculty, Integer idCoordinator) {
+		ApiResponse response = null;
 		try {
 			facultyRepository.setCoordinator(idFaculty,idCoordinator);
-			response = "Updated";
+			response = new ApiResponse("Success", 200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse archiveFaculty(Integer idFaculty, boolean state) {
+		ApiResponse response = null;
+		try {
+			facultyRepository.archiveFaculty(idFaculty,state);
+			response = new ApiResponse("Success", 200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}

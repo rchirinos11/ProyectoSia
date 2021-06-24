@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pe.edu.pucp.sia.model.Activity;
 import pe.edu.pucp.sia.model.ImprovementProposal;
 import pe.edu.pucp.sia.repository.ActivityRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.ActivityService;
 
 @Service
@@ -14,50 +15,64 @@ public class ActivityServiceImpl implements ActivityService{
 	private ActivityRepository activityRepository;
 	
 	@Override
-	public Iterable<Activity> listAll() {
-		 return activityRepository.findAll();
+	public ApiResponse listAll() {
+		ApiResponse response = null;
+		try{
+			Iterable<Activity> list = activityRepository.findAll();
+			response = new ApiResponse(list, 200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		 return response;
 	}
 
 	@Override
-	public Integer createActivity(Activity a) {
-		Integer response = 0;
-		try {
-			response = activityRepository.save(a).getId();
+	public ApiResponse createActivity(Activity a) {
+		ApiResponse response = null;
+		try{
+			Integer id = activityRepository.save(a).getId();			
+			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer updateActivity(Activity a) {
-		Integer response = 0;
+	public ApiResponse updateActivity(Activity a) {
+		ApiResponse response = null;
 		try {
-			response = activityRepository.save(a).getId();
+			Integer id = activityRepository.save(a).getId();
+			response = new ApiResponse(id,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteActivity(Integer id) {
-		String response = "";
+	public ApiResponse deleteActivity(Integer id) {
+		ApiResponse response = null;
 		try {
 			activityRepository.deleteActivity(id);
-			response = "Deleted";
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Iterable<Activity> listByImprovementProposal(Integer id) {
-		Iterable<Activity> lista = activityRepository.findByImprovementProposalId(id);
-		for (Activity activity : lista) {
-			activity.setImprovementProposal(null);
+	public ApiResponse listByImprovementProposal(Integer id) {
+		ApiResponse response = null;
+		try {
+			Iterable<Activity> list = activityRepository.findByImprovementProposalId(id);
+			for (Activity activity : list)
+				activity.setImprovementProposal(null);
+			response = new ApiResponse(list, 200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return lista;
-	}
+		return response;
+	}	
 }

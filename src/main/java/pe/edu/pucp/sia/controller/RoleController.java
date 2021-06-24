@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Role;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.RoleService;
 import pe.edu.pucp.sia.service.impl.RoleServiceImpl;
 
@@ -25,30 +26,35 @@ public class RoleController {
     @Autowired
     private RoleService roleService=new RoleServiceImpl();
     @GetMapping("/list")
-    public ResponseEntity<Object>listRole(){
+    public ResponseEntity<ApiResponse>listRole(){
         logger.info("Entered method listRole()");
-		return ResponseEntity.status(HttpStatus.OK).body(roleService.listAll());
+		ApiResponse response = roleService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
     }
     @PostMapping("/create")
-    public ResponseEntity<Object>createRole(@RequestBody Role r){
+    public ResponseEntity<ApiResponse>createRole(@RequestBody Role r){
         logger.info("Entered method createRole()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(roleService.createRole(r));
+		ApiResponse response = roleService.createRole(r);
+		return ResponseEntity.status(response.getStatus()).body(response);
     }
     @PostMapping("/update")
-	public ResponseEntity<Object> updateRole(@RequestBody Role r){
+	public ResponseEntity<ApiResponse> updateRole(@RequestBody Role r){
 		logger.info("Entered method updateRole()");
-		return ResponseEntity.status(HttpStatus.OK).body(roleService.updateRole(r));
+		ApiResponse response = roleService.updateRole(r);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteRole(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> deleteRole(@PathVariable Integer id){
 		logger.info("Entered method deleteRole()");
-		return ResponseEntity.status(HttpStatus.OK).body(roleService.deleteRole(id));
+		ApiResponse response = roleService.deleteRole(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/listByEmail")
-	public ResponseEntity<Object> listByEmail(@RequestBody Person p){
+	public ResponseEntity<ApiResponse> listByEmail(@RequestBody Person p){
 		logger.info("Entered method listByEmail()");
-		return ResponseEntity.status(HttpStatus.OK).body(roleService.listByEmail(p.getEmail()));
+		ApiResponse response = roleService.listByEmail(p.getEmail());
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

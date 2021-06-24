@@ -1,10 +1,19 @@
 package pe.edu.pucp.sia.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.edu.pucp.sia.model.Faculty;
+import pe.edu.pucp.sia.model.Person;
+import pe.edu.pucp.sia.model.Role;
 import pe.edu.pucp.sia.model.Specialty;
+import pe.edu.pucp.sia.repository.PersonRepository;
+import pe.edu.pucp.sia.repository.RoleRepository;
 import pe.edu.pucp.sia.repository.SpecialtyRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.SpecialtyService;
 
 import pe.edu.pucp.sia.model.Person;
@@ -14,104 +23,288 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 	@Autowired
 	private SpecialtyRepository specialtyRepository;
 	
+	@Autowired
+	private PersonRepository personRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
 	@Override
-	public Iterable<Specialty> listAll(){
-		return specialtyRepository.findAll();
-	}
-
-	@Override
-	public Integer createSpecialty(Specialty s) {
-		Integer response = 0;
-		try {
-			response = specialtyRepository.save(s).getId();
+	public ApiResponse listAll(){
+		ApiResponse response = null;
+		 try {
+			Iterable<Specialty> list = specialtyRepository.findAll();
+		 	response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer updateSpecialty(Specialty s) {
-		Integer response = 0;
+	public ApiResponse createSpecialty(Specialty s) {
+		ApiResponse response = null;
 		try {
-			response = specialtyRepository.save(s).getId();
+			List<Role> roleList1=new ArrayList<Role>();
+			List<Role> roleList2=new ArrayList<Role>();
+			Integer evaulateIfCoordinator=0;
+			Integer evaluateIfAssistant=0;
+			if(s.getCoordinator()!=null){
+				Person person1 =personRepository.findById(s.getCoordinator().getId()).get();
+				roleList1=person1.getRoleList();
+				for(Role r: roleList1) {
+					if(r.getId()==3) {
+						evaulateIfCoordinator=1;
+					}					
+				}		
+				if(evaulateIfCoordinator==0) {
+					roleList1.add(roleRepository.findById(3).get());
+					person1.setRoleList(roleList1);
+					personRepository.save(person1);
+				}
+			}	
+
+			if(s.getAssistant()!=null){
+				Person person2 =personRepository.findById(s.getAssistant().getId()).get();
+				roleList2=person2.getRoleList();
+				for(Role r: roleList2) {
+					if(r.getId()==4) {
+						evaluateIfAssistant=1;
+					}					
+				}		
+				if(evaluateIfAssistant==0) {
+					roleList2.add(roleRepository.findById(4).get());
+					person2.setRoleList(roleList2);
+					personRepository.save(person2);
+				}
+			}			
+			Integer id = specialtyRepository.save(s).getId();
+			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteSpecialty(Integer id) {
-		String response = "";
+	public ApiResponse updateSpecialty(Specialty s) {
+		ApiResponse response = null;
+		try {
+			Person cord=specialtyRepository.findById(s.getId()).get().getCoordinator();	
+			List<Role> roleList1=new ArrayList<Role>();
+			Integer evaulateIfCoordinator=0;
+			if(s.getCoordinator()!=null){
+				Person person1 =personRepository.findById(s.getCoordinator().getId()).get();				
+				if(cord!=null) {
+					if(person1!=cord) {
+						roleList1=person1.getRoleList();
+						for(Role r: roleList1) {
+							if(r.getId()==3) {
+								evaulateIfCoordinator=1;
+							}					
+						}		
+						if(evaulateIfCoordinator==0) {
+							roleList1.add(roleRepository.findById(3).get());
+							person1.setRoleList(roleList1);
+							personRepository.save(person1);
+						}	
+						List <Specialty> fs1=specialtyRepository.findByCoordinatorId(cord.getId());
+						if(fs1.size()==1) {
+							List<Role> cordRoleList=cord.getRoleList();
+							cordRoleList.removeIf(r -> r.getId()==3);
+							cord.setRoleList(cordRoleList);
+							personRepository.save(cord);
+						}
+					}
+				}
+				else {
+					roleList1=person1.getRoleList();
+					for(Role r: roleList1) {
+						if(r.getId()==3) {
+							evaulateIfCoordinator=1;
+						}					
+					}		
+					if(evaulateIfCoordinator==0) {
+						roleList1.add(roleRepository.findById(3).get());
+						person1.setRoleList(roleList1);
+						personRepository.save(person1);
+					}	
+				}											
+			}
+			else {
+				if(cord!=null) {
+					List <Specialty> fs1=specialtyRepository.findByCoordinatorId(cord.getId());
+					if(fs1.size()==1) {
+						List<Role> cordRoleList=cord.getRoleList();
+						cordRoleList.removeIf(r -> r.getId()==3);
+						cord.setRoleList(cordRoleList);
+						personRepository.save(cord);
+					}
+				}
+			}	
+			
+			Person ass=specialtyRepository.findById(s.getId()).get().getAssistant();	
+			List<Role> roleList2=new ArrayList<Role>();
+			Integer evaluateIfAssistant=0;
+			if(s.getAssistant()!=null){
+				Person person2 =personRepository.findById(s.getAssistant().getId()).get();				
+				if(ass!=null) {
+					if(person2!=ass) {
+						roleList2=person2.getRoleList();
+						for(Role r: roleList2) {
+							if(r.getId()==4) {
+								evaluateIfAssistant=1;
+							}					
+						}		
+						if(evaluateIfAssistant==0) {
+							roleList2.add(roleRepository.findById(4).get());
+							person2.setRoleList(roleList2);
+							personRepository.save(person2);
+						}	
+						List <Specialty> fs2=specialtyRepository.findByAssistantId(ass.getId());
+						if(fs2.size()==1) {
+							List<Role> assRoleList=ass.getRoleList();
+							assRoleList.removeIf(r -> r.getId()==4);
+							ass.setRoleList(assRoleList);
+							personRepository.save(ass);
+						}
+					}
+				}
+				else {
+					roleList2=person2.getRoleList();
+					for(Role r: roleList2) {
+						if(r.getId()==4) {
+							evaluateIfAssistant=1;
+						}					
+					}		
+					if(evaluateIfAssistant==0) {
+						roleList2.add(roleRepository.findById(4).get());
+						person2.setRoleList(roleList2);
+						personRepository.save(person2);
+					}	
+				}											
+			}
+			else {
+				if(ass!=null) {
+					List <Specialty> fs2=specialtyRepository.findByAssistantId(ass.getId());
+					if(fs2.size()==1) {
+						List<Role> assRoleList=ass.getRoleList();
+						assRoleList.removeIf(r -> r.getId()==4);
+						ass.setRoleList(assRoleList);
+						personRepository.save(ass);
+					}
+				}
+			}	
+			
+			Integer id = specialtyRepository.save(s).getId();
+			response = new ApiResponse(id,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse deleteSpecialty(Integer id) {
+		ApiResponse response = null;
 		try {
 			specialtyRepository.deleteSpecialty(id);
-			response = "Deleted"; 
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Iterable<Specialty> listByFaculty(Integer id) {
-		Iterable<Specialty> lista = specialtyRepository.findByFacultyId(id);
-		for (Specialty specialty : lista) {
-			specialty.setFaculty(null);
+	public ApiResponse listByFaculty(Integer id) {
+		ApiResponse response = null;
+		 try {
+			Iterable<Specialty> list = specialtyRepository.findByFacultyId(id);
+			for (Specialty specialty : list) {
+				specialty.setFaculty(null);
+			}
+		 	response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return lista;
+		return response;
 	}
 
 	@Override
-	public Iterable<Specialty> listByCoordinator(Integer id) {
-		Iterable<Specialty> lista = specialtyRepository.findByCoordinatorId(id);
-		for (Specialty specialty : lista) {
-			specialty.setCoordinator(null);
+	public ApiResponse listByCoordinator(Integer id) {
+		ApiResponse response = null;
+		 try {
+			Iterable<Specialty> list = specialtyRepository.findByCoordinatorId(id);
+			for (Specialty specialty : list) {
+				specialty.setCoordinator(null);
+			}
+		 	response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return lista;
+		return response;
 	}
 
 	@Override
-	public Iterable<Specialty> listByAssistant(Integer id) {
-		Iterable<Specialty> lista = specialtyRepository.findByAssistantId(id);
-		for (Specialty specialty : lista) {
-			specialty.setAssistant(null);
+	public ApiResponse listByAssistant(Integer id) {
+		ApiResponse response = null;
+		 try {
+			Iterable<Specialty> list = specialtyRepository.findByAssistantId(id);
+			for (Specialty specialty : list) {
+				specialty.setAssistant(null);
+			}
+		 	response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return lista;
+		return response;
 	}
 
 	@Override
-	public String updateCoordinator(Integer idSpecialty, Integer idCoordinator) {
-		String response = "";
+	public ApiResponse updateCoordinator(Integer idSpecialty, Integer idCoordinator) {
+		ApiResponse response = null;
 		try {
 			specialtyRepository.setCoordinator(idSpecialty,idCoordinator);
-			response = "Updated";
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String updateAssitant(Integer idSpecialty, Integer idAssistant) {
-		String response = "";
+	public ApiResponse updateAssitant(Integer idSpecialty, Integer idAssistant) {
+		ApiResponse response = null;
 		try {
 			specialtyRepository.setAssistant(idSpecialty,idAssistant);
-			response = "Updated";
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String updatePercentage(Integer idSpecialty, Integer percentage){
-		String response = "";
+	public ApiResponse updatePercentage(Integer idSpecialty, Integer percentage){
+		ApiResponse response = null;
 		try {
 			specialtyRepository.setPercentage(idSpecialty,percentage);
-			response = "Updated";
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse archiveSpecialty(Integer idSpecialty, boolean state) {
+		ApiResponse response = null;
+		try {
+			specialtyRepository.archiveSpecialty(idSpecialty,state);
+			response = new ApiResponse("Success", 200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}

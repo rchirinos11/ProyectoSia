@@ -3,7 +3,6 @@ package pe.edu.pucp.sia.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.requests.SpecialtyUpdateAssistantRequest;
 import pe.edu.pucp.sia.requests.SpecialtyUpdateCoordinatorRequest;
 import pe.edu.pucp.sia.requests.SpecialtyUpdatePercentageRequest;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.SpecialtyService;
 import pe.edu.pucp.sia.service.impl.SpecialtyServiceImpl;
 
@@ -32,62 +31,86 @@ public class SpecialtyController {
 	private SpecialtyService specialtyService = new SpecialtyServiceImpl();
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listSpecialty(){
+	public ResponseEntity<ApiResponse> listSpecialty(){
 		logger.info("Entered method listSpecialty()");
-		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.listAll());
+		ApiResponse response = specialtyService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/listbyfaculty/{id}")
-	public ResponseEntity<Object> listByFaculty(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> listByFaculty(@PathVariable Integer id){
 		logger.info("Entered method listByFaculty()");
-		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.listByFaculty(id));
+		ApiResponse response = specialtyService.listByFaculty(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/listbycoordinator/{id}")
-	public ResponseEntity<Object> listByCoordinator(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> listByCoordinator(@PathVariable Integer id){
 		logger.info("Entered method listByCoordinator()");
-		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.listByCoordinator(id));
+		ApiResponse response = specialtyService.listByCoordinator(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/listbyassistant/{id}")
-	public ResponseEntity<Object> listByAssistant(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> listByAssistant(@PathVariable Integer id){
 		logger.info("Entered method listByAssistant()");
-		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.listByAssistant(id));
+		ApiResponse response = specialtyService.listByAssistant(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	@PostMapping("/create")
-	public ResponseEntity<Object> createSpecialty(@RequestBody Specialty s){
+	public ResponseEntity<ApiResponse> createSpecialty(@RequestBody Specialty s){
 		logger.info("Entered method createSpecialty()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(specialtyService.createSpecialty(s));
+		ApiResponse response = specialtyService.createSpecialty(s);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateSpecialty(@RequestBody Specialty s){
+	public ResponseEntity<ApiResponse> updateSpecialty(@RequestBody Specialty s){
 		logger.info("Entered method updateSpecialty()");
-		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updateSpecialty(s));
+		ApiResponse response = specialtyService.updateSpecialty(s);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteSpecialty(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> deleteSpecialty(@PathVariable Integer id){
 		logger.info("Entered method deleteSpecialty()");
-		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.deleteSpecialty(id));
+		ApiResponse response = specialtyService.deleteSpecialty(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("setCoordinator")
-	public ResponseEntity<Object> updateSpecialtyCoordinator(@RequestBody SpecialtyUpdateCoordinatorRequest s){
+	public ResponseEntity<ApiResponse> updateSpecialtyCoordinator(@RequestBody SpecialtyUpdateCoordinatorRequest s){
 		logger.info("Entered method updateSpecialtyCoordinator()");
-		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updateCoordinator(s.getIdSpecialty(),s.getIdCoordinator()));
+		ApiResponse response = specialtyService.updateCoordinator(s.getIdSpecialty(),s.getIdCoordinator());
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("setAssistant")
-	public ResponseEntity<Object> updateSpecialtyAssistant(@RequestBody SpecialtyUpdateAssistantRequest s){
+	public ResponseEntity<ApiResponse> updateSpecialtyAssistant(@RequestBody SpecialtyUpdateAssistantRequest s){
 		logger.info("Entered method updateSpecialtyAssistant()");
-		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updateAssitant(s.getIdSpecialty(),s.getIdAssistant()));
+		ApiResponse response = specialtyService.updateAssitant(s.getIdSpecialty(),s.getIdAssistant());
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 
 	@PostMapping("setPercentage")
-	public ResponseEntity<Object> updateSuccessPercentage(@RequestBody SpecialtyUpdatePercentageRequest s){
+	public ResponseEntity<ApiResponse> updateSuccessPercentage(@RequestBody SpecialtyUpdatePercentageRequest s){
 		logger.info("Entered method updateSuccessPercentage()");
-		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.updatePercentage(s.getIdSpecialty(),s.getSuccessPercentage()));
+		ApiResponse response = specialtyService.updatePercentage(s.getIdSpecialty(),s.getSuccessPercentage());
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("archive/{id}")
+	public ResponseEntity<ApiResponse> archiveSpecialty(@PathVariable Integer id){
+		logger.info("Entered method archiveSpecialty()");
+		ApiResponse response = specialtyService.archiveSpecialty(id,true);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("disarchive/{id}")
+	public ResponseEntity<ApiResponse> disarchiveSpecialty(@PathVariable Integer id){
+		logger.info("Entered method disarchiveSpecialty()");
+		ApiResponse response = specialtyService.archiveSpecialty(id,false);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 
 	@GetMapping("/listTeachersBySpecialty/{id}")

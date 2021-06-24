@@ -1,13 +1,17 @@
 package pe.edu.pucp.sia.service;
 
 import pe.edu.pucp.sia.model.StudentResult;
-import pe.edu.pucp.sia.model.dozers.StudentResultDozer;
+import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
+import pe.edu.pucp.sia.response.ApiResponse;
 
 public interface StudentResultService {
-	public Iterable<StudentResult> listAll();
-	public Iterable<StudentResult> listBySpecialty(Integer id);
-	public Iterable<StudentResultDozer> listBySpecialtyPlusIndicator(Integer id);
-	public Integer createStudentResult(StudentResult sr);
-	public Integer updateStudentResult(StudentResult sr);
-	public String deleteStudentResult(Integer id);
+	public ApiResponse listAll();
+	public ApiResponse listBySemester(Integer idSemester);
+	public ApiResponse listBySpecialtySemester(MPlanLineSpecialtySemesterRequest lss);
+	public ApiResponse listBySpecialtySemesterPlusIndicator(MPlanLineSpecialtySemesterRequest lss);
+	public ApiResponse listBySpecialtySemesterPlusAchievementPercentage(MPlanLineSpecialtySemesterRequest lss);
+	public ApiResponse createStudentResult(StudentResult sr);
+	public ApiResponse updateStudentResult(StudentResult sr);
+	public ApiResponse deleteStudentResult(Integer id);
+	public ApiResponse copyBySpecialtySemester(Integer idSpecialtyFrom, Integer idSemesterFrom, Integer idSpecialtyTo, Integer idSemesterTo);
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.Evidence;
 import pe.edu.pucp.sia.repository.EvidenceRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.EvidenceService;
 
 @Service
@@ -14,26 +15,33 @@ public class EvidenceServiceImpl implements EvidenceService{
 	private EvidenceRepository evidenceRepository;
 	
 	@Override
-	public Iterable<Evidence> listAll() {
-		return evidenceRepository.findAll();
+	public ApiResponse listAll() {
+		ApiResponse response = null;
+		try {
+			Iterable<Evidence> list = evidenceRepository.findAll();
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
-	public int createEvidence(Evidence e) {
+	public ApiResponse createEvidence(Evidence e) {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
 	}
 
 	@Override
-	public int deleteEvidence(Integer id) {
+	public ApiResponse deleteEvidence(Integer id) {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
 	}
 
 	@Override
-	public int updateEvidence(Evidence e) {
+	public ApiResponse updateEvidence(Evidence e) {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
 	}
 
 }

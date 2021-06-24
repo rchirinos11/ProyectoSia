@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.ImprovementProposal;
 import pe.edu.pucp.sia.repository.ImprovementProposalRepository;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.ImprovementProposalService;
 
 @Service
@@ -13,50 +14,64 @@ public class ImprovementProposalServiceImpl implements ImprovementProposalServic
 	private ImprovementProposalRepository improvementProposalRepository;
 	
 	@Override
-	public Iterable<ImprovementProposal> listAll() {
-		 return improvementProposalRepository.findAll();
-	}
-
-	@Override
-	public Integer createImprovementProposal(ImprovementProposal i) {
-		Integer response = 0;
+	public ApiResponse listAll() {
+		ApiResponse response = null;
 		try {
-			response = improvementProposalRepository.save(i).getId();
+			Iterable<ImprovementProposal> list = improvementProposalRepository.findAll();
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Integer updateImprovementProposal(ImprovementProposal i) {
-		Integer response = 0;
+	public ApiResponse createImprovementProposal(ImprovementProposal i) {
+		ApiResponse response = null;
 		try {
-			response = improvementProposalRepository.save(i).getId();
+			Integer id = improvementProposalRepository.save(i).getId();
+			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteImprovementProposal(Integer id) {
-		String response = "";
+	public ApiResponse updateImprovementProposal(ImprovementProposal i) {
+		ApiResponse response = null;
+		try {
+			Integer id = improvementProposalRepository.save(i).getId();
+			response = new ApiResponse(id,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse deleteImprovementProposal(Integer id) {
+		ApiResponse response = null;
 		try {
 			improvementProposalRepository.deleteImprovementProposal(id);
-			response = "Deleted";
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Iterable<ImprovementProposal> listByImprovementPlan(Integer id) {
-		Iterable<ImprovementProposal> lista = improvementProposalRepository.findByImprovementPlanId(id);
-		for (ImprovementProposal improvementProposal : lista) {
-			improvementProposal.setImprovementPlan(null);
+	public ApiResponse listByImprovementPlan(Integer id) {
+		ApiResponse response = null;
+		try {
+			Iterable<ImprovementProposal> list = improvementProposalRepository.findByImprovementPlanId(id);
+			response = new ApiResponse(list,200);
+			for (ImprovementProposal improvementProposal : list)
+				improvementProposal.setImprovementPlan(null);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return lista;
+		return response;
 	}
 }

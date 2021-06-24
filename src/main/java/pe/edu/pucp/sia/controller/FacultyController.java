@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.requests.FacultyUpdateCoordinatorRequest;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.FacultyService;
 import pe.edu.pucp.sia.service.impl.FacultyServiceImpl;
 
@@ -27,38 +28,58 @@ public class FacultyController {
 	private FacultyService facultyService = new FacultyServiceImpl();
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listFaculty(){
+	public ResponseEntity<ApiResponse> listFaculty(){
 		logger.info("Entered method listFaculty()");
-		return ResponseEntity.status(HttpStatus.OK).body(facultyService.listAll());
+		ApiResponse response = facultyService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@GetMapping("/listbycoordinator/{id}")
-	public ResponseEntity<Object> listByCoordinator(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> listByCoordinator(@PathVariable Integer id){
 		logger.info("Entered method listByCoordinator()");
-		return ResponseEntity.status(HttpStatus.OK).body(facultyService.listByCoordinator(id));
+		ApiResponse response = facultyService.listByCoordinator(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createFaculty(@RequestBody Faculty f){
+	public ResponseEntity<ApiResponse> createFaculty(@RequestBody Faculty f){
 		logger.info("Entered method createFaculty()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(facultyService.createFaculty(f));
+		ApiResponse response = facultyService.createFaculty(f);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateFaculty(@RequestBody Faculty f){
+	public ResponseEntity<ApiResponse> updateFaculty(@RequestBody Faculty f){
 		logger.info("Entered method updateFaculty()");
-		return ResponseEntity.status(HttpStatus.OK).body(facultyService.updateFaculty(f));
+		ApiResponse response = facultyService.updateFaculty(f);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteFaculty(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> deleteFaculty(@PathVariable Integer id){
 		logger.info("Entered method deleteFaculty()");
-		return ResponseEntity.status(HttpStatus.OK).body(facultyService.deleteFaculty(id));
+		ApiResponse response = facultyService.deleteFaculty(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/setCoordinator")
-	public ResponseEntity<Object> updateFacultyCoordinator(@RequestBody FacultyUpdateCoordinatorRequest f){
+	public ResponseEntity<ApiResponse> updateFacultyCoordinator(@RequestBody FacultyUpdateCoordinatorRequest f){
 		logger.info("Entered method updateFacultyCoordinator()");
-		return ResponseEntity.status(HttpStatus.OK).body(facultyService.updateCoordinator(f.getIdFaculty(),f.getIdCoordinator()));
+		ApiResponse response = facultyService.updateCoordinator(f.getIdFaculty(),f.getIdCoordinator());
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/archive/{id}")
+	public ResponseEntity<ApiResponse> archiveFaculty(@PathVariable Integer id){
+		logger.info("Entered method archiveFaculty()");
+		ApiResponse response = facultyService.archiveFaculty(id,true);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/disarchive/{id}")
+	public ResponseEntity<ApiResponse> disarchiveFaculty(@PathVariable Integer id){
+		logger.info("Entered method disarchiveFaculty()");
+		ApiResponse response = facultyService.archiveFaculty(id,false);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

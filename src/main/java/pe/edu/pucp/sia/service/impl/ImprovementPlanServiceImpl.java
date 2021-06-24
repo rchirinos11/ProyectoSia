@@ -17,6 +17,7 @@ import pe.edu.pucp.sia.repository.SemesterRepository;
 import pe.edu.pucp.sia.requests.CreateImprovementPlanRequest;
 import pe.edu.pucp.sia.requests.CreateImprovementProposalRequest;
 import pe.edu.pucp.sia.requests.ImprovementPlanActivityRequest;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.response.ImprovementPlanDataResponse;
 import pe.edu.pucp.sia.response.ImprovementPlanDataResponseList;
 import pe.edu.pucp.sia.response.ImprovementProposalDataResponse;
@@ -35,20 +36,27 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 	private SemesterRepository semesterRepository;
 	
 	@Override
-	public Iterable<ImprovementPlan> listAll() {
-		 return improvementPlanRepository.findAll();
+	public ApiResponse listAll() {
+		ApiResponse response = null;
+		try {
+			Iterable<ImprovementPlan> list = improvementPlanRepository.findAll();
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
 	}
 
 	@Override
-	public Integer createImprovementPlan(CreateImprovementPlanRequest c) {
-		Integer improvementPlanId = 0;
-		ImprovementPlan i = new ImprovementPlan();
-		ImprovementProposal ip = new ImprovementProposal();
+	public ApiResponse createImprovementPlan(CreateImprovementPlanRequest c) {
+		ApiResponse response = null;
 		try {
+			ImprovementPlan i = new ImprovementPlan();
+			ImprovementProposal ip = new ImprovementProposal();
 			i.setSpecialty(c.getSpecialty());
 			i.setTitle(c.getTitle());
 			i.setOpportunity(c.getOpportunity());
-			improvementPlanId = improvementPlanRepository.save(i).getId();
+			Integer improvementPlanId = improvementPlanRepository.save(i).getId();
 			for(CreateImprovementProposalRequest cip : c.getImprovementProposals()) {
 				ip = new ImprovementProposal();
 				ip.setDescription(cip.getDescription());
@@ -59,15 +67,17 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 					activityRepository.save(a);
 				}
 			}
+
+			response = new ApiResponse(improvementPlanId,201);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return improvementPlanId;
+		return response;
 	}
 
 	@Override
-	public Integer updateImprovementPlan(CreateImprovementPlanRequest ipr) {
-		Integer response = 0;
+	public ApiResponse updateImprovementPlan(CreateImprovementPlanRequest ipr) {
+		ApiResponse response = null;
 		try {
 			Iterable<ImprovementProposal> improvementProposals = improvementProposalRepository.findByImprovementPlanId(ipr.getId());
 			Iterable<Activity> activities = null;
@@ -84,7 +94,7 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 			improvementPlan.setSpecialty(ipr.getSpecialty());
 			improvementPlan.setTitle(ipr.getTitle());
 			improvementPlan.setOpportunity(ipr.getOpportunity());
-			response = improvementPlanRepository.save(improvementPlan).getId();
+			Integer id = improvementPlanRepository.save(improvementPlan).getId();
 			
 			ImprovementProposal improvementProposal = null;
 			for(CreateImprovementProposalRequest iprr : ipr.getImprovementProposals()) {
@@ -105,122 +115,135 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 					activityRepository.save(activity);
 				}
 			}
+			response = new ApiResponse(id,200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public String deleteImprovementPlan(Integer id) {
-		String response = "";
+	public ApiResponse deleteImprovementPlan(Integer id) {
+		ApiResponse response = null;
 		try {
 			improvementPlanRepository.deleteImprovementPlan(id);
-			response = "Deleted";
+			response = new ApiResponse("Success", 200);
 		} catch(Exception ex) {
-			System.out.println(ex.getMessage());
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;
 	}
 
 	@Override
-	public Iterable<ImprovementPlanDataResponse> listBySpecialty(Integer id) {
-		Iterable<ImprovementPlan> lista = improvementPlanRepository.findBySpecialtyId(id);
-		Iterable<ImprovementProposal> improvementProposalList = null;
-		Iterable<Activity> activityList = null;
-		List<ImprovementProposalResponse> improvementProposalResponseList = null;
-		ImprovementPlanDataResponse response = new ImprovementPlanDataResponse();
-		ImprovementProposalResponse ipr = null;
-		List<ImprovementPlanDataResponse> listaResponse = new ArrayList<ImprovementPlanDataResponse>();
-		for (ImprovementPlan improvementPlan : lista) {
-			response = new ImprovementPlanDataResponse();
-			response.setId(improvementPlan.getId());
-			response.setSpecialty(null);
-			response.setTitle(improvementPlan.getTitle());
-			response.setOpportunity(improvementPlan.getOpportunity());
-			improvementProposalResponseList = new ArrayList<ImprovementProposalResponse>();
-			improvementProposalList = improvementProposalRepository.findByImprovementPlanId(improvementPlan.getId());
-			for (ImprovementProposal improvementProposal : improvementProposalList) {
-				ipr = new ImprovementProposalResponse();
-				ipr.setId(improvementProposal.getId());
-				ipr.setDescription(improvementProposal.getDescription());
-				activityList = activityRepository.findByImprovementProposalId(improvementProposal.getId()); 
-				for(Activity activity : activityList) {
-					activity.setImprovementProposal(null);
+	public ApiResponse listBySpecialty(Integer id) {
+		ApiResponse response = null;
+		try{
+			Iterable<ImprovementPlan> lista = improvementPlanRepository.findBySpecialtyId(id);
+			Iterable<ImprovementProposal> improvementProposalList = null;
+			Iterable<Activity> activityList = null;
+			List<ImprovementProposalResponse> improvementProposalResponseList = null;
+			ImprovementPlanDataResponse iPResponse = new ImprovementPlanDataResponse();
+			ImprovementProposalResponse ipr = null;
+			List<ImprovementPlanDataResponse> listaResponse = new ArrayList<ImprovementPlanDataResponse>();
+			for (ImprovementPlan improvementPlan : lista) {
+				iPResponse = new ImprovementPlanDataResponse();
+				iPResponse.setId(improvementPlan.getId());
+				iPResponse.setSpecialty(null);
+				iPResponse.setTitle(improvementPlan.getTitle());
+				iPResponse.setOpportunity(improvementPlan.getOpportunity());
+				improvementProposalResponseList = new ArrayList<ImprovementProposalResponse>();
+				improvementProposalList = improvementProposalRepository.findByImprovementPlanId(improvementPlan.getId());
+				for (ImprovementProposal improvementProposal : improvementProposalList) {
+					ipr = new ImprovementProposalResponse();
+					ipr.setId(improvementProposal.getId());
+					ipr.setDescription(improvementProposal.getDescription());
+					activityList = activityRepository.findByImprovementProposalId(improvementProposal.getId()); 
+					for(Activity activity : activityList) {
+						activity.setImprovementProposal(null);
+					}
+					ipr.setActivities(activityList);
+					improvementProposalResponseList.add(ipr);
 				}
-				ipr.setActivities(activityList);
-				improvementProposalResponseList.add(ipr);
+				iPResponse.setImprovementProposals(improvementProposalResponseList);
+				listaResponse.add(iPResponse);
 			}
-			response.setImprovementProposals(improvementProposalResponseList);
-			listaResponse.add(response);
+			response = new ApiResponse(listaResponse,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
-		return listaResponse;
+		return response;
 	}
 
 	@Override
-	public Iterable<ImprovementPlanDataResponseList> listByActivityStatesAndSemesters(ImprovementPlanActivityRequest i) {
-		Iterable<Activity> activities = null;
-		Integer idIni = i.getIdSemesterStart();
-		Integer idFin = i.getIdSemesterEnd();
+	public ApiResponse listByActivityStatesAndSemesters(ImprovementPlanActivityRequest i) {
+		ApiResponse response = null;
+		try {
+			Iterable<Activity> activities = null;
+			Integer idIni = i.getIdSemesterStart();
+			Integer idFin = i.getIdSemesterEnd();
 
-		Semester semesterIni = semesterRepository.findById(idIni).get();
-		Semester semesterFin = semesterRepository.findById(idFin).get();
+			Semester semesterIni = semesterRepository.findById(idIni).get();
+			Semester semesterFin = semesterRepository.findById(idFin).get();
 
-		activities = activityRepository.listByActivityStatesAndSemesters(semesterIni.getYear()*10+semesterIni.getNumber(),semesterFin.getYear()*10+semesterFin.getNumber(),improvementProposalRepository.findByImprovementPlanIn(improvementPlanRepository.findBySpecialtyId(i.getIdSpecialty())),i.getStates());
-		
-		//hell
-		Integer idProAnt = 0;
-		Integer idPlanAnt = 0;
-		Integer idProCur;
-		Integer idPlanCur;
-		ImprovementPlanDataResponseList ipldr = null;
-		ImprovementProposalDataResponse iprdr = null;
-		List<ImprovementPlanDataResponseList> ipldrs = new ArrayList<ImprovementPlanDataResponseList>();
-		List<ImprovementProposalDataResponse> iprdrs = null;
-		List<Activity> adrs = null;
-		ImprovementPlan ipl = null;
-		ImprovementProposal ipr = null;
-		Activity act = null;
-		for(Activity a : activities) {
-			ipl = a.getImprovementProposal().getImprovementPlan();
-			ipr = a.getImprovementProposal();
-			idProCur = ipr.getId();
-			idPlanCur = ipl.getId();
-			if(idPlanCur != idPlanAnt) {
-				ipldr = new ImprovementPlanDataResponseList();
-				ipldr.setId(ipl.getId());
-				ipldr.setSpecialty(ipl.getSpecialty());
-				ipldr.setTitle(ipl.getTitle());
-				ipldr.setOpportunity(ipl.getOpportunity());
-				iprdrs = new ArrayList<ImprovementProposalDataResponse>();
-				ipldr.setImprovementProposals(iprdrs);
-				
-				ipldrs.add(ipldr);
-			}
-			if(idProCur != idProAnt) {
-				iprdr = new ImprovementProposalDataResponse();
-				iprdr.setId(ipr.getId());
-				iprdr.setDescription(ipr.getDescription());
-				adrs = new ArrayList<Activity>();
-				iprdr.setActivities(adrs);
-				
-				iprdrs.add(iprdr);
-			}
-			act = new Activity();
-			act.setId(a.getId());
-			act.setState(a.getState());
-			act.setDescription(a.getDescription());
-			act.setEvidence(a.getEvidence());
-			act.setSemesterStart(a.getSemesterStart());
-			act.setSemesterEnd(a.getSemesterEnd());
-			act.setResponsible(a.getResponsible());
+			activities = activityRepository.listByActivityStatesAndSemesters(semesterIni.getYear()*10+semesterIni.getNumber(),semesterFin.getYear()*10+semesterFin.getNumber(),improvementProposalRepository.findByImprovementPlanIn(improvementPlanRepository.findBySpecialtyId(i.getIdSpecialty())),i.getStates());
 			
-			adrs.add(act);
-			
-			idPlanAnt = idPlanCur;
-			idProAnt = idProCur;
+			//hell
+			Integer idProAnt = 0;
+			Integer idPlanAnt = 0;
+			Integer idProCur;
+			Integer idPlanCur;
+			ImprovementPlanDataResponseList ipldr = null;
+			ImprovementProposalDataResponse iprdr = null;
+			List<ImprovementPlanDataResponseList> ipldrs = new ArrayList<ImprovementPlanDataResponseList>();
+			List<ImprovementProposalDataResponse> iprdrs = null;
+			List<Activity> adrs = null;
+			ImprovementPlan ipl = null;
+			ImprovementProposal ipr = null;
+			Activity act = null;
+			for(Activity a : activities) {
+				ipl = a.getImprovementProposal().getImprovementPlan();
+				ipr = a.getImprovementProposal();
+				idProCur = ipr.getId();
+				idPlanCur = ipl.getId();
+				if(idPlanCur != idPlanAnt) {
+					ipldr = new ImprovementPlanDataResponseList();
+					ipldr.setId(ipl.getId());
+					ipldr.setSpecialty(ipl.getSpecialty());
+					ipldr.setTitle(ipl.getTitle());
+					ipldr.setOpportunity(ipl.getOpportunity());
+					iprdrs = new ArrayList<ImprovementProposalDataResponse>();
+					ipldr.setImprovementProposals(iprdrs);
+					
+					ipldrs.add(ipldr);
+				}
+				if(idProCur != idProAnt) {
+					iprdr = new ImprovementProposalDataResponse();
+					iprdr.setId(ipr.getId());
+					iprdr.setDescription(ipr.getDescription());
+					adrs = new ArrayList<Activity>();
+					iprdr.setActivities(adrs);
+					
+					iprdrs.add(iprdr);
+				}
+				act = new Activity();
+				act.setId(a.getId());
+				act.setState(a.getState());
+				act.setDescription(a.getDescription());
+				act.setEvidence(a.getEvidence());
+				act.setSemesterStart(a.getSemesterStart());
+				act.setSemesterEnd(a.getSemesterEnd());
+				act.setResponsible(a.getResponsible());
+				
+				adrs.add(act);
+				
+				idPlanAnt = idPlanCur;
+				idProAnt = idProCur;
+			}
+			response = new ApiResponse(ipldrs, 200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
 		}
 		
-		return ipldrs;
+		return response;		
 	}
 }

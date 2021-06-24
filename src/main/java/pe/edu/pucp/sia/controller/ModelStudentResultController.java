@@ -3,7 +3,6 @@ package pe.edu.pucp.sia.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.ModelStudentResult;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.ModelStudentResultService;
 import pe.edu.pucp.sia.service.impl.ModelStudentResultServiceImpl;
 
@@ -27,26 +27,30 @@ public class ModelStudentResultController {
     private ModelStudentResultService modelStudentResultService = new ModelStudentResultServiceImpl();
     
     @GetMapping("/list")
-	public ResponseEntity<Object> listModelStudentResult(){
+	public ResponseEntity<ApiResponse> listModelStudentResult(){
 		logger.info("Entered method listModelStudentResult()");
-		return ResponseEntity.status(HttpStatus.OK).body(modelStudentResultService.listAll());
+		ApiResponse response = modelStudentResultService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createModelStudentResult(@RequestBody ModelStudentResult m){
+	public ResponseEntity<ApiResponse> createModelStudentResult(@RequestBody ModelStudentResult m){
 		logger.info("Entered method createModelStudentResult()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(modelStudentResultService.createModelStudentResult(m));
+		ApiResponse response = modelStudentResultService.createModelStudentResult(m);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateModelStudentResult(@RequestBody ModelStudentResult m){
+	public ResponseEntity<ApiResponse> updateModelStudentResult(@RequestBody ModelStudentResult m){
 		logger.info("Entered method updateModelStudentResult()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(modelStudentResultService.updateModelStudentResult(m));
+		ApiResponse response = modelStudentResultService.updateModelStudentResult(m);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteModelStudentResult(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> deleteModelStudentResult(@PathVariable Integer id){
 		logger.info("Entered method deleteModelStudentResult()");
-		return ResponseEntity.status(HttpStatus.CREATED).body(modelStudentResultService.deleteModelStudentResult(id));
+		ApiResponse response = modelStudentResultService.deleteModelStudentResult(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

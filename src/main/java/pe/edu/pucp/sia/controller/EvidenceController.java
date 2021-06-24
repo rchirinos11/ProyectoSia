@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Evidence;
+import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.EvidenceService;
 import pe.edu.pucp.sia.service.impl.EvidenceServiceImpl;
 
@@ -23,22 +24,26 @@ public class EvidenceController {
 	private EvidenceService evidenceService = new EvidenceServiceImpl(); 
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> listEvidence(){
-		return ResponseEntity.status(HttpStatus.OK).body(evidenceService.listAll());
+	public ResponseEntity<ApiResponse> listEvidence(){
+		ApiResponse response = evidenceService.listAll();
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Object> createEvidence(@RequestBody Evidence e){
-		return ResponseEntity.status(HttpStatus.CREATED).body(evidenceService.createEvidence(e));
+	public ResponseEntity<ApiResponse> createEvidence(@RequestBody Evidence e){
+		ApiResponse response = evidenceService.createEvidence(e);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<Object> updateEvidence(@RequestBody Evidence e){
-		return ResponseEntity.status(HttpStatus.CREATED).body(evidenceService.updateEvidence(e));
+	public ResponseEntity<ApiResponse> updateEvidence(@RequestBody Evidence e){
+		ApiResponse response = evidenceService.updateEvidence(e);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Object> deleteEvidence(@PathVariable Integer id){
-		return ResponseEntity.status(HttpStatus.CREATED).body(evidenceService.deleteEvidence(id));
+	public ResponseEntity<ApiResponse> deleteEvidence(@PathVariable Integer id){
+		ApiResponse response = evidenceService.deleteEvidence(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }
