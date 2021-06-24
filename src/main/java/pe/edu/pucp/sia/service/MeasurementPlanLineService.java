@@ -12,6 +12,7 @@ public interface MeasurementPlanLineService {
 	public ApiResponse listBySpecialtyAndSemester(Integer idSpecialty, Integer idSemester);
 	public ApiResponse listByCourseSemesterTeacher(Integer idCourse, Integer idSemester,Integer idPerson);
 	public ApiResponse listByCourseAndSemester(Integer idCourse, Integer idSemester);
+	public ApiResponse listByCourseAndSemesterPlusCode(Integer idCourse, Integer idSemester);
 	public ApiResponse listBySemesterAndTeachers(Integer idSemester, Integer idPerson);
 	public ApiResponse listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection);
 }

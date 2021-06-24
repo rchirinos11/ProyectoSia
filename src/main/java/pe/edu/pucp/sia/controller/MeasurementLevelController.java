@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.MeasurementLevel;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
+import pe.edu.pucp.sia.requests.MeasurementLevelCopyRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementLevelService;
 import pe.edu.pucp.sia.service.impl.MeasurementLevelServiceImpl;
@@ -73,6 +74,13 @@ public class MeasurementLevelController {
 	public ResponseEntity<ApiResponse> updateCurrentMeasurementLevel(@PathVariable Integer id){
 		logger.info("Entered method updateCurrentMeasurementLevel()");
 		ApiResponse response = measurementLevelService.updateCurrentMeasurementLevel(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/copybyspecialtysemester")
+	public ResponseEntity<ApiResponse> copyBySpecialtySemester(@RequestBody MeasurementLevelCopyRequest mlcr){
+		logger.info("Entered method copyBySpecialtySemester()");
+		ApiResponse response = measurementLevelService.copyBySpecialtySemester(mlcr.getIdSpecialtyFrom(),mlcr.getIdSemesterFrom(),mlcr.getIdSpecialtyTo(),mlcr.getIdSemesterTo());
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }
