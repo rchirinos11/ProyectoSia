@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class StorageController{
 
     @Autowired
-    private StorageService service;
+    private StorageServiceImpl service;
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam(value="file") MultipartFile file){
