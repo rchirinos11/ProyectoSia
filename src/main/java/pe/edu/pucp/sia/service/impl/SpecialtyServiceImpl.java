@@ -16,7 +16,7 @@ import pe.edu.pucp.sia.repository.SpecialtyRepository;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.SpecialtyService;
 
-//import pe.edu.pucp.sia.model.Person;
+import pe.edu.pucp.sia.model.Person;
 
 @Service
 public class SpecialtyServiceImpl implements SpecialtyService{
@@ -308,11 +308,18 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 		}
 		return response;
 	}
-	/*
+	
 	@Override
-	public  Iterable<Person> listTeachersBySpecialty(Integer idSpecialty){
-		Iterable <Person> lista = specialtyRepository.listTeachersBySpecialty(idSpecialty);
-		return lista;
+	public  ApiResponse listTeachersBySpecialty(Integer idSpecialty){
+		ApiResponse response=null;
+		try{
+			Iterable <Person> lista = specialtyRepository.listTeachersBySpecialty(idSpecialty);
+			response = new ApiResponse(lista,200);
+		}
+		catch(Exception ex){
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
 	}
-	*/
+	
 }

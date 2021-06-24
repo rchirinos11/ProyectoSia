@@ -114,9 +114,10 @@ public class SpecialtyController {
 	}
 
 	@GetMapping("/listTeachersBySpecialty/{id}")
-	public ResponseEntity<Object> listTeachersBySpecialty(@PathVariable Integer id){
+	public ResponseEntity<ApiResponse> listTeachersBySpecialty(@PathVariable Integer id){
 		logger.info("Entered method listTeachersBySpecialty()");
-		return ResponseEntity.status(HttpStatus.OK).body(specialtyService.listTeachersBySpecialty(id));
+		ApiResponse response = specialtyService.listTeachersBySpecialty(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 
 }

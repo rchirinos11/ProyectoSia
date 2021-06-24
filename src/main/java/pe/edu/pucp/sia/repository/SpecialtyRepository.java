@@ -5,6 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import pe.edu.pucp.sia.model.Person;
+
 import pe.edu.pucp.sia.model.Specialty;
 
 public interface SpecialtyRepository extends CrudRepository<Specialty,Integer>{
@@ -26,4 +30,7 @@ public interface SpecialtyRepository extends CrudRepository<Specialty,Integer>{
 	public void setPercentage(Integer idSpecialty,Integer percentage);
 	@Procedure("sp_archive_specialty")
 	public void archiveSpecialty(Integer idSpecialty,boolean state);
+
+	@Query(value = "call sp_list_teachers_by_specialty(:in_id_specialty)", nativeQuery = true)
+	public Iterable<Person> listTeachersBySpecialty(@Param("in_id_specialty") Integer idSpecialty);
 }
