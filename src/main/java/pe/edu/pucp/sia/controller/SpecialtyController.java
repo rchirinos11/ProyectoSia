@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Specialty;
-import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.requests.SpecialtyUpdateAssistantRequest;
 import pe.edu.pucp.sia.requests.SpecialtyUpdateCoordinatorRequest;
 import pe.edu.pucp.sia.requests.SpecialtyUpdatePercentageRequest;
