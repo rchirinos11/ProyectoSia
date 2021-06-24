@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.LevelDetail;
 import pe.edu.pucp.sia.model.MeasurementLevel;
+import pe.edu.pucp.sia.model.Semester;
+import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.repository.LevelDetailRepository;
 import pe.edu.pucp.sia.repository.MeasurementLevelRepository;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
@@ -119,6 +121,38 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 					}
 			}
 			response = new ApiResponse(id,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse copyBySpecialtySemester(Integer idSpecialtyFrom, Integer idSemesterFrom, Integer idSpecialtyTo,
+			Integer idSemesterTo) {
+		ApiResponse response = null;
+		List<MeasurementLevel> lista;
+		try {
+			lista = measurementLevelRepository.findBySpecialtyIdAndSemesterIdOrderByOrdenAsc(idSpecialtyFrom, idSemesterFrom);
+			if(!lista.isEmpty()) {
+				//Recorre lista y copia los datos
+				for (MeasurementLevel mlf : lista) {
+					MeasurementLevel mlt = new MeasurementLevel();
+					Specialty specialty = new Specialty();
+					Semester semester = new Semester();
+					specialty.setId(idSpecialtyTo);
+					semester.setId(idSemesterTo);
+					mlt.setSpecialty(specialty);
+					mlt.setSemester(semester);
+					mlt.setName(mlf.getName());
+					mlt.setOrden(mlf.getOrden());
+					mlt.setIsMinimum(mlf.getIsMinimum());
+					measurementLevelRepository.save(mlt);
+				}
+				response = new ApiResponse(lista.size(), 200);
+			}
+			else
+				response = new ApiResponse(400,"Nothing was updated");
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
