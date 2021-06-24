@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import pe.edu.pucp.sia.model.Semester;
 import pe.edu.pucp.sia.service.SemesterService;
 import pe.edu.pucp.sia.service.impl.SemesterServiceImpl;
-
+/*
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
 public class SemesterTester {
@@ -63,3 +63,4 @@ public class SemesterTester {
 		assertThat(list).isEmpty();
 		}
 }
+*/

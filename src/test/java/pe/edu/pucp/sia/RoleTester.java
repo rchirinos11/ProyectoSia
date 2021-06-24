@@ -15,7 +15,7 @@ import pe.edu.pucp.sia.service.RoleService;
 import pe.edu.pucp.sia.service.impl.RoleServiceImpl;
 import java.util.List;
 import java.util.ArrayList;
-
+/*
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
 public class RoleTester {
@@ -87,3 +87,4 @@ public class RoleTester {
 		assertThat(list).isEmpty();
 	}
 }
+*/

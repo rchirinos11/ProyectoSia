@@ -25,7 +25,7 @@ import pe.edu.pucp.sia.service.impl.FacultyServiceImpl;
 import pe.edu.pucp.sia.service.impl.MeasurementLevelServiceImpl;
 import pe.edu.pucp.sia.service.impl.SectionServiceImpl;
 import pe.edu.pucp.sia.service.impl.SpecialtyServiceImpl;
-
+/*
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
 
@@ -93,3 +93,4 @@ public class SectionTester {
 	
 	
 }
+*/

@@ -1,3 +1,5 @@
+
+
 package pe.edu.pucp.sia;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +33,8 @@ import pe.edu.pucp.sia.service.impl.ImprovementPlanServiceImpl;
 import pe.edu.pucp.sia.service.impl.ImprovementProposalServiceImpl;
 import pe.edu.pucp.sia.service.impl.SpecialtyServiceImpl;
 import pe.edu.pucp.sia.service.impl.StateServiceImpl;
+
+/*
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
@@ -153,3 +157,4 @@ class ActivityTester {
 		serviceFaculty.updateFaculty(faculty);	
 		}
 }
+*/

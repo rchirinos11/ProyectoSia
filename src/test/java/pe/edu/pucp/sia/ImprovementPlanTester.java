@@ -20,7 +20,7 @@ import pe.edu.pucp.sia.service.SpecialtyService;
 import pe.edu.pucp.sia.service.impl.FacultyServiceImpl;
 import pe.edu.pucp.sia.service.impl.ImprovementPlanServiceImpl;
 import pe.edu.pucp.sia.service.impl.SpecialtyServiceImpl;
-
+/*
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
 public class ImprovementPlanTester {
@@ -97,3 +97,4 @@ public class ImprovementPlanTester {
 		}
 	
 }
+*/

@@ -19,7 +19,7 @@ import pe.edu.pucp.sia.service.SpecialtyService;
 import pe.edu.pucp.sia.service.impl.FacultyServiceImpl;
 import pe.edu.pucp.sia.service.impl.MeasurementLevelServiceImpl;
 import pe.edu.pucp.sia.service.impl.SpecialtyServiceImpl;
-
+/*
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
 public class MeasurementLevelTester {
@@ -108,3 +108,4 @@ public class MeasurementLevelTester {
 	
 	
 }
+*/

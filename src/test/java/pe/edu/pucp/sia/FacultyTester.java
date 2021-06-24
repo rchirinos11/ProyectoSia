@@ -19,6 +19,8 @@ import pe.edu.pucp.sia.service.PersonService;
 import pe.edu.pucp.sia.service.impl.FacultyServiceImpl;
 import pe.edu.pucp.sia.service.impl.PersonServiceImpl;
 
+/*
+
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
 class FacultyTester {
@@ -107,3 +109,4 @@ class FacultyTester {
 		serviceCoordinator.updatePerson(coordinator);
 	}
 }
+*/

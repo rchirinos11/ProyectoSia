@@ -306,18 +306,4 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 		}
 		return response;
 	}
-	
-	@Override
-	public  ApiResponse listTeachersBySpecialty(Integer idSpecialty){
-		ApiResponse response=null;
-		try{
-			Iterable <Person> lista = specialtyRepository.listTeachersBySpecialty(idSpecialty);
-			response = new ApiResponse(lista,200);
-		}
-		catch(Exception ex){
-			response = new ApiResponse(500, ex.getMessage());
-		}
-		return response;
-	}
-	
 }

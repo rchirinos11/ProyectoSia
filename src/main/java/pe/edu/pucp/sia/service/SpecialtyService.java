@@ -15,5 +15,5 @@ public interface SpecialtyService {
 	public ApiResponse updateAssitant(Integer idSpecialty, Integer idAssistant);
 	public ApiResponse updatePercentage(Integer idSpecialty, Integer successPercentage);
 	public ApiResponse archiveSpecialty(Integer idSpecialty, boolean state);
-	public ApiResponse listTeachersBySpecialty(Integer idSpecialty);
+	
 }

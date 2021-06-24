@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import pe.edu.pucp.sia.model.State;
 import pe.edu.pucp.sia.service.StateService;
 import pe.edu.pucp.sia.service.impl.StateServiceImpl;
-
+/*
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
 class StateTester {
@@ -68,3 +68,4 @@ class StateTester {
 		assertThat(list).isEmpty();
 		}
 }
+*/

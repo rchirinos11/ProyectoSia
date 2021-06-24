@@ -18,7 +18,7 @@ import pe.edu.pucp.sia.service.SpecialtyService;
 import pe.edu.pucp.sia.service.impl.FacultyServiceImpl;
 import pe.edu.pucp.sia.service.impl.PersonServiceImpl;
 import pe.edu.pucp.sia.service.impl.SpecialtyServiceImpl;
-
+/*
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
 public class SpecialtyTester {
@@ -136,3 +136,4 @@ public class SpecialtyTester {
 
 	
 }
+*/

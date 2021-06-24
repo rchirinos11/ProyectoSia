@@ -89,4 +89,11 @@ public class PersonController {
 		ApiResponse response = personService.listUnfinishedTeachers(u);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
+
+	@GetMapping("/listTeachersBySpecialty/{id}")
+	public ResponseEntity<ApiResponse> listTeachersBySpecialty(@PathVariable Integer id){
+		logger.info("Entered method listTeachersBySpecialty()");
+		ApiResponse response = personService.listTeachersBySpecialty(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
 }

@@ -19,7 +19,7 @@ import pe.edu.pucp.sia.service.StudentResultService;
 import pe.edu.pucp.sia.service.impl.FacultyServiceImpl;
 import pe.edu.pucp.sia.service.impl.SpecialtyServiceImpl;
 import pe.edu.pucp.sia.service.impl.StudentResultServiceImpl;
-
+/*
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
 public class StudentResultTester {
@@ -142,3 +142,4 @@ public class StudentResultTester {
 		}
 	}
 }
+*/
