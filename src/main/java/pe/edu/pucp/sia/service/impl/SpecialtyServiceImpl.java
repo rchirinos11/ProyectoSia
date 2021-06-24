@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pe.edu.pucp.sia.model.Faculty;
+//import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Role;
 import pe.edu.pucp.sia.model.Specialty;
@@ -16,7 +16,7 @@ import pe.edu.pucp.sia.repository.SpecialtyRepository;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.SpecialtyService;
 
-import pe.edu.pucp.sia.model.Person;
+//import pe.edu.pucp.sia.model.Person;
 
 @Service
 public class SpecialtyServiceImpl implements SpecialtyService{
@@ -308,10 +308,11 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 		}
 		return response;
 	}
-
+	/*
 	@Override
 	public  Iterable<Person> listTeachersBySpecialty(Integer idSpecialty){
 		Iterable <Person> lista = specialtyRepository.listTeachersBySpecialty(idSpecialty);
 		return lista;
 	}
+	*/
 }
