@@ -106,7 +106,7 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 	public ApiResponse registerStudentMeditions(ResultsPerCard r) {
 		ApiResponse response = null;
 		try {
-			Integer nota,notaMin=0,idSpecialty=0;
+			Integer nota,notaMin=0;
 			Integer total=0,total34=0,cantidad=0;
 			MeasurementLevel ml=null;
 			float media, porcentaje;
@@ -154,10 +154,13 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 					nota=ml.getOrden();
 					//Halla la nota minima una vez
 					if (notaMin==0) {
+						Integer idSpecialty=0,idSemester=0;
 						var val = measurementLevelRepository.findById(ml.getId());	//Para obtener el dato completo con especialidad
-						if (val.isPresent())
-							idSpecialty = val.get().getSpecialty().getId(); 
-						ml = measurementLevelRepository.findBySpecialtyIdAndIsMinimum(idSpecialty, 1);
+						if (val.isPresent()) {
+							idSpecialty = val.get().getSpecialty().getId();
+							idSemester = val.get().getSemester().getId();
+						}
+						ml = measurementLevelRepository.findBySpecialtyIdAndSemesterIdAndIsMinimum(idSpecialty,idSemester, 1);
 						if (ml!=null)
 							notaMin = ml.getOrden();
 					}
@@ -180,6 +183,25 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 			resultsPerCardRepository.registerResultsPerCard(idResult,cantidad,total34,media,porcentaje);
 			response = new ApiResponse("Success",200);
 		}catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse promPercentageByStudentResult(Integer id) {
+		ApiResponse response = null;
+		try {
+			float prom=0;
+			int cant =0;
+			Iterable<ResultsPerCard> list = resultsPerCardRepository.findByMeasurementPlanLineIndicatorStudentResultId(id);
+			for (ResultsPerCard rc : list) {
+				prom += rc.getPercentage();
+				cant +=1;
+			}
+			if(cant!=0)prom = prom/cant;
+			response = new ApiResponse(prom,200);
+		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;

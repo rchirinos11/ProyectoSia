@@ -10,4 +10,5 @@ public interface FacultyService {
 	public ApiResponse updateFaculty(Faculty f);
 	public ApiResponse deleteFaculty(Integer id);
 	public ApiResponse updateCoordinator(Integer idFaculty, Integer idCoordinator);
+	public ApiResponse archiveFaculty(Integer idFaculty, boolean state);
 }

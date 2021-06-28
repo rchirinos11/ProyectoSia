@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.MeasurementLevel;
+import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
+import pe.edu.pucp.sia.requests.MeasurementLevelCopyRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementLevelService;
 import pe.edu.pucp.sia.service.impl.MeasurementLevelServiceImpl;
@@ -32,10 +34,17 @@ public class MeasurementLevelController {
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
-	@GetMapping("/listbyspecialty/{id}")
-	public ResponseEntity<ApiResponse> listByFaculty(@PathVariable Integer id){
-		logger.info("Entered method listBySpecialty()");
-		ApiResponse response = measurementLevelService.listBySpecialty(id);
+	@GetMapping("/listbysemester/{idSemester}")
+	public ResponseEntity<ApiResponse> listBySemester(@PathVariable Integer idSemester){
+		logger.info("Entered method listBySemester()");
+		ApiResponse response = measurementLevelService.listBySemester(idSemester);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/listbyspecialtysemester")
+	public ResponseEntity<ApiResponse> listBySpecialtySemester(@RequestBody MPlanLineSpecialtySemesterRequest lss){
+		logger.info("Entered method listBySpecialtySemester()");
+		ApiResponse response = measurementLevelService.listBySpecialtySemester(lss);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
@@ -65,6 +74,13 @@ public class MeasurementLevelController {
 	public ResponseEntity<ApiResponse> updateCurrentMeasurementLevel(@PathVariable Integer id){
 		logger.info("Entered method updateCurrentMeasurementLevel()");
 		ApiResponse response = measurementLevelService.updateCurrentMeasurementLevel(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/copybyspecialtysemester")
+	public ResponseEntity<ApiResponse> copyBySpecialtySemester(@RequestBody MeasurementLevelCopyRequest mlcr){
+		logger.info("Entered method copyBySpecialtySemester()");
+		ApiResponse response = measurementLevelService.copyBySpecialtySemester(mlcr.getIdSpecialtyFrom(),mlcr.getIdSemesterFrom(),mlcr.getIdSpecialtyTo(),mlcr.getIdSemesterTo());
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

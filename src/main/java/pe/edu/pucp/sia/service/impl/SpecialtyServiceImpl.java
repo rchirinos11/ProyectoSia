@@ -294,4 +294,16 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 		}
 		return response;
 	}
+
+	@Override
+	public ApiResponse archiveSpecialty(Integer idSpecialty, boolean state) {
+		ApiResponse response = null;
+		try {
+			specialtyRepository.archiveSpecialty(idSpecialty,state);
+			response = new ApiResponse("Success", 200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
 }
