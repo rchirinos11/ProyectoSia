@@ -203,7 +203,6 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			for(MeasurementPlanLine mpl : list) {
 				mpl.getCourse().setSpecialty(null);			
 				mpl.setSemester(null);
-				mpl.setResultsPerCards(null);
 			}
 			response = new ApiResponse(list,200);
 		} catch(Exception ex) {

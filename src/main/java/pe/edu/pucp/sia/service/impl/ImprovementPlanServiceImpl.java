@@ -187,7 +187,6 @@ public class ImprovementPlanServiceImpl implements ImprovementPlanService{
 
 			activities = activityRepository.listByActivityStatesAndSemesters(semesterIni.getYear()*10+semesterIni.getNumber(),semesterFin.getYear()*10+semesterFin.getNumber(),improvementProposalRepository.findByImprovementPlanIn(improvementPlanRepository.findBySpecialtyId(i.getIdSpecialty())),i.getStates());
 			
-			//hell
 			Integer idProAnt = 0;
 			Integer idPlanAnt = 0;
 			Integer idProCur;
