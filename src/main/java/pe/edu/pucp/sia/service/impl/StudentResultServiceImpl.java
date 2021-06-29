@@ -194,4 +194,39 @@ public class StudentResultServiceImpl implements StudentResultService{
 		}
 		return response;
 	}
+
+	@Override
+	public ApiResponse listBySemestersPlusPercentage(Integer id_semester_start, Integer id_semester_end){
+		ApiResponse response=null;
+		try {
+			//find by semesters
+			List<StudentResult> listSr=new ArrayList<StudentResult>(); //Change to proper method
+			//Copy as in listBySpecialtySemesterPlusAchievementPercentage
+			List<StudentResultPercentageDataResponse> list= new ArrayList<StudentResultPercentageDataResponse>();
+			Float percentage=100f;
+			Integer contador;
+			for(StudentResult studentResult : listSr) {
+				StudentResultPercentageDataResponse sr= new StudentResultPercentageDataResponse();
+				contador=0;
+				for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
+					Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
+					if(p!=null) {
+						contador++;
+						if(p<percentage)
+							percentage=p;	
+					}									
+				}
+				if(contador==0) percentage=-1f;
+				sr.setStudentResult(studentResult);
+				sr.setAchievementPercentage(percentage);
+				list.add(sr);
+				percentage=100f;
+			}
+			if(list.isEmpty()) response = new ApiResponse("There are not Student Results available for the specified semesters",400);
+			else response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
 }

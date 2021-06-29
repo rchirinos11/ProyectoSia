@@ -13,4 +13,9 @@ public interface StudentResultRepository extends CrudRepository<StudentResult,In
 	
 	@Procedure("sp_clone_student_results")
 	public Integer cloneStudentResults(Integer idSpecialtyFrom, Integer idSemesterFrom, Integer idSpecialtyTo, Integer idSemesterTo);
+
+
+	//Change to the proper procedure
+	@Procedure("sp_clone_student_results")
+	public Integer findBySemesters(Integer id_semester_start,Integer id_semester_end);
 }
