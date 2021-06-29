@@ -122,7 +122,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 								}
 								//Busca si no es profesor de otro curso para quitarle el rol
 								if (find==false)
-									roleRepository.unassignTeacher(idT);
+									roleRepository.unassignTeacher(idTeacher);
 							}
 						}
 						sectionRepository.save(s);
