@@ -26,18 +26,6 @@ public class ResultsPerCard {
 	@Column(name="id_results_per_card")
 	private Integer id;
 	
-	/*@JoinColumn(name="id_indicator", referencedColumnName = "id_indicator")
-	@ManyToOne
-	private Indicator indicator;*/
-	
-	/*@JoinColumn(name="id_measurement_card", referencedColumnName = "id_measurement_card")
-	@ManyToOne
-	private MeasurementCard measurementCard;*/
-	
-	/*@JoinColumn(name="id_measurement_level", referencedColumnName = "id_measurement_level")
-	@ManyToOne
-	private MeasurementLevel measurementLevel;*/
-	
 	@JsonIgnore
 	@JoinColumn(name="id_measurement_plan_line", referencedColumnName = "id_measurement_plan_line")
 	@ManyToOne
