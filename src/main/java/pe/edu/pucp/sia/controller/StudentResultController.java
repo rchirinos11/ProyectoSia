@@ -96,7 +96,7 @@ public class StudentResultController {
 	@PostMapping("/listbysemesterspluspercentage")
 	public ResponseEntity<ApiResponse> listBySemestersPlusAchievementPercentage(@RequestBody StudentResultSemestersRequest srRequest){
 		logger.info("Entered method listBySemestersPlusAchievementPercentage()");
-		ApiResponse response = studentResultService.listBySemestersPlusAchievementPercentage(srRequest.getIdSemester1(),srRequest.getIdSemester2());
+		ApiResponse response = studentResultService.listBySemestersPlusAchievementPercentage(srRequest.getIdSemesterStart(),srRequest.getIdSemesterEnd());
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }
