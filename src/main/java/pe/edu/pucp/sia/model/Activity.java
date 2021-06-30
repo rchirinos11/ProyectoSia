@@ -19,22 +19,15 @@ public class Activity {
 	@Id @Column(name="id_activity") 
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
-	@ManyToOne
-	@JoinColumn(name="id_state")
+	@ManyToOne @JoinColumn(name="id_state")
 	private State state;
-	@ManyToOne
-	@JoinColumn(name="id_improvement_proposal")
+	@ManyToOne @JoinColumn(name="id_improvement_proposal")
 	private ImprovementProposal improvementProposal;
 	private String description;
 	private String evidence;
-	//private Integer yearStart;
-	//private Integer yearEnd;
-	@ManyToOne
-	@JoinColumn(name="id_semester_start")
+	@ManyToOne @JoinColumn(name="id_semester_start")
 	private Semester semesterStart;
-	@ManyToOne
-	@JoinColumn(name="id_semester_end")
+	@ManyToOne @JoinColumn(name="id_semester_end")
 	private Semester semesterEnd;
 	private String responsible;
-	private boolean active=true;
 }

@@ -14,5 +14,5 @@ public interface PersonService {
 	public ApiResponse loginPerson(String email);	
 	public ApiResponse listFacultiesSpecialties(String email);
 	public ApiResponse listUnfinishedTeachers(UnfinishedTeachersRequest u);
-	public ApiResponse listTeachersBySpecialty(Integer idSpecialty);
+	public ApiResponse listAssignedTeachers(UnfinishedTeachersRequest u);
 }

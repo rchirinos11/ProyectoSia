@@ -18,5 +18,4 @@ public class State {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	private String description;
-	private boolean active=true;
 }

@@ -165,17 +165,14 @@ public class PersonServiceImpl implements PersonService{
 	}
 
 	@Override
-	public ApiResponse listTeachersBySpecialty(Integer idSpecialty){
-		ApiResponse response=null;
-		try{
-			Iterable <Person> list = personRepository.listTeachersBySpecialty(idSpecialty);
-			for (Person p : list)
-				p.setRoleList(null);
-			response = new ApiResponse(list,200);
-		}
-		catch(Exception ex){
+	public ApiResponse listAssignedTeachers(UnfinishedTeachersRequest u) {
+		ApiResponse response = null;
+		try {
+			Iterable<Person> teachers = personRepository.listAssignedTeachers(u.getIdSemester(),u.getIdSpecialty());
+			response = new ApiResponse(teachers,200);			
+		}catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
-		}
+		}	
 		return response;
 	}
 }

@@ -112,7 +112,6 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 						
 						//Verifica si fueron removidos los originales
 						if (!teachersOld.isEmpty()) {
-							List<Integer> teachersRemove = new ArrayList<>();
 							boolean find=false;
 							for(Integer idTeacher : teachersOld){
 								for(Person t : s.getTeachers()) {
@@ -121,12 +120,9 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 										break;
 									}
 								}
+								//Busca si no es profesor de otro curso para quitarle el rol
 								if (find==false)
-									teachersRemove.add(idTeacher);
-							}
-							//Busca si no es profesor de otro curso para quitarle el rol
-							for(Integer idT : teachersRemove){
-								roleRepository.unassignTeacher(idT);
+									roleRepository.unassignTeacher(idTeacher);
 							}
 						}
 						sectionRepository.save(s);
