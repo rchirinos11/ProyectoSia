@@ -18,7 +18,7 @@ public interface StudentResultRepository extends CrudRepository<StudentResult,In
 	public Integer cloneStudentResults(Integer idSpecialtyFrom, Integer idSemesterFrom, Integer idSpecialtyTo, Integer idSemesterTo);
 
 
-	//sp not implemented yet
+	//sp implementd and functional. If method fails, delete
 	@Query(value = "call sp_list_student_result_by_semesters(:in_id_semester_start,:in_id_semester_end)", nativeQuery = true)
 	public List<StudentResult> findBySemesters(@Param("in_id_semester_start")Integer id_semester_start,@Param("in_id_semester_end")Integer id_semester_end);
 }

@@ -195,6 +195,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 		return response;
 	}
 
+	//New method. If fails, delete
 	@Override
 	public ApiResponse listBySemestersPlusAchievementPercentage(Integer id_semester_start, Integer id_semester_end){
 		ApiResponse response=null;
