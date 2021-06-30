@@ -89,4 +89,12 @@ public class PersonController {
 		ApiResponse response = personService.listUnfinishedTeachers(u);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
+	
+	@PostMapping("/listassignedteachers")
+	public ResponseEntity<ApiResponse> listassignedteachers(@RequestBody UnfinishedTeachersRequest u){
+		logger.info("Entered method listAssignedTeachers()");
+		ApiResponse response = personService.listAssignedTeachers(u);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
 }
