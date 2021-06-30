@@ -196,12 +196,10 @@ public class StudentResultServiceImpl implements StudentResultService{
 	}
 
 	@Override
-	public ApiResponse listBySemestersPlusPercentage(Integer id_semester_start, Integer id_semester_end){
+	public ApiResponse listBySemestersPlusAchievementPercentage(Integer id_semester_start, Integer id_semester_end){
 		ApiResponse response=null;
 		try {
-			//find by semesters
-			List<StudentResult> listSr=new ArrayList<StudentResult>(); //Change to proper method
-			//Copy as in listBySpecialtySemesterPlusAchievementPercentage
+			List<StudentResult> listSr=studentResultRepository.findBySemesters(id_semester_start, id_semester_end);
 			List<StudentResultPercentageDataResponse> list= new ArrayList<StudentResultPercentageDataResponse>();
 			Float percentage=100f;
 			Integer contador;
