@@ -221,8 +221,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 				list.add(sr);
 				percentage=100f;
 			}
-			if(list.isEmpty()) response = new ApiResponse("There are not Student Results available for the specified semesters",400);
-			else response = new ApiResponse(list,200);
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
