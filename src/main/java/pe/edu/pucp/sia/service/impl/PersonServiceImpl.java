@@ -163,4 +163,16 @@ public class PersonServiceImpl implements PersonService{
 		}	
 		return response;
 	}
+
+	@Override
+	public ApiResponse listAssignedTeachers(UnfinishedTeachersRequest u) {
+		ApiResponse response = null;
+		try {
+			Iterable<Person> teachers = personRepository.listAssignedTeachers(u.getIdSemester(),u.getIdSpecialty());
+			response = new ApiResponse(teachers,200);			
+		}catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}	
+		return response;
+	}
 }
