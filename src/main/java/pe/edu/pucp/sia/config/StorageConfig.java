@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class StorageConfig {
 
     @Bean
-    private AmazonS3 generateS3client(){
+    public AmazonS3 generateS3client(){
         return AmazonS3ClientBuilder.standard().withCredentials(new InstanceProfileCredentialsProvider(false)).build();
     }
 }
