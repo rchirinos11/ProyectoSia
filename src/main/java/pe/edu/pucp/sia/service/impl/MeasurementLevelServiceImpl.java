@@ -1,16 +1,21 @@
 package pe.edu.pucp.sia.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.LevelDetail;
+import pe.edu.pucp.sia.model.Measurement;
 import pe.edu.pucp.sia.model.MeasurementLevel;
+import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Semester;
 import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.repository.LevelDetailRepository;
 import pe.edu.pucp.sia.repository.MeasurementLevelRepository;
+import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
+import pe.edu.pucp.sia.repository.SemesterRepository;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementLevelService;
@@ -21,7 +26,10 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 
 	@Autowired
 	private LevelDetailRepository levelDetailRepository;
-
+	
+	@Autowired
+	private ResultsPerCardRepository resultsPerCardRepository;
+	
 	@Override
 	public ApiResponse listAll() {
 		ApiResponse response = null;
@@ -105,6 +113,8 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 	@Override
 	public ApiResponse updateCurrentMeasurementLevel(Integer idMeasurement) {
 		ApiResponse response = null;
+		List<ResultsPerCard> listaRPC = new ArrayList<ResultsPerCard>();
+		Integer notaMin;
 		try {
 			Integer specialtyId = 0;
 			MeasurementLevel ml = measurementLevelRepository.findById(idMeasurement).get();
@@ -120,6 +130,38 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 							measurementLevelRepository.save(m);
 					}
 			}
+			//Actualiza ResultsPerCard por el nuevo mínimo
+			notaMin = ml.getOrden();
+			listaRPC = resultsPerCardRepository.findByMeasurementPlanLineIndicatorStudentResultSpecialtyIdAndMeasurementPlanLineSemesterId(ml.getSpecialty().getId(),ml.getSemester().getId());
+			for (ResultsPerCard rpc : listaRPC) {
+				List <Measurement> listaM = rpc.getMeasurements();
+				Integer total34=0,nota,total;
+				float porcentaje;
+				//Lista los measurements de cada resultPerCard
+				if (listaM!=null) {
+					for (Measurement me : listaM) {
+						MeasurementLevel mlevel;
+						mlevel = me.getMeasurementLevel();
+						if (mlevel==null)
+							nota=0;
+						else {
+							nota=mlevel.getOrden();
+							if (nota>=notaMin)
+								total34++;
+						}
+					}
+					//Actualiza los aprobados y el porcentaje
+					total = rpc.getTotalStudents();
+					if (total==0)
+						porcentaje = 0;
+					else
+						porcentaje = (float)total34/total;
+					rpc.setTotalSuccessful(total34);
+					rpc.setPercentage(porcentaje);
+					resultsPerCardRepository.registerResultsPerCard(rpc.getId(),total,total34,rpc.getAverage(),porcentaje);
+				}
+			}
+			
 			response = new ApiResponse(id,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
