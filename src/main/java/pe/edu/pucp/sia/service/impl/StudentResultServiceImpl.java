@@ -207,19 +207,23 @@ public class StudentResultServiceImpl implements StudentResultService{
 			List<StudentResult> listSr=studentResultRepository.findBySemesters(id_semester_start, id_semester_end);
 			List<StudentResultPercentageDataResponse> list= new ArrayList<StudentResultPercentageDataResponse>();
 			Float percentage=100f;
-			Integer contador;
+			Integer counter;
+			Integer counterTotal;
 			for(StudentResult studentResult : listSr) {
 				StudentResultPercentageDataResponse sr= new StudentResultPercentageDataResponse();
-				contador=0;
+				counter=0;
+				counterTotal=0;
 				for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
+					counterTotal++;
 					Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
 					if(p!=null) {
-						contador++;
+						counter++;
 						if(p<percentage)
 							percentage=p;	
 					}									
 				}
-				if(contador==0) percentage=-1f;
+				if(counter==0) percentage=-1f;
+				if(counter!=counterTotal) percentage=-2f;
 				sr.setStudentResult(studentResult);
 				sr.setAchievementPercentage(percentage);
 				list.add(sr);
