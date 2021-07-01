@@ -169,11 +169,9 @@ public class StudentResultServiceImpl implements StudentResultService{
 					List<ResultsPerCard> rcs=resultsPerCardRepository.listResultsPerCardByIndicatorAll(indicator.getId());
 					if(rcs!=null) {
 						for(ResultsPerCard rc : rcs) {
-							if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=null) {
 								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
 									evalua=0;
-								}
-							}
+								}					
 						}
 					}
 					Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
