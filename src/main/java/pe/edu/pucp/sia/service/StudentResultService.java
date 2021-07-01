@@ -16,4 +16,6 @@ public interface StudentResultService {
 	public ApiResponse updateStudentResult(StudentResult sr);
 	public ApiResponse deleteStudentResult(Integer id);
 	public ApiResponse copyBySpecialtySemester(Integer idSpecialtyFrom, Integer idSemesterFrom, Integer idSpecialtyTo, Integer idSemesterTo);
+	 //New method, if fails, delete
+	public ApiResponse listBySemestersPlusAchievementPercentage(Integer id_semester_start, Integer id_semester_end);
 }

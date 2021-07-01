@@ -20,6 +20,8 @@ import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.StudentResultService;
 import pe.edu.pucp.sia.service.impl.StudentResultServiceImpl;
 
+import pe.edu.pucp.sia.requests.StudentResultSemestersRequest;
+
 @RestController
 @RequestMapping("/studentresult")
 public class StudentResultController {
@@ -95,6 +97,14 @@ public class StudentResultController {
 	public ResponseEntity<ApiResponse> copyBySpecialtySemester(@RequestBody StudentResultCopyRequest srRequest){
 		logger.info("Entered method copyBySpecialtySemester()");
 		ApiResponse response = studentResultService.copyBySpecialtySemester(srRequest.getIdSpecialtyFrom(),srRequest.getIdSemesterFrom(),srRequest.getIdSpecialtyTo(),srRequest.getIdSemesterTo());
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+
+	//Method inserted. If fails, delete this
+	@PostMapping("/listbysemesterspluspercentage")
+	public ResponseEntity<ApiResponse> listBySemestersPlusAchievementPercentage(@RequestBody StudentResultSemestersRequest srRequest){
+		logger.info("Entered method listBySemestersPlusAchievementPercentage()");
+		ApiResponse response = studentResultService.listBySemestersPlusAchievementPercentage(srRequest.getIdSemesterStart(),srRequest.getIdSemesterEnd());
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

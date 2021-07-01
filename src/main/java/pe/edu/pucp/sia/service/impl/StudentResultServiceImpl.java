@@ -201,6 +201,42 @@ public class StudentResultServiceImpl implements StudentResultService{
 		return response;
 	}
 
+	//New method. If fails, delete
+	@Override
+	public ApiResponse listBySemestersPlusAchievementPercentage(Integer id_semester_start, Integer id_semester_end){
+		ApiResponse response=null;
+		try {
+			List<StudentResult> listSr=studentResultRepository.findBySemesters(id_semester_start, id_semester_end);
+			List<StudentResultPercentageDataResponse> list= new ArrayList<StudentResultPercentageDataResponse>();
+			Float percentage=100f;
+			Integer counter;
+			Integer counterTotal;
+			for(StudentResult studentResult : listSr) {
+				StudentResultPercentageDataResponse sr= new StudentResultPercentageDataResponse();
+				counter=0;
+				counterTotal=0;
+				for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
+					counterTotal++;
+					Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
+					if(p!=null) {
+						counter++;
+						if(p<percentage)
+							percentage=p;	
+					}									
+				}
+				if(counter==0) percentage=-1f;
+				else if(counter!=counterTotal) percentage=-2f;			
+				sr.setStudentResult(studentResult);
+				sr.setAchievementPercentage(percentage);
+				list.add(sr);
+				percentage=100f;
+			}
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
 	@Override
 	public ApiResponse listByCourseSemesterPlusSuccess(MPlanLineCourseSemesterRequest lss) {
 		ApiResponse response = null;
