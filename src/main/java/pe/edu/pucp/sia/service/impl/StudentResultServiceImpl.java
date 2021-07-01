@@ -171,7 +171,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 					}									
 				}
 				if(counter==0) percentage=-1f;
-				if(counter!=counterTotal) percentage=-2f;
+				else if(counter!=counterTotal) percentage=-2f;			
 				sr.setStudentResult(studentResult);
 				sr.setAchievementPercentage(percentage);
 				list.add(sr);
