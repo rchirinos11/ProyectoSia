@@ -19,9 +19,11 @@ import pe.edu.pucp.sia.repository.MeasurementLevelRepository;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.StudentResultRepository;
+import pe.edu.pucp.sia.requests.MPlanLineCourseSemesterRequest;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.response.StudentResultPercentageDataResponse;
+import pe.edu.pucp.sia.response.StudentResultSuccessDataResponse;
 import pe.edu.pucp.sia.service.IndicatorService;
 import pe.edu.pucp.sia.service.StudentResultService;
 
@@ -193,6 +195,34 @@ public class StudentResultServiceImpl implements StudentResultService{
 				response = new ApiResponse(count, 200);
 			else
 				response = new ApiResponse(400,"Nothing was updated");
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse listByCourseSemesterPlusSuccess(MPlanLineCourseSemesterRequest lss) {
+		ApiResponse response = null;
+		try {
+			List<StudentResult> listSr = studentResultRepository.listStudentResultBySemesterCourse(lss.getIdSemester(),lss.getIdCourse());
+			List<StudentResultSuccessDataResponse> list= new ArrayList<StudentResultSuccessDataResponse>();
+			Integer counter;
+			for(StudentResult studentResult : listSr) {
+				StudentResultSuccessDataResponse sr= new StudentResultSuccessDataResponse();
+				counter=0;
+				for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
+					Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
+					if(p!=null) {
+						counter++;
+					}									
+				}
+				sr.setStudentResult(studentResult);
+				if (counter!=0) sr.setSuccess(1);
+				else sr.setSuccess(-1);				
+				list.add(sr);
+			}
+			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}

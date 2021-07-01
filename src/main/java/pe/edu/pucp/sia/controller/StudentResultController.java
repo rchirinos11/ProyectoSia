@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.StudentResult;
+import pe.edu.pucp.sia.requests.MPlanLineCourseSemesterRequest;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.requests.StudentResultCopyRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
@@ -55,6 +56,13 @@ public class StudentResultController {
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 
+	@PostMapping("/listbycoursesemesterplussuccess")
+	public ResponseEntity<ApiResponse> listByCourseSemesterPlusSuccess(@RequestBody MPlanLineCourseSemesterRequest lss){
+		logger.info("Entered method listByCourseSemesterPlusSuccess()");
+		ApiResponse response = studentResultService.listByCourseSemesterPlusSuccess(lss);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
 	@PostMapping("/listbyspecialtysemesterplusindicator")
 	public ResponseEntity<ApiResponse> listBySpecialtySemesterPlusIndicator(@RequestBody MPlanLineSpecialtySemesterRequest lss){
 		logger.info("Entered method listBySpecialtyPlusIndicator()");
