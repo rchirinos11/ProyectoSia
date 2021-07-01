@@ -1,5 +1,4 @@
-package pe.edu.pucp.sia.response;
-
+package pe.edu.pucp.sia.model.dozers;
 
 import java.util.List;
 
@@ -10,9 +9,8 @@ import pe.edu.pucp.sia.model.Indicator;
 import pe.edu.pucp.sia.model.Semester;
 import pe.edu.pucp.sia.model.Specialty;
 
-
 @Getter @Setter
-public class StudentResultResponse {
+public class StudentResultDozer {
     private Integer id;
 
 	private Specialty specialty;
