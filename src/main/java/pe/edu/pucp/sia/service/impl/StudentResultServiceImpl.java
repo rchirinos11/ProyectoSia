@@ -13,7 +13,6 @@ import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Indicator;
 import pe.edu.pucp.sia.model.StudentResult;
-import pe.edu.pucp.sia.model.dozers.StudentResultDozer;
 import pe.edu.pucp.sia.repository.IndicatorRepository;
 import pe.edu.pucp.sia.repository.MeasurementLevelRepository;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
@@ -136,14 +135,14 @@ public class StudentResultServiceImpl implements StudentResultService{
 	private ApiResponse mapListDTO(List<StudentResult> studentResults){
 		ApiResponse response = null;
 		try{
-			List<StudentResultDozer> studentResultDozers = new ArrayList<>();
+			List<StudentResultResponse> studentResultResponses = new ArrayList<>();
 			for(StudentResult s: studentResults){
-				StudentResultDozer studentResultDozer = new StudentResultDozer();
-				mapper.map(s,studentResultDozer);
-				studentResultDozer.setIndicators(indicatorRepository.findBystudentResultIdOrderByCode(studentResultDozer.getId()));
-				studentResultDozers.add(studentResultDozer);
+				StudentResultResponse studentResultResponse = new StudentResultResponse();
+				mapper.map(s,studentResultResponse);
+				studentResultResponse.setIndicators(indicatorRepository.findBystudentResultIdOrderByCode(studentResultResponse.getId()));
+				studentResultResponses.add(studentResultResponse);
 			}
-			response = new ApiResponse(studentResultDozers,200);
+			response = new ApiResponse(studentResultResponses,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
