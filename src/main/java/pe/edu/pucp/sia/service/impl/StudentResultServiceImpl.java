@@ -22,6 +22,7 @@ import pe.edu.pucp.sia.requests.MPlanLineCourseSemesterRequest;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.response.StudentResultPercentageDataResponse;
+import pe.edu.pucp.sia.response.StudentResultResponse;
 import pe.edu.pucp.sia.response.StudentResultSuccessDataResponse;
 import pe.edu.pucp.sia.service.IndicatorService;
 import pe.edu.pucp.sia.service.StudentResultService;
