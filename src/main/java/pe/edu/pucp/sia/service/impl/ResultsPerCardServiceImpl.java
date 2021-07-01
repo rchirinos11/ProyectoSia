@@ -171,15 +171,15 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 				cantidad++;
 			}
 			//Calcula resultados totales
-			if (cantidad == 0)
+			if (cantidad == 0) {
 				media = 0;
-			else
-				media = (float)total/cantidad;
-			
-			if (total==0)
 				porcentaje = 0;
-			else
-				porcentaje = (float)total34/total;
+			}
+			else {
+				media = (float)total/cantidad;
+				porcentaje = (float)total34/cantidad;
+			}
+				
 			resultsPerCardRepository.registerResultsPerCard(idResult,cantidad,total34,media,porcentaje);
 			response = new ApiResponse("Success",200);
 		}catch(Exception ex) {
