@@ -159,12 +159,21 @@ public class StudentResultServiceImpl implements StudentResultService{
 			Float percentage=100f;
 			Integer counter;
 			Integer counterTotal;
+			Integer evalua=1;
 			for(StudentResult studentResult : listSr) {
 				StudentResultPercentageDataResponse sr= new StudentResultPercentageDataResponse();
 				counter=0;
 				counterTotal=0;
 				for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
 					counterTotal++;
+					List<ResultsPerCard> rcs=resultsPerCardRepository.listResultsPerCardByIndicatorAll(indicator.getId());
+					if(rcs!=null) {
+						for(ResultsPerCard rc : rcs) {
+								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
+									evalua=0;
+								}					
+						}
+					}
 					Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
 					if(p!=null) {
 						counter++;
@@ -172,10 +181,28 @@ public class StudentResultServiceImpl implements StudentResultService{
 							percentage=p;	
 					}									
 				}
-				if(counter==0) percentage=-1f;
-				else if(counter!=counterTotal) percentage=-2f;			
+				if(counter==0) {
+					percentage=0f;
+					sr.setFlagg(1);
+				}
+				else {
+					if(counter!=counterTotal) {
+						percentage=0f;		
+						sr.setFlagg(2);
+					}
+					else {
+						if(counter==counterTotal) {
+							sr.setFlagg(3);
+							if(evalua==1) {
+								sr.setFlagg(4);
+							}								
+						}
+				
+					}
+				}
 				sr.setStudentResult(studentResult);
 				sr.setAchievementPercentage(percentage);
+				
 				list.add(sr);
 				percentage=100f;
 			}

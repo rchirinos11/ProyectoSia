@@ -8,4 +8,5 @@ import pe.edu.pucp.sia.model.StudentResult;
 public class StudentResultPercentageDataResponse {
 	StudentResult studentResult;
 	Float achievementPercentage;
+	Integer flagg;
 }

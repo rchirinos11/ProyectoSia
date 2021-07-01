@@ -27,5 +27,14 @@ public interface ResultsPerCardRepository extends CrudRepository <ResultsPerCard
 	@Query(value = "call sp_list_results_per_card_by_indicator(:in_id_indicator)", nativeQuery = true)
 	public Float listResultsPerCardByIndicator(@Param("in_id_indicator") Integer idIndicator);
 	
+	@Query(value = "call sp_update_percentage_results_per_card(:in_id_semester,:in_id_specialty,:in_id_results_per_card)", nativeQuery = true)
+	public void updatePercentageResutlsPerCard(@Param("in_id_semester") Integer idSemester,@Param("in_id_specialty") Integer idSpecialty,@Param("in_id_results_per_card") Integer idResultsPerCard);
+	
+	@Query(value = "call sp_list_results_per_card_by_indicator_all(:in_id_indicator)", nativeQuery = true)
+	public List<ResultsPerCard> listResultsPerCardByIndicatorAll(@Param("in_id_indicator") Integer idIndicator);
+	
+	@Query(value = "call sp_evalute_student_result_total_measured(:in_id_results_per_card)", nativeQuery = true)
+	public Float evaluaStudentResultTotalMeasured(@Param("in_id_results_per_card") Integer idResultsPerCard);
+	
 	
 }
