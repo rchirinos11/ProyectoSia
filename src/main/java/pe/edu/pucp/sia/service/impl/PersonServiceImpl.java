@@ -10,6 +10,7 @@ import pe.edu.pucp.sia.model.Specialty;
 import pe.edu.pucp.sia.repository.FacultyRepository;
 import pe.edu.pucp.sia.repository.PersonRepository;
 import pe.edu.pucp.sia.repository.SpecialtyRepository;
+import pe.edu.pucp.sia.requests.MultiplePersonRequest;
 import pe.edu.pucp.sia.requests.UnfinishedTeachersRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.response.PersonDataResponse;
@@ -173,6 +174,21 @@ public class PersonServiceImpl implements PersonService{
 		}catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}	
+		return response;
+	}
+
+	@Override
+	public ApiResponse createMultiplePerson(MultiplePersonRequest m) {
+		ApiResponse response = null;
+		try {
+			Integer id = 0;
+			for(Person p : m.getPersons()) {
+				id = personRepository.save(p).getId();
+			}
+			response = new ApiResponse(id,201);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
 		return response;
 	}
 }

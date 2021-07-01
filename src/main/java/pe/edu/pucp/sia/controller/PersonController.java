@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Person;
+import pe.edu.pucp.sia.requests.MultiplePersonRequest;
 import pe.edu.pucp.sia.requests.UnfinishedTeachersRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.PersonService;
@@ -52,6 +53,13 @@ public class PersonController {
 	public ResponseEntity<ApiResponse> createPerson(@RequestBody Person p){
 		logger.info("Entered method createPerson()");
 		ApiResponse response = personService.createPerson(p);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/createmultiple")
+	public ResponseEntity<ApiResponse> createMultiplePerson(@RequestBody MultiplePersonRequest m){
+		logger.info("Entered method createMultiplePerson()");
+		ApiResponse response = personService.createMultiplePerson(m);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
