@@ -27,7 +27,7 @@ public class StudentResult {
 	@ManyToOne
 	@JoinColumn(name="id_semester")
 	private Semester semester;
-	private int orderNumber;
+	private String code;
 	private String description;
 	//private boolean active=true;
 }

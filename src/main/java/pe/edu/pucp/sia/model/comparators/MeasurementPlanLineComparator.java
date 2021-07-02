@@ -8,7 +8,7 @@ public class MeasurementPlanLineComparator implements Comparator<MeasurementPlan
 
     @Override
     public int compare(MeasurementPlanLine o1, MeasurementPlanLine o2) {
-        return o1.getIndicator().getStudentResult().getOrderNumber()-(o2.getIndicator().getStudentResult().getOrderNumber());
+        return o1.getIndicator().getStudentResult().getCode().compareTo(o2.getIndicator().getStudentResult().getCode());
         
     }
     

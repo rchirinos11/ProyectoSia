@@ -107,7 +107,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 	public ApiResponse listBySpecialtySemester(MPlanLineSpecialtySemesterRequest lss) {
 		ApiResponse response = null;
 		try {
-			Iterable<StudentResult> list = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByOrderNumber(lss.getIdSpecialty(),lss.getIdSemester());
+			Iterable<StudentResult> list = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByCode(lss.getIdSpecialty(),lss.getIdSemester());
 			for (StudentResult studentResult : list) {
 				studentResult.setSpecialty(null);
 			}
@@ -122,7 +122,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 	public ApiResponse listBySpecialtySemesterPlusIndicator(MPlanLineSpecialtySemesterRequest lss) {
 		ApiResponse response = null;
 		try {
-			List<StudentResult> list = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByOrderNumber(lss.getIdSpecialty(),lss.getIdSemester());
+			List<StudentResult> list = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByCode(lss.getIdSpecialty(),lss.getIdSemester());
 			for (StudentResult studentResult : list) {
 				studentResult.setSpecialty(null);
 			}
@@ -154,7 +154,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 	public ApiResponse listBySpecialtySemesterPlusAchievementPercentage(MPlanLineSpecialtySemesterRequest lss) {
 		ApiResponse response = null;
 		try {
-			List<StudentResult> listSr = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByOrderNumber(lss.getIdSpecialty(),lss.getIdSemester());
+			List<StudentResult> listSr = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByCode(lss.getIdSpecialty(),lss.getIdSemester());
 			List<StudentResultPercentageDataResponse> list= new ArrayList<StudentResultPercentageDataResponse>();
 			Float percentage=100f;
 			Integer counter;

@@ -14,7 +14,7 @@ import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.StudentResult;
 
 public interface StudentResultRepository extends CrudRepository<StudentResult,Integer>{
-	public List<StudentResult> findBySpecialtyIdAndSemesterIdOrderByOrderNumber(Integer idSpecialty, Integer idSemester);
+	public List<StudentResult> findBySpecialtyIdAndSemesterIdOrderByCode(Integer idSpecialty, Integer idSemester);
 	public Iterable<StudentResult> findBySemesterId(Integer idSemester);
 	
 	@Procedure("sp_clone_student_results")
