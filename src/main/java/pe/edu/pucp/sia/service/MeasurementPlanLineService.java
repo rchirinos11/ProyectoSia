@@ -1,6 +1,7 @@
 package pe.edu.pucp.sia.service;
 
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
+import pe.edu.pucp.sia.requests.MPlanLineBatchRegisterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 
 public interface MeasurementPlanLineService {
@@ -15,4 +16,5 @@ public interface MeasurementPlanLineService {
 	public ApiResponse listByCourseAndSemesterPlusCode(Integer idCourse, Integer idSemester);
 	public ApiResponse listBySemesterAndTeachers(Integer idSemester, Integer idPerson);
 	public ApiResponse listByCourseAndSemesterAndSchedule(Integer idCourse, Integer idSemester,Integer idSection);
+	public ApiResponse registerMeasurementPlanLineBatch(MPlanLineBatchRegisterRequest mplRequest);
 }
