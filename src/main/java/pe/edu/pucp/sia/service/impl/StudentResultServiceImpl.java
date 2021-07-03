@@ -320,8 +320,8 @@ public class StudentResultServiceImpl implements StudentResultService{
 						if(p!=null) {
 							icp.setPercentage(p);
 						}			
-						listICP.add(icp);
 					}
+					listICP.add(icp);
 				}
 				sr.setStudentResult(studentResult);
 				sr.setListICP(listICP);	
