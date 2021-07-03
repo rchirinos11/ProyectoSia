@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Measurement;
+import pe.edu.pucp.sia.requests.MultipleMeasurementRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementService;
 import pe.edu.pucp.sia.service.impl.MeasurementServiceImpl;
@@ -36,6 +37,13 @@ public class MeasurementController {
 	public ResponseEntity<ApiResponse> createMeasurement(@RequestBody Measurement m){
 		logger.info("Entered method createMeasurement()");
 		ApiResponse response = measurementService.createMeasurement(m);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/createmultiple")
+	public ResponseEntity<ApiResponse> createMultipleMeasurement(@RequestBody MultipleMeasurementRequest m){
+		logger.info("Entered method createMultipleMeasurement()");
+		ApiResponse response = measurementService.createMultipleMeasurement(m);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
