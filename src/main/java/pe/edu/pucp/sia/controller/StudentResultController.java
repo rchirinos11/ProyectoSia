@@ -57,6 +57,13 @@ public class StudentResultController {
 		ApiResponse response = studentResultService.listBySpecialtySemesterPlusAchievementPercentage(lss);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
+	
+	@PostMapping("/listbyspecialtysemesterplusindicatorscoursespercentages")
+	public ResponseEntity<ApiResponse> listBySpecialtySemesterPlusIndicatorsCoursesPercentage(@RequestBody MPlanLineSpecialtySemesterRequest lss){
+		logger.info("Entered method listBySpecialtySemesterPlusIndicatorsCoursesPercentage()");
+		ApiResponse response = studentResultService.listBySpecialtySemesterPlusIndicatorsCoursesPercentage(lss);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
 
 	@PostMapping("/listbycoursesemesterplussuccess")
 	public ResponseEntity<ApiResponse> listByCourseSemesterPlusSuccess(@RequestBody MPlanLineCourseSemesterRequest lss){

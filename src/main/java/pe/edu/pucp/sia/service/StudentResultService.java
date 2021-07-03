@@ -11,6 +11,7 @@ public interface StudentResultService {
 	public ApiResponse listBySpecialtySemester(MPlanLineSpecialtySemesterRequest lss);
 	public ApiResponse listBySpecialtySemesterPlusIndicator(MPlanLineSpecialtySemesterRequest lss);
 	public ApiResponse listBySpecialtySemesterPlusAchievementPercentage(MPlanLineSpecialtySemesterRequest lss);
+	public ApiResponse listBySpecialtySemesterPlusIndicatorsCoursesPercentage(MPlanLineSpecialtySemesterRequest lss);
 	public ApiResponse listByCourseSemesterPlusSuccess(MPlanLineCourseSemesterRequest lss);
 	public ApiResponse createStudentResult(StudentResult sr);
 	public ApiResponse updateStudentResult(StudentResult sr);
