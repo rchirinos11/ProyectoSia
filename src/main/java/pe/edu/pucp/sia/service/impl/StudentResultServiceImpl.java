@@ -309,18 +309,17 @@ public class StudentResultServiceImpl implements StudentResultService{
 				StudentResultIndicatorsCoursesPercentagesDataResponse sr= new StudentResultIndicatorsCoursesPercentagesDataResponse();
 				List<IndicatorCoursePercentageDataResponse> listICP= new ArrayList<IndicatorCoursePercentageDataResponse>();
 				for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
+					IndicatorCoursePercentageDataResponse icp = new IndicatorCoursePercentageDataResponse();
+					icp.setIndicator(indicator);
+					icp.setCourse(null);
+					icp.setPercentage(0f);
 					Iterator<MeasurementPlanLine> i = measurementPlanLineRepository.findByIndicatorId(indicator.getId()).iterator();
-					if(i.hasNext()) {
-						IndicatorCoursePercentageDataResponse icp = new IndicatorCoursePercentageDataResponse();
-						icp.setIndicator(indicator);
+					if(i.hasNext()) {	
 						icp.setCourse(measurementPlanLineRepository.findByIndicatorId(indicator.getId()).iterator().next().getCourse());	
 						Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
 						if(p!=null) {
 							icp.setPercentage(p);
 						}			
-						else {
-							icp.setPercentage(0f);
-						}
 						listICP.add(icp);
 					}
 				}
