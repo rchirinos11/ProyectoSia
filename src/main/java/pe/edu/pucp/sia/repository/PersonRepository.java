@@ -16,4 +16,8 @@ public interface PersonRepository extends CrudRepository<Person,Integer>{
 	public Iterable<Person> listUnfinishedTeachers(@Param("in_id_semester") Integer idSemester, @Param("in_id_specialty") Integer idSpecialty);
 	@Query(value = "call sp_list_assigned_teachers(:in_id_semester,:in_id_specialty)", nativeQuery = true)
 	public Iterable<Person> listAssignedTeachers(@Param("in_id_semester") Integer idSemester, @Param("in_id_specialty") Integer idSpecialty);
+	@Procedure("sp_delete_person")
+	public void deletePerson(Integer id);
+	@Procedure("sp_reactivate_person")
+	public void reactivatePerson(String code);
 }

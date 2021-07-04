@@ -44,8 +44,13 @@ public class PersonServiceImpl implements PersonService{
 	public ApiResponse createPerson(Person p) {
 		ApiResponse response = null;
 		try {
-			Integer id = personRepository.save(p).getId();
-			response = new ApiResponse(id,201);
+			personRepository.reactivatePerson(p.getCode());
+			Person person = null;
+			person = personRepository.findByCode(p.getCode());
+			if(person==null) {
+				person = personRepository.save(p);			
+			}
+			response = new ApiResponse(person.getId(),201);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
@@ -56,7 +61,7 @@ public class PersonServiceImpl implements PersonService{
 	public ApiResponse deletePerson(Integer id) {
 		ApiResponse response = null;
 		try {
-			personRepository.deleteById(id);
+			personRepository.deletePerson(id);
 			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
@@ -181,11 +186,15 @@ public class PersonServiceImpl implements PersonService{
 	public ApiResponse createMultiplePerson(MultiplePersonRequest m) {
 		ApiResponse response = null;
 		try {
-			Integer id = 0;
+			Person person = null;
 			for(Person p : m.getPersons()) {
-				id = personRepository.save(p).getId();
+				personRepository.reactivatePerson(p.getCode());
+				person=personRepository.findByCode(p.getCode());
+				if(person==null) {
+					person = personRepository.save(p);
+				}
 			}
-			response = new ApiResponse(id,201);
+			response = new ApiResponse(person.getId(),201);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
