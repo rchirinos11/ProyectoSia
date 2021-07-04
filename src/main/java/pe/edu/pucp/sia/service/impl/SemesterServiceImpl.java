@@ -4,7 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.Semester;
+import pe.edu.pucp.sia.model.Specialty;
+import pe.edu.pucp.sia.model.StudentResult;
+import pe.edu.pucp.sia.model.SuccessPercentage;
 import pe.edu.pucp.sia.repository.SemesterRepository;
+import pe.edu.pucp.sia.repository.SpecialtyRepository;
+import pe.edu.pucp.sia.repository.SuccessPercentageRepository;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.SemesterService;
 
@@ -12,6 +17,12 @@ import pe.edu.pucp.sia.service.SemesterService;
 public class SemesterServiceImpl implements SemesterService{
 	@Autowired
 	private SemesterRepository semesterRepository;
+	
+	@Autowired
+	private SpecialtyRepository specialtyRepository;
+	
+	@Autowired
+	private SuccessPercentageRepository successPercentageRepository;
 	
 	@Override
 	public ApiResponse listAll() {
@@ -30,6 +41,14 @@ public class SemesterServiceImpl implements SemesterService{
 		ApiResponse response = null;
 		try {
 			Integer id = semesterRepository.save(s).getId(); 
+			Iterable<Specialty> lista = specialtyRepository.findAll();
+			if (lista!=null)
+			for (Specialty specialty : lista) {
+				SuccessPercentage sp = new SuccessPercentage();
+				sp.setSemester(s);
+				sp.setSpecialty(specialty);
+				successPercentageRepository.save(sp);
+			}
 			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
