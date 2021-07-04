@@ -166,11 +166,12 @@ public class StudentResultServiceImpl implements StudentResultService{
 			Float percentage=100f;
 			Integer counter;
 			Integer counterTotal;
-			Integer evalua=1;
+			Integer evalua;
 			for(StudentResult studentResult : listSr) {
 				StudentResultPercentageDataResponse sr= new StudentResultPercentageDataResponse();
 				counter=0;
 				counterTotal=0;
+				evalua=1;
 				for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
 					counterTotal++;
 					List<ResultsPerCard> rcs=resultsPerCardRepository.listResultsPerCardByIndicatorAll(indicator.getId());
@@ -305,6 +306,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 		try {
 			List<StudentResult> listSr = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByCode(lss.getIdSpecialty(),lss.getIdSemester());
 			List<StudentResultIndicatorsCoursesPercentagesDataResponse> list= new ArrayList<StudentResultIndicatorsCoursesPercentagesDataResponse>();
+			Integer evalua;
 			for(StudentResult studentResult : listSr) {
 				StudentResultIndicatorsCoursesPercentagesDataResponse sr= new StudentResultIndicatorsCoursesPercentagesDataResponse();
 				List<IndicatorCoursePercentageDataResponse> listICP= new ArrayList<IndicatorCoursePercentageDataResponse>();
@@ -313,13 +315,43 @@ public class StudentResultServiceImpl implements StudentResultService{
 					icp.setIndicator(indicator);
 					icp.setCourse(null);
 					icp.setPercentage(0f);
+					icp.setFlagg(0);
+					evalua=1;
 					Iterator<MeasurementPlanLine> i = measurementPlanLineRepository.findByIndicatorId(indicator.getId()).iterator();
 					if(i.hasNext()) {	
 						icp.setCourse(measurementPlanLineRepository.findByIndicatorId(indicator.getId()).iterator().next().getCourse());	
 						Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
 						if(p!=null) {
 							icp.setPercentage(p);
-						}			
+						}	
+						
+						List<ResultsPerCard> rcs=resultsPerCardRepository.listResultsPerCardByIndicatorAll(indicator.getId());
+						Integer counter1=0;
+						Integer counter2=0;
+						if(rcs!=null) {
+							for(ResultsPerCard rc : rcs) {
+								counter1++;
+								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())==-1f) {
+									counter2++;
+								}
+								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
+									evalua=0;
+								}				
+									
+									
+							}
+						}
+						if(evalua==0) {
+							icp.setFlagg(1);
+						}
+						else {
+							icp.setFlagg(2);
+						}
+						if(counter1!=0) {
+							if(counter1==counter2) {
+								icp.setFlagg(0);
+							}
+						}		
 					}
 					listICP.add(icp);
 				}

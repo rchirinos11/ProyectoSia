@@ -10,4 +10,5 @@ public class IndicatorCoursePercentageDataResponse {
 	Indicator indicator;
 	Course	course;
 	Float percentage;
+	Integer flagg;
 }
