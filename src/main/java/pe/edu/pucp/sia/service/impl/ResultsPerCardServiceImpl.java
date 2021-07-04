@@ -107,7 +107,7 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 		ApiResponse response = null;
 		try {
 			Integer nota,notaMin=0;
-			Integer total=0,total34=0,cantidad=0;
+			Integer total=0,total34=0,cantidad=0,evaluados=0;
 			MeasurementLevel ml=null;
 			float media, porcentaje;
 			Integer idResult = r.getId();
@@ -166,19 +166,22 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 					}
 					if (nota>=notaMin && notaMin>0)
 						total34++;
+					evaluados++;
 				}
 				total+=nota;
 				cantidad++;
-			}
+			}//end for
+			
 			//Calcula resultados totales
-			if (cantidad == 0) {
+			if (cantidad == 0)
 				media = 0;
-				porcentaje = 0;
-			}
-			else {
+			else
 				media = (float)total/cantidad;
-				porcentaje = (float)total34/cantidad;
-			}
+			
+			if (evaluados == 0 )
+				porcentaje = 0;
+			else
+				porcentaje = (float)total34/evaluados;
 				
 			resultsPerCardRepository.registerResultsPerCard(idResult,cantidad,total34,media,porcentaje);
 			response = new ApiResponse("Success",200);
