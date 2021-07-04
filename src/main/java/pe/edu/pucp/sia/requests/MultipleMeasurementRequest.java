@@ -6,9 +6,9 @@ import pe.edu.pucp.sia.model.Person;
 
 @Getter @Setter
 public class MultipleMeasurementRequest {
-	private Integer idProfesor;
-	private Integer idSeccion;
-	private Integer idCurso;
-	private Integer idSemestre;
+	private Integer idTeacher;
+	private Integer idSection;
+	private Integer idCourse;
+	private Integer idSemester;
 	Iterable<Person> students;
 }

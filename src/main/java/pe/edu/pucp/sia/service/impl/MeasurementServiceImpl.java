@@ -97,13 +97,13 @@ public class MeasurementServiceImpl implements MeasurementService {
 		try {
 			Iterable<ResultsPerCard> resultsPerCards;
 			Person person = new Person();
-			person = personRepository.findById(m.getIdProfesor()).get();
+			person = personRepository.findById(m.getIdTeacher()).get();
 			List<Person> persons = new ArrayList<Person>();
 			List<ResultsPerCard> rpcs = new ArrayList<ResultsPerCard>();
 			persons.add(person);
-			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCourseIdAndSemesterIdAndSectionsTeachersInOrderByIndicatorCodeAsc(m.getIdCurso(), m.getIdSemestre(), persons);
+			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCourseIdAndSemesterIdAndSectionsTeachersInOrderByIndicatorCodeAsc(m.getIdCourse(), m.getIdSemester(), persons);
 			for(MeasurementPlanLine mpl : mpls) {
-				resultsPerCards = resultsPerCardRepository.findBySectionIdAndMeasurementPlanLineId(m.getIdSeccion(), mpl.getId());
+				resultsPerCards = resultsPerCardRepository.findBySectionIdAndMeasurementPlanLineId(m.getIdSection(), mpl.getId());
 				for(ResultsPerCard rpc : resultsPerCards) {
 					rpcs.add(rpc);
 				}
