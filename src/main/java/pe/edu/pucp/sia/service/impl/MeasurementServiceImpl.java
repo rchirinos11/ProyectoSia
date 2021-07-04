@@ -113,10 +113,14 @@ public class MeasurementServiceImpl implements MeasurementService {
 				response = new ApiResponse(403,"Could not find any ResultsPerCards");
 			}
 			else {
+				Integer id = null;
+				person = null;
 				Measurement measurement;
-				
 				for(Person p : m.getStudents()) {
-					person = personRepository.save(p);
+					person=personRepository.findByCode(p.getCode());
+					if(person==null) {
+						person = personRepository.save(p);
+					}
 					for(ResultsPerCard rpc : rpcs) {
 						measurement = new Measurement();
 						measurement.setPerson(person);
