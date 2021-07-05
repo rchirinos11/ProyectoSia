@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
+import pe.edu.pucp.sia.requests.MPlanLineBatchRegisterRequest;
 import pe.edu.pucp.sia.requests.MPlanLineCourseSemesterRequest;
 import pe.edu.pucp.sia.requests.MPlanLineCourseSemesterTeacherRequest;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
@@ -40,6 +41,13 @@ public class MeasurementPlanLineController {
 	public ResponseEntity<ApiResponse> createMeasurementPlanLine(@RequestBody MeasurementPlanLine m){
 		logger.info("Entered method createMeasurementPlanLine()");
 		ApiResponse response = mPlanLineService.createMeasurementPlanLine(m);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/registerBatch")
+	public ResponseEntity<ApiResponse> registerMeasurementPlanLineBatch(@RequestBody MPlanLineBatchRegisterRequest mplRequest){
+		logger.info("Entered method registerMeasurementPlanLineBatch()");
+		ApiResponse response = mPlanLineService.registerMeasurementPlanLineBatch(mplRequest);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	

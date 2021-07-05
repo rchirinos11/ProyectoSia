@@ -1,5 +1,7 @@
 package pe.edu.pucp.sia.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Where;
 
@@ -29,7 +32,9 @@ public class Specialty {
 	@ManyToOne
 	@JoinColumn(name="id_assistant")
 	private Person assistant;
-	private Integer successPercentage=70;
+	@OneToMany()
+	@JoinColumn(name="id_specialty")
+	private List<SuccessPercentage> successPercentages;
 	private boolean archived;
 	
 	

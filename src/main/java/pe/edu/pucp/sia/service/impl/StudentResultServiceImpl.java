@@ -1,6 +1,7 @@
 package pe.edu.pucp.sia.service.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.dozer.DozerBeanMapper;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import pe.edu.pucp.sia.model.MeasurementLevel;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
+import pe.edu.pucp.sia.model.Course;
 import pe.edu.pucp.sia.model.Indicator;
 import pe.edu.pucp.sia.model.StudentResult;
 import pe.edu.pucp.sia.repository.IndicatorRepository;
@@ -21,6 +23,8 @@ import pe.edu.pucp.sia.repository.StudentResultRepository;
 import pe.edu.pucp.sia.requests.MPlanLineCourseSemesterRequest;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
+import pe.edu.pucp.sia.response.IndicatorCoursePercentageDataResponse;
+import pe.edu.pucp.sia.response.StudentResultIndicatorsCoursesPercentagesDataResponse;
 import pe.edu.pucp.sia.response.StudentResultPercentageDataResponse;
 import pe.edu.pucp.sia.response.StudentResultResponse;
 import pe.edu.pucp.sia.response.StudentResultSuccessDataResponse;
@@ -41,6 +45,9 @@ public class StudentResultServiceImpl implements StudentResultService{
 	
 	@Autowired
 	private ResultsPerCardRepository resultsPerCardRepository;
+	
+	@Autowired
+	private MeasurementPlanLineRepository measurementPlanLineRepository;
 	
 	
 	@Override
@@ -107,7 +114,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 	public ApiResponse listBySpecialtySemester(MPlanLineSpecialtySemesterRequest lss) {
 		ApiResponse response = null;
 		try {
-			Iterable<StudentResult> list = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByOrderNumber(lss.getIdSpecialty(),lss.getIdSemester());
+			Iterable<StudentResult> list = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByCode(lss.getIdSpecialty(),lss.getIdSemester());
 			for (StudentResult studentResult : list) {
 				studentResult.setSpecialty(null);
 			}
@@ -122,7 +129,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 	public ApiResponse listBySpecialtySemesterPlusIndicator(MPlanLineSpecialtySemesterRequest lss) {
 		ApiResponse response = null;
 		try {
-			List<StudentResult> list = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByOrderNumber(lss.getIdSpecialty(),lss.getIdSemester());
+			List<StudentResult> list = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByCode(lss.getIdSpecialty(),lss.getIdSemester());
 			for (StudentResult studentResult : list) {
 				studentResult.setSpecialty(null);
 			}
@@ -154,17 +161,27 @@ public class StudentResultServiceImpl implements StudentResultService{
 	public ApiResponse listBySpecialtySemesterPlusAchievementPercentage(MPlanLineSpecialtySemesterRequest lss) {
 		ApiResponse response = null;
 		try {
-			List<StudentResult> listSr = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByOrderNumber(lss.getIdSpecialty(),lss.getIdSemester());
+			List<StudentResult> listSr = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByCode(lss.getIdSpecialty(),lss.getIdSemester());
 			List<StudentResultPercentageDataResponse> list= new ArrayList<StudentResultPercentageDataResponse>();
 			Float percentage=100f;
 			Integer counter;
 			Integer counterTotal;
+			Integer evalua;
 			for(StudentResult studentResult : listSr) {
 				StudentResultPercentageDataResponse sr= new StudentResultPercentageDataResponse();
 				counter=0;
 				counterTotal=0;
+				evalua=1;
 				for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
 					counterTotal++;
+					List<ResultsPerCard> rcs=resultsPerCardRepository.listResultsPerCardByIndicatorAll(indicator.getId());
+					if(rcs!=null) {
+						for(ResultsPerCard rc : rcs) {
+								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
+									evalua=0;
+								}					
+						}
+					}
 					Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
 					if(p!=null) {
 						counter++;
@@ -172,10 +189,28 @@ public class StudentResultServiceImpl implements StudentResultService{
 							percentage=p;	
 					}									
 				}
-				if(counter==0) percentage=-1f;
-				else if(counter!=counterTotal) percentage=-2f;			
+				if(counter==0) {
+					percentage=0f;
+					sr.setFlagg(1);
+				}
+				else {
+					if(counter!=counterTotal) {
+						percentage=0f;		
+						sr.setFlagg(2);
+					}
+					else {
+						if(counter==counterTotal) {
+							sr.setFlagg(3);
+							if(evalua==1) {
+								sr.setFlagg(4);
+							}								
+						}
+				
+					}
+				}
 				sr.setStudentResult(studentResult);
 				sr.setAchievementPercentage(percentage);
+				
 				list.add(sr);
 				percentage=100f;
 			}
@@ -256,6 +291,72 @@ public class StudentResultServiceImpl implements StudentResultService{
 				sr.setStudentResult(studentResult);
 				if (counter!=0) sr.setSuccess(1);
 				else sr.setSuccess(-1);				
+				list.add(sr);
+			}
+			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse listBySpecialtySemesterPlusIndicatorsCoursesPercentage(MPlanLineSpecialtySemesterRequest lss) {
+		ApiResponse response = null;
+		try {
+			List<StudentResult> listSr = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByCode(lss.getIdSpecialty(),lss.getIdSemester());
+			List<StudentResultIndicatorsCoursesPercentagesDataResponse> list= new ArrayList<StudentResultIndicatorsCoursesPercentagesDataResponse>();
+			Integer evalua;
+			for(StudentResult studentResult : listSr) {
+				StudentResultIndicatorsCoursesPercentagesDataResponse sr= new StudentResultIndicatorsCoursesPercentagesDataResponse();
+				List<IndicatorCoursePercentageDataResponse> listICP= new ArrayList<IndicatorCoursePercentageDataResponse>();
+				for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
+					IndicatorCoursePercentageDataResponse icp = new IndicatorCoursePercentageDataResponse();
+					icp.setIndicator(indicator);
+					icp.setCourse(null);
+					icp.setPercentage(0f);
+					icp.setFlagg(0);
+					evalua=1;
+					Iterator<MeasurementPlanLine> i = measurementPlanLineRepository.findByIndicatorId(indicator.getId()).iterator();
+					if(i.hasNext()) {	
+						icp.setCourse(measurementPlanLineRepository.findByIndicatorId(indicator.getId()).iterator().next().getCourse());	
+						Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
+						if(p!=null) {
+							icp.setPercentage(p);
+						}	
+						
+						List<ResultsPerCard> rcs=resultsPerCardRepository.listResultsPerCardByIndicatorAll(indicator.getId());
+						Integer counter1=0;
+						Integer counter2=0;
+						if(rcs!=null) {
+							for(ResultsPerCard rc : rcs) {
+								counter1++;
+								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())==-1f) {
+									counter2++;
+								}
+								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
+									evalua=0;
+								}				
+									
+									
+							}
+						}
+						if(evalua==0) {
+							icp.setFlagg(1);
+						}
+						else {
+							icp.setFlagg(2);
+						}
+						if(counter1!=0) {
+							if(counter1==counter2) {
+								icp.setFlagg(0);
+							}
+						}		
+					}
+					listICP.add(icp);
+				}
+				sr.setStudentResult(studentResult);
+				sr.setListICP(listICP);	
 				list.add(sr);
 			}
 			response = new ApiResponse(list,200);

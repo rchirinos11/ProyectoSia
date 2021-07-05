@@ -135,7 +135,7 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 			listaRPC = resultsPerCardRepository.findByMeasurementPlanLineIndicatorStudentResultSpecialtyIdAndMeasurementPlanLineSemesterId(ml.getSpecialty().getId(),ml.getSemester().getId());
 			for (ResultsPerCard rpc : listaRPC) {
 				List <Measurement> listaM = rpc.getMeasurements();
-				Integer total34=0,nota,total;
+				Integer total34=0,nota,evaluados=0;
 				float porcentaje;
 				//Lista los measurements de cada resultPerCard
 				if (listaM!=null) {
@@ -148,19 +148,19 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 							nota=mlevel.getOrden();
 							if (nota>=notaMin)
 								total34++;
+							evaluados++;
 						}
 					}
 					//Actualiza los aprobados y el porcentaje
-					total = rpc.getTotalStudents();
-					if (total==0)
+					if (evaluados==0)
 						porcentaje = 0;
 					else
-						porcentaje = (float)total34/total;
+						porcentaje = (float)total34/evaluados;
 					rpc.setTotalSuccessful(total34);
 					rpc.setPercentage(porcentaje);
-					resultsPerCardRepository.registerResultsPerCard(rpc.getId(),total,total34,rpc.getAverage(),porcentaje);
+					resultsPerCardRepository.registerResultsPerCard(rpc.getId(),rpc.getTotalStudents(),total34,rpc.getAverage(),porcentaje);
 				}
-			}
+			}//end for
 			
 			response = new ApiResponse(id,200);
 		} catch(Exception ex) {

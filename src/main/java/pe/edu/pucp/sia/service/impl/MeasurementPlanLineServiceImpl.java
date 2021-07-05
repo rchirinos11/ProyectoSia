@@ -19,6 +19,7 @@ import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.RoleRepository;
 import pe.edu.pucp.sia.repository.SectionRepository;
+import pe.edu.pucp.sia.requests.MPlanLineBatchRegisterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.response.ResultsPerCardScheduleDataResponse;
 import pe.edu.pucp.sia.response.ResultsPerCardScheduleListDataResponse;
@@ -358,6 +359,41 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			}
 			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse registerMeasurementPlanLineBatch(MPlanLineBatchRegisterRequest mplRequest) {
+		ApiResponse response = null;
+		Indicator indicator = new Indicator();
+		try {
+			MeasurementPlanLine mpl = mplRequest.getMeasurementPlanLine();
+			//Lista indicadores
+			for (Integer idIndicator : mplRequest.getIndicators()) {
+				indicator.setId(idIndicator);
+				mpl.setIndicator(indicator);
+				List<Section> listSection = new ArrayList<Section>();
+				for(Section s : mpl.getSections()) {
+					//Debe crear uno nuevo, porque no permite poner id null una vez registrado
+					Section newSection = new Section();
+					newSection.setCode(s.getCode());
+					//Al igual que los profesores
+					List<Person> listTeacher = new ArrayList<Person>();
+					for (Person t : s.getTeachers()) {
+						Person newTeacher = new Person();
+						newTeacher.setId(t.getId());
+						listTeacher.add(newTeacher);
+					}
+					newSection.setTeachers(listTeacher);
+					listSection.add(newSection);
+				}
+				mpl.setSections(listSection);
+				createMeasurementPlanLine(mpl);
+			}
+			response = new ApiResponse(mplRequest.getIndicators().size(),201);
+		} catch (Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;

@@ -8,26 +8,22 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.Where;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Where(clause = "active=true")
 @Entity @Getter @Setter
-public class StudentResult {
-	@Id @Column(name="id_student_result") @GeneratedValue(strategy=GenerationType.AUTO)
+public class SuccessPercentage {
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id_successPercentage")
 	private Integer id;
+	@JoinColumn(name="id_specialty",referencedColumnName = "id_specialty")
 	@ManyToOne
-	@JoinColumn(name="id_specialty")
+	@JsonIgnore()
 	private Specialty specialty;
+	@JoinColumn(name="id_semester",referencedColumnName = "id_semester")
 	@ManyToOne
-	@JoinColumn(name="id_educational_objective")
-	private EducationalObjective educationalObjective;
-	@ManyToOne
-	@JoinColumn(name="id_semester")
 	private Semester semester;
-	private String code;
-	private String description;
-	private boolean active=true;
+	private int percentage=70;
 }
