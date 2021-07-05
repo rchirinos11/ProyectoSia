@@ -31,9 +31,6 @@ public class Section {
 			inverseJoinColumns = @JoinColumn(name = "id_measurement_plan_line"))
     private List<MeasurementPlanLine> mplanlines;
 
-    private boolean active=true;
-    
-
 	@ManyToMany @JoinTable(name="section_person_list",
 			joinColumns = @JoinColumn(name = "id_section"), 
 			inverseJoinColumns = @JoinColumn(name = "id_teacher"))

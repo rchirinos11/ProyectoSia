@@ -29,7 +29,6 @@ public class Person {
 	private String pLastName;
 	private String mLastName;
 	private String email;
-	private boolean active=true;
 	
 	@ManyToMany	@JoinTable(name = "role_person_list",
 			joinColumns = @JoinColumn(name = "id_person"), 

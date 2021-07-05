@@ -29,5 +29,5 @@ public class StudentResult {
 	private Semester semester;
 	private String code;
 	private String description;
-	private boolean active=true;
+	//private boolean active=true;
 }
