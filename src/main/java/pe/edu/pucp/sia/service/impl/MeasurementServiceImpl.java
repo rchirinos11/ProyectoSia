@@ -14,6 +14,7 @@ import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.MeasurementRepository;
 import pe.edu.pucp.sia.repository.PersonRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
+import pe.edu.pucp.sia.requests.DeleteMultipleMeasurementRequest;
 import pe.edu.pucp.sia.requests.MultipleMeasurementRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementService;
@@ -130,6 +131,32 @@ public class MeasurementServiceImpl implements MeasurementService {
 				}
 				response = new ApiResponse("Success",201);
 			}
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse deleteMultipleMeasurement(DeleteMultipleMeasurementRequest m) {
+		ApiResponse response = null;
+		try {
+			Iterable<ResultsPerCard> resultsPerCards;
+			Person person = new Person();
+			person = personRepository.findById(m.getIdTeacher()).get();
+			List<Person> persons = new ArrayList<Person>();
+			List<ResultsPerCard> rpcs = new ArrayList<ResultsPerCard>();
+			persons.add(person);
+			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCourseIdAndSemesterIdAndSectionsTeachersInOrderByIndicatorCodeAsc(m.getIdCourse(), m.getIdSemester(), persons);
+			for(MeasurementPlanLine mpl : mpls) {
+				resultsPerCards = resultsPerCardRepository.findBySectionIdAndMeasurementPlanLineId(m.getIdSection(), mpl.getId());
+				for(ResultsPerCard rpc : resultsPerCards) {
+					if(measurementRepository.findDeleteMultipleMeasurement(rpc.getId()).isEmpty()) {
+						measurementRepository.deleteByResultsPerCardId(rpc.getId());
+					}
+				}
+			}
+			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}

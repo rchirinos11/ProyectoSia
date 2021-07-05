@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Measurement;
+import pe.edu.pucp.sia.requests.DeleteMultipleMeasurementRequest;
 import pe.edu.pucp.sia.requests.MultipleMeasurementRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementService;
@@ -65,6 +66,13 @@ public class MeasurementController {
 	public ResponseEntity<ApiResponse> deleteByResultsPerCard(@PathVariable Integer id){
 		logger.info("Entered method deleteByResultsPerCard()");
 		ApiResponse response = measurementService.deleteByResultsPerCard(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("deletemultiple")
+	public ResponseEntity<ApiResponse> deleteMultipleMeasurement(@RequestBody DeleteMultipleMeasurementRequest m){
+		logger.info("Entered method deleteMultipleMeasurement()");
+		ApiResponse response = measurementService.deleteMultipleMeasurement(m);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }
