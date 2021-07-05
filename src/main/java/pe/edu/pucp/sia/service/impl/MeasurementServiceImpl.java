@@ -102,9 +102,9 @@ public class MeasurementServiceImpl implements MeasurementService {
 			List<Person> persons = new ArrayList<Person>();
 			List<ResultsPerCard> rpcs = new ArrayList<ResultsPerCard>();
 			persons.add(person);
-			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCourseIdAndSemesterIdAndSectionsTeachersInOrderByIndicatorCodeAsc(m.getIdCourse(), m.getIdSemester(), persons);
+			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCodeTeacherCourseSemester(m.getCode(),m.getIdTeacher(),m.getIdCourse(),m.getIdSemester());
 			for(MeasurementPlanLine mpl : mpls) {
-				resultsPerCards = resultsPerCardRepository.findBySectionIdAndMeasurementPlanLineId(m.getIdSection(), mpl.getId());
+				resultsPerCards = resultsPerCardRepository.findByMeasurementPlanLineCode(mpl.getId(),m.getCode());
 				for(ResultsPerCard rpc : resultsPerCards) {
 					rpcs.add(rpc);
 				}
@@ -147,9 +147,9 @@ public class MeasurementServiceImpl implements MeasurementService {
 			List<Person> persons = new ArrayList<Person>();
 			List<ResultsPerCard> rpcs = new ArrayList<ResultsPerCard>();
 			persons.add(person);
-			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCourseIdAndSemesterIdAndSectionsTeachersInOrderByIndicatorCodeAsc(m.getIdCourse(), m.getIdSemester(), persons);
+			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCodeTeacherCourseSemester(m.getCode(),m.getIdTeacher(),m.getIdCourse(),m.getIdSemester());
 			for(MeasurementPlanLine mpl : mpls) {
-				resultsPerCards = resultsPerCardRepository.findBySectionIdAndMeasurementPlanLineId(m.getIdSection(), mpl.getId());
+				resultsPerCards = resultsPerCardRepository.findByMeasurementPlanLineCode(mpl.getId(),m.getCode());
 				for(ResultsPerCard rpc : resultsPerCards) {
 					if(measurementRepository.findDeleteMultipleMeasurement(rpc.getId()).isEmpty()) {
 						measurementRepository.deleteByResultsPerCardId(rpc.getId());
