@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.var;
 import pe.edu.pucp.sia.model.Indicator;
+import pe.edu.pucp.sia.model.Measurement;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Person;
@@ -16,6 +17,7 @@ import pe.edu.pucp.sia.model.Section;
 import pe.edu.pucp.sia.model.comparators.LevelDetailComparator;
 import pe.edu.pucp.sia.model.comparators.MeasurementPlanLineComparator;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
+import pe.edu.pucp.sia.repository.MeasurementRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.RoleRepository;
 import pe.edu.pucp.sia.repository.SectionRepository;
@@ -36,7 +38,8 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	private ResultsPerCardRepository resultsPerCardRepository;
 	@Autowired
 	private RoleRepository roleRepository;
-	
+	@Autowired
+	private MeasurementRepository measurementRepository;
 
 	@Override
 	public ApiResponse listAll() {
@@ -374,12 +377,12 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			for (Integer idIndicator : mplRequest.getIndicators()) {
 				indicator.setId(idIndicator);
 				mpl.setIndicator(indicator);
+				//Debe crear secciones nuevas, porque no permite poner id null una vez registrado
 				List<Section> listSection = new ArrayList<Section>();
 				for(Section s : mpl.getSections()) {
-					//Debe crear uno nuevo, porque no permite poner id null una vez registrado
 					Section newSection = new Section();
 					newSection.setCode(s.getCode());
-					//Al igual que los profesores
+					//Al igual que los profesores de las secciones
 					List<Person> listTeacher = new ArrayList<Person>();
 					for (Person t : s.getTeachers()) {
 						Person newTeacher = new Person();
@@ -390,7 +393,53 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 					listSection.add(newSection);
 				}
 				mpl.setSections(listSection);
-				createMeasurementPlanLine(mpl);
+				
+				//Registra el MPL
+				//createMeasurementPlanLine(mpl).getId();
+				
+				//Obtiene rol profesor
+				Integer idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
+				
+				if(mpl.getSections()!=null) {
+					List<ResultsPerCard> list= new ArrayList<ResultsPerCard>();
+					for(Section s : mpl.getSections()) {
+						s.setId(sectionRepository.save(s).getId());
+
+						//Genera ResultPerCard
+						ResultsPerCard r= new ResultsPerCard();
+						r.setSection(s);
+						r.setId(resultsPerCardRepository.save(r).getId());
+						list.add(r);
+
+						//Asigna rol profesor
+						if(s.getTeachers()!=null) {
+							for(Person p : s.getTeachers()) 
+								roleRepository.assignRole(idRoleProfesor, p.getId());
+						}
+						
+						//Verifica curso y horario existente
+						List<ResultsPerCard> listRPC =
+						resultsPerCardRepository.findByMeasurementPlanLineCourseIdAndSectionCode(
+								mpl.getCourse().getId(), s.getCode());
+						if (listRPC!=null) {
+							for (ResultsPerCard rpc : listRPC) {
+								//Busca que tenga mediciones con alumnos
+								List<Measurement> listMea = rpc.getMeasurements();
+								if (listMea != null) {
+									for (Measurement m : listMea) {
+										Measurement newMea = new Measurement();
+										newMea.setResultsPerCard(r);
+										newMea.setPerson(m.getPerson());
+										measurementRepository.save(newMea);
+									}
+									break; //terminó de copiar lista
+								}
+							}
+						}
+					}
+					mpl.setResultsPerCards(list);
+				}		
+				mPlanLineRepository.save(mpl).getId();	
 			}
 			response = new ApiResponse(mplRequest.getIndicators().size(),201);
 		} catch (Exception ex) {
