@@ -47,9 +47,10 @@ public class PersonServiceImpl implements PersonService{
 			personRepository.reactivatePerson(p.getCode());
 			Person person = null;
 			person = personRepository.findByCode(p.getCode());
-			if(person==null) {
-				person = personRepository.save(p);			
+			if(person!=null) {		
+				p.setId(person.getId());
 			}
+			person = personRepository.save(p);	
 			response = new ApiResponse(person.getId(),201);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
@@ -190,9 +191,10 @@ public class PersonServiceImpl implements PersonService{
 			for(Person p : m.getPersons()) {
 				personRepository.reactivatePerson(p.getCode());
 				person=personRepository.findByCode(p.getCode());
-				if(person==null) {
-					person = personRepository.save(p);
+				if(person!=null) {
+					p.setId(person.getId());
 				}
+				person = personRepository.save(p);
 			}
 			response = new ApiResponse(person.getId(),201);
 		} catch(Exception ex) {
