@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import pe.edu.pucp.sia.model.MeasurementLevel;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
+import pe.edu.pucp.sia.model.Semester;
 import pe.edu.pucp.sia.model.Course;
 import pe.edu.pucp.sia.model.Indicator;
 import pe.edu.pucp.sia.model.StudentResult;
@@ -19,11 +20,16 @@ import pe.edu.pucp.sia.repository.IndicatorRepository;
 import pe.edu.pucp.sia.repository.MeasurementLevelRepository;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
+import pe.edu.pucp.sia.repository.SemesterRepository;
 import pe.edu.pucp.sia.repository.StudentResultRepository;
 import pe.edu.pucp.sia.requests.MPlanLineCourseSemesterRequest;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
+import pe.edu.pucp.sia.requests.StudentResultSpecialtySemestersRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.response.IndicatorCoursePercentageDataResponse;
+import pe.edu.pucp.sia.response.IndicatorCoursePercentagesDataResponse;
+import pe.edu.pucp.sia.response.SemesterPercentagesDataResponse;
+import pe.edu.pucp.sia.response.StudentResultICPDataResponse;
 import pe.edu.pucp.sia.response.StudentResultIndicatorsCoursesPercentagesDataResponse;
 import pe.edu.pucp.sia.response.StudentResultPercentageDataResponse;
 import pe.edu.pucp.sia.response.StudentResultResponse;
@@ -48,6 +54,9 @@ public class StudentResultServiceImpl implements StudentResultService{
 	
 	@Autowired
 	private MeasurementPlanLineRepository measurementPlanLineRepository;
+	
+	@Autowired
+	private SemesterRepository semesterRepository;
 	
 	
 	@Override
@@ -360,6 +369,81 @@ public class StudentResultServiceImpl implements StudentResultService{
 				list.add(sr);
 			}
 			response = new ApiResponse(list,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse listBySpecialtySemestersPlusIndicatorsCoursesPercentage(
+			StudentResultSpecialtySemestersRequest lss) {
+		ApiResponse response = null;
+		try {
+			List<Semester> listSemester = semesterRepository.listSemestersRange(lss.getIdSemesterStart(), lss.getIdSemesterEnd());
+			List<SemesterPercentagesDataResponse> listFinal = new ArrayList<SemesterPercentagesDataResponse>();
+			for(Semester s : listSemester) {
+				SemesterPercentagesDataResponse sps = new SemesterPercentagesDataResponse();
+				sps.setSemester(s);				
+				List<StudentResult> listSr = studentResultRepository.findBySpecialtyIdAndSemesterIdOrderByCode(lss.getIdSpecialty(),s.getId());
+				List<StudentResultIndicatorsCoursesPercentagesDataResponse> list= new ArrayList<StudentResultIndicatorsCoursesPercentagesDataResponse>();
+				Integer evalua;
+				for(StudentResult studentResult : listSr) {
+					StudentResultIndicatorsCoursesPercentagesDataResponse sr= new StudentResultIndicatorsCoursesPercentagesDataResponse();
+					List<IndicatorCoursePercentageDataResponse> listICP= new ArrayList<IndicatorCoursePercentageDataResponse>();
+					for(Indicator indicator : indicatorRepository.findBystudentResultIdOrderByCode(studentResult.getId())) {
+						IndicatorCoursePercentageDataResponse icp = new IndicatorCoursePercentageDataResponse();
+						icp.setIndicator(indicator);
+						icp.setCourse(null);
+						icp.setPercentage(0f);
+						icp.setFlagg(0);
+						evalua=1;
+						Iterator<MeasurementPlanLine> i = measurementPlanLineRepository.findByIndicatorId(indicator.getId()).iterator();
+						if(i.hasNext()) {	
+							icp.setCourse(measurementPlanLineRepository.findByIndicatorId(indicator.getId()).iterator().next().getCourse());	
+							Float p = resultsPerCardRepository.listResultsPerCardByIndicator(indicator.getId());
+							if(p!=null) {
+								icp.setPercentage(p);
+							}	
+							
+							List<ResultsPerCard> rcs=resultsPerCardRepository.listResultsPerCardByIndicatorAll(indicator.getId());
+							Integer counter1=0;
+							Integer counter2=0;
+							if(rcs!=null) {
+								for(ResultsPerCard rc : rcs) {
+									counter1++;
+									if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())==-1f) {
+										counter2++;
+									}
+									if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
+										evalua=0;
+									}				
+										
+										
+								}
+							}
+							if(evalua==0) {
+								icp.setFlagg(1);
+							}
+							else {
+								icp.setFlagg(2);
+							}
+							if(counter1!=0) {
+								if(counter1==counter2) {
+									icp.setFlagg(0);
+								}
+							}		
+						}
+						listICP.add(icp);
+					}
+					sr.setStudentResult(studentResult);
+					sr.setListICP(listICP);	
+					list.add(sr);				
+			}
+				sps.setPercentages(list);
+				listFinal.add(sps);	
+			}
+			response = new ApiResponse(listFinal,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}

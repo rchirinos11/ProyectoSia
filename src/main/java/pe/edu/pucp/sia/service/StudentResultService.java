@@ -3,6 +3,7 @@ package pe.edu.pucp.sia.service;
 import pe.edu.pucp.sia.model.StudentResult;
 import pe.edu.pucp.sia.requests.MPlanLineCourseSemesterRequest;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
+import pe.edu.pucp.sia.requests.StudentResultSpecialtySemestersRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 
 public interface StudentResultService {
@@ -19,4 +20,6 @@ public interface StudentResultService {
 	public ApiResponse copyBySpecialtySemester(Integer idSpecialtyFrom, Integer idSemesterFrom, Integer idSpecialtyTo, Integer idSemesterTo);
 	 //New method, if fails, delete
 	public ApiResponse listBySemestersPlusAchievementPercentage(Integer id_semester_start, Integer id_semester_end);
+	public ApiResponse listBySpecialtySemestersPlusIndicatorsCoursesPercentage(StudentResultSpecialtySemestersRequest lss);
+	
 }
