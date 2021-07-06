@@ -20,10 +20,15 @@ public class SuccessPercentage {
 	private Integer id;
 	@JoinColumn(name="id_specialty",referencedColumnName = "id_specialty")
 	@ManyToOne
-	@JsonIgnore()
+	//@JsonIgnore()
 	private Specialty specialty;
 	@JoinColumn(name="id_semester",referencedColumnName = "id_semester")
 	@ManyToOne
 	private Semester semester;
 	private int percentage=70;
+	public Specialty getSpecialty() {
+		return null;
+	}
+	
+	
 }
