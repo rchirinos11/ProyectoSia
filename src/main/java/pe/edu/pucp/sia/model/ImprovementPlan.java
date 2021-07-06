@@ -25,5 +25,5 @@ public class ImprovementPlan {
 	private Specialty specialty;
 	private String title;
 	private String opportunity;
-	//private boolean active=true;
+	private boolean active=true;
 }
