@@ -21,6 +21,7 @@ import pe.edu.pucp.sia.service.StudentResultService;
 import pe.edu.pucp.sia.service.impl.StudentResultServiceImpl;
 
 import pe.edu.pucp.sia.requests.StudentResultSemestersRequest;
+import pe.edu.pucp.sia.requests.StudentResultSpecialtySemestersRequest;
 
 @RestController
 @RequestMapping("/studentresult")
@@ -62,6 +63,13 @@ public class StudentResultController {
 	public ResponseEntity<ApiResponse> listBySpecialtySemesterPlusIndicatorsCoursesPercentage(@RequestBody MPlanLineSpecialtySemesterRequest lss){
 		logger.info("Entered method listBySpecialtySemesterPlusIndicatorsCoursesPercentage()");
 		ApiResponse response = studentResultService.listBySpecialtySemesterPlusIndicatorsCoursesPercentage(lss);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/listbyspecialtysemesterstartsemesterendplusindicatorscoursespercentages")
+	public ResponseEntity<ApiResponse> listBySpecialtySemestersPlusIndicatorsCoursesPercentage(@RequestBody StudentResultSpecialtySemestersRequest lss){
+		logger.info("Entered method listBySpecialtySemestersPlusIndicatorsCoursesPercentage()");
+		ApiResponse response = studentResultService.listBySpecialtySemestersPlusIndicatorsCoursesPercentage(lss);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 

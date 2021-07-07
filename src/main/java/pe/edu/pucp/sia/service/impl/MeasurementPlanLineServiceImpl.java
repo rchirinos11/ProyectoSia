@@ -92,55 +92,121 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	@Override
 	public ApiResponse updateMeasurementPlanLine(MeasurementPlanLine m) {
 		ApiResponse response = null;
+		MeasurementPlanLine mOri = null;
+		boolean valido=true;
 		try {
-			//Obtiene rol profesor
-			Integer idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
-			List<ResultsPerCard> rPerCardList = m.getResultsPerCards();
-			if(m.getSections()!=null) {
-				for(Section s : m.getSections()) {
-					if(s.getId()==null) {
-						s.setId(sectionRepository.save(s).getId());
-						
-						ResultsPerCard r= new ResultsPerCard();
-						r.setSection(s);
-						r.setId(resultsPerCardRepository.save(r).getId());
-						rPerCardList.add(r);
-					} else {
-						//Busca profesores a cargo originalmente
-						List<Integer> teachersOld = new ArrayList<>();
-						var val = sectionRepository.findById(s.getId());
-						if (val.isPresent() && val.get().getTeachers()!=null) {
-							for (Person p : val.get().getTeachers())
-								teachersOld.add(p.getId());
-						}
-						
-						//Verifica si fueron removidos los originales
-						if (!teachersOld.isEmpty()) {
-							boolean find=false;
-							for(Integer idTeacher : teachersOld){
-								for(Person t : s.getTeachers()) {
-									if (idTeacher.equals(t.getId())) {
-										find=true;
-										break;
-									}
-								}
-								//Busca si no es profesor de otro curso para quitarle el rol
-								if (find==false)
-									roleRepository.unassignTeacher(idTeacher);
-							}
-						}
-						sectionRepository.save(s);
-					}
-					//Asigna rol a profesores agregados
-					if(s.getTeachers()!=null) {
-						for(Person p : s.getTeachers())
-							roleRepository.assignRole(idRoleProfesor, p.getId());
+			//Obtiene measurement plan line original
+			var valMpl = mPlanLineRepository.findById(m.getId());
+			if (valMpl.isPresent())
+				mOri = valMpl.get();
+			//Verifica si antiguo curso se cambio y tenían mediciones
+			if (!mOri.getCourse().getId().equals(m.getCourse().getId())) {
+				for (ResultsPerCard rpc : mOri.getResultsPerCards()) {
+					if (rpc.getTotalStudents()>0) {
+						valido = false;
+						response = new ApiResponse(500, "Course "+mOri.getCourse().getName()+" with section "+rpc.getSection().getCode()+" has meditions done.");
+						break;
 					}
 				}
-				m.setResultsPerCards(rPerCardList);
-			}			
-			Integer id = mPlanLineRepository.save(m).getId();
-			response = new ApiResponse(id,201);
+			}
+			//Verifica si antiguos horarios se cambiaron y tenían mediciones
+			if (valido)
+				for (ResultsPerCard rpc : mOri.getResultsPerCards()) {
+					int sectionOri = rpc.getSection().getCode();
+					valido = false;
+					for (Section section : m.getSections()) {
+						//Si aún está, es válido
+						if (sectionOri == section.getCode()) {
+							valido = true;
+							break;
+						}
+					}
+					//Si ya no está en la modificatoria 
+					if (!valido) {
+						//Verifica si tenía mediciones
+						if	(rpc.getTotalStudents()>0) {
+							valido = false;
+							response = new ApiResponse(500, "Section "+sectionOri+" has meditions done.");
+							break;
+						}
+						//Si no tiene mediciones y se va a cambiar, debe borrar measurements asociados
+						if (rpc.getMeasurements()!=null)
+							for (Measurement mea : rpc.getMeasurements()) {
+								measurementRepository.delete(mea);
+							}
+					}
+					valido = true;
+				}
+			
+			if (valido) {
+				//Obtiene rol profesor
+				Integer idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
+				List<ResultsPerCard> rPerCardList = m.getResultsPerCards();
+				if(m.getSections()!=null) {
+					for(Section s : m.getSections()) {
+						if(s.getId()==null) {
+							s.setId(sectionRepository.save(s).getId());
+							
+							ResultsPerCard r= new ResultsPerCard();
+							r.setSection(s);
+							r.setId(resultsPerCardRepository.save(r).getId());
+							rPerCardList.add(r);
+							//Verifica curso y horario existente
+							copyStudentList(m,s,r);
+							
+						} else {
+							//Verifica que sea nuevo horario
+							valido = false;
+							int code = s.getCode();
+							for (Section sec : mOri.getSections()) {
+								if (code == sec.getCode()) {
+									valido = true;
+									break;
+								}
+							}
+							//Para los nuevos horarios verifica curso y horario existente
+							if (!valido) {
+								List<ResultsPerCard> listRPC = resultsPerCardRepository.findByMeasurementPlanLineIdAndSectionCode(m.getId(),s.getCode());
+								if (!listRPC.isEmpty()) {
+									copyStudentList(m,s,listRPC.get(0));
+								}
+							}
+							//Busca profesores a cargo originalmente
+							List<Integer> teachersOld = new ArrayList<>();
+							var val = sectionRepository.findById(s.getId());
+							if (val.isPresent() && val.get().getTeachers()!=null) {
+								for (Person p : val.get().getTeachers())
+									teachersOld.add(p.getId());
+							}
+							
+							//Verifica si fueron removidos los originales
+							if (!teachersOld.isEmpty()) {
+								boolean find=false;
+								for(Integer idTeacher : teachersOld){
+									for(Person t : s.getTeachers()) {
+										if (idTeacher.equals(t.getId())) {
+											find=true;
+											break;
+										}
+									}
+									//Busca si no es profesor de otro curso para quitarle el rol
+									if (find==false)
+										roleRepository.unassignTeacher(idTeacher);
+								}
+							}
+							sectionRepository.save(s);
+						}
+						//Asigna rol a profesores agregados
+						if(s.getTeachers()!=null) {
+							for(Person p : s.getTeachers())
+								roleRepository.assignRole(idRoleProfesor, p.getId());
+						}
+					}
+					m.setResultsPerCards(rPerCardList);
+				}			
+				Integer id = mPlanLineRepository.save(m).getId();
+				response = new ApiResponse(id,201);
+			}
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
@@ -295,7 +361,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			List<MeasurementPlanLine> listMpl = new ArrayList<MeasurementPlanLine>();	
 			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
 			for(MeasurementPlanLine mpl : list) {
-				mpl.setCourse(null);
+				
 				mpl.setSemester(null);
 
 				List<Section> ss=new ArrayList<Section>();
@@ -367,6 +433,31 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 		return response;
 	}
 
+	private boolean copyStudentList(MeasurementPlanLine mpl, Section s, ResultsPerCard r) {
+		boolean copio=false;
+		//Verifica curso y horario existente
+		List<ResultsPerCard> listRPC =
+		resultsPerCardRepository.findByMeasurementPlanLineCourseIdAndSectionCode(
+				mpl.getCourse().getId(),s.getCode());
+		if (listRPC!=null) {
+			for (ResultsPerCard rpc : listRPC) {
+				//Busca que tenga mediciones con alumnos
+				List<Measurement> listMea = rpc.getMeasurements();
+				if (listMea != null) {
+					for (Measurement m : listMea) {
+						Measurement newMea = new Measurement();
+						newMea.setResultsPerCard(r);
+						newMea.setPerson(m.getPerson());
+						measurementRepository.save(newMea);
+					}
+					copio = true;
+					break; //terminó de copiar lista
+				}
+			}
+		}
+		return copio;
+	}
+	
 	@Override
 	public ApiResponse registerMeasurementPlanLineBatch(MPlanLineBatchRegisterRequest mplRequest) {
 		ApiResponse response = null;
@@ -394,9 +485,6 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 				}
 				mpl.setSections(listSection);
 				
-				//Registra el MPL
-				//createMeasurementPlanLine(mpl).getId();
-				
 				//Obtiene rol profesor
 				Integer idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
 				
@@ -418,24 +506,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 						}
 						
 						//Verifica curso y horario existente
-						List<ResultsPerCard> listRPC =
-						resultsPerCardRepository.findByMeasurementPlanLineCourseIdAndSectionCode(
-								mpl.getCourse().getId(), s.getCode());
-						if (listRPC!=null) {
-							for (ResultsPerCard rpc : listRPC) {
-								//Busca que tenga mediciones con alumnos
-								List<Measurement> listMea = rpc.getMeasurements();
-								if (listMea != null) {
-									for (Measurement m : listMea) {
-										Measurement newMea = new Measurement();
-										newMea.setResultsPerCard(r);
-										newMea.setPerson(m.getPerson());
-										measurementRepository.save(newMea);
-									}
-									break; //terminó de copiar lista
-								}
-							}
-						}
+						copyStudentList(mpl,s,r);
 					}
 					mpl.setResultsPerCards(list);
 				}		

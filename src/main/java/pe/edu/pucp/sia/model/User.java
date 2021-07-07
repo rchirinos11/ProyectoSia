@@ -8,21 +8,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.Where;
-
 import lombok.Getter;
 import lombok.Setter;
 
-@Where(clause="active=true")
 @Entity @Getter @Setter
 public class User {
     @Id @Column(name="id_user") @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;   
-    private String username;    
+    private String username;
     private String password;
     @OneToOne @JoinColumn(name="id_person")
     private Person person;
-
-    //@ForeignKey(name="id_specialty);
-    //private Integer id_specialty;
+    private boolean active;
 }

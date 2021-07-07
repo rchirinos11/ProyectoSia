@@ -28,4 +28,11 @@ public class Role {
 		inverseJoinColumns = @JoinColumn(name = "id_person"))
     private List<Person> personList;
     //private boolean active;
+    
+    public Role() {
+    }
+    
+    public Role(int id) {
+    	this.id = id;
+    }
 }

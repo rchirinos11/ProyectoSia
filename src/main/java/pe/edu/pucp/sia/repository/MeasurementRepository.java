@@ -18,4 +18,7 @@ public interface MeasurementRepository extends CrudRepository<Measurement,Intege
 	public void deleteMeasurement(Integer id);
 	@Procedure("sp_delete_measurement_by_result")
 	public Integer deleteByResultsPerCardId(Integer idResultsPerCard);
+
+	@Procedure("sp_delete_measurementByRolAndIdResultPerCard")
+	public void deleteByRolAndIdResultPerCard(Integer idRole,Integer idResultsPerCard);
 }

@@ -19,6 +19,7 @@ import pe.edu.pucp.sia.repository.SemesterRepository;
 import pe.edu.pucp.sia.repository.SpecialtyRepository;
 import pe.edu.pucp.sia.repository.SuccessPercentageRepository;
 import pe.edu.pucp.sia.response.ApiResponse;
+import pe.edu.pucp.sia.response.PercentageResponse;
 import pe.edu.pucp.sia.service.SpecialtyService;
 
 
@@ -94,6 +95,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 			//Agrega porcentaje del semestre actual
 			Semester semester = semesterRepository.findByCurrent(true);
 			SuccessPercentage sucPer = new SuccessPercentage();
+			s.setId(id);
 			sucPer.setSpecialty(s);
 			sucPer.setSemester(semester);
 			successPercentageRepository.save(sucPer);
@@ -307,11 +309,14 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 	@Override
 	public ApiResponse updatePercentage(Integer idSpecialty, Integer percentage){
 		ApiResponse response = null;
+		PercentageResponse contentResponse = new PercentageResponse();
 		try {
 			Semester semester = semesterRepository.findByCurrent(true);
 			if (semester!=null) {
 				specialtyRepository.setPercentage(idSpecialty,semester.getId(),percentage);
-				response = new ApiResponse("Success",200);
+				contentResponse.setPercentage(percentage);
+				contentResponse.setIdSemester(semester.getId());
+				response = new ApiResponse(contentResponse,200);
 			}
 			else
 				response = new ApiResponse(500, "Don't exist a current semester.");

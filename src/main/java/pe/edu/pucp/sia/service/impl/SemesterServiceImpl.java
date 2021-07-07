@@ -42,12 +42,14 @@ public class SemesterServiceImpl implements SemesterService{
 		try {
 			Integer id = semesterRepository.save(s).getId(); 
 			Iterable<Specialty> lista = specialtyRepository.findAll();
-			if (lista!=null)
-			for (Specialty specialty : lista) {
-				SuccessPercentage sp = new SuccessPercentage();
-				sp.setSemester(s);
-				sp.setSpecialty(specialty);
-				successPercentageRepository.save(sp);
+			if (lista!=null) {
+				s.setId(id);
+				for (Specialty specialty : lista) {
+					SuccessPercentage sp = new SuccessPercentage();
+					sp.setSemester(s);
+					sp.setSpecialty(specialty);
+					successPercentageRepository.save(sp);
+				}
 			}
 			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
