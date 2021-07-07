@@ -109,19 +109,9 @@ public class StudentResultServiceImpl implements StudentResultService{
 
 	@Override
 	public ApiResponse deleteStudentResult(Integer id) {
-		//Old version
-		/*ApiResponse response = null;
-		try {
-			studentResultRepository.deleteById(id);
-			response = new ApiResponse("Success",200);
-		} catch(Exception ex) {
-			response = new ApiResponse(500, ex.getMessage());
-		}
-		return response;
-		*/
 		ApiResponse response = null;
 		try {
-			List<Indicator> i = indicatorRepository.findBystudentResultIdOrderByCode(id);
+			List<Indicator> i = indicatorRepository.findBystudentResultId(id);
 			if(i.size() == 0) {
 				studentResultRepository.deleteStudentResult(id);					
 				response = new ApiResponse("Success",200);
