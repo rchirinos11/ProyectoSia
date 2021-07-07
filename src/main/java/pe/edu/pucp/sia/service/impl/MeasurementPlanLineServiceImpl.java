@@ -121,11 +121,19 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 							break;
 						}
 					}
-					//Si ya no está, verifica si tenía mediciones
-					if (!valido && rpc.getTotalStudents()>0) {
-						valido = false;
-						response = new ApiResponse(500, "Section "+sectionOri+" has meditions done.");
-						break;
+					//Si ya no está en la modificatoria 
+					if (!valido) {
+						//Verifica si tenía mediciones
+						if	(rpc.getTotalStudents()>0) {
+							valido = false;
+							response = new ApiResponse(500, "Section "+sectionOri+" has meditions done.");
+							break;
+						}
+						//Si no tiene mediciones y se va a cambiar, debe borrar measurements asociados
+						if (rpc.getMeasurements()!=null)
+							for (Measurement mea : rpc.getMeasurements()) {
+								measurementRepository.delete(mea);
+							}
 					}
 					valido = true;
 				}
@@ -147,10 +155,21 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 							copyStudentList(m,s,r);
 							
 						} else {
-							//Verifica curso y horario existente
-							List<ResultsPerCard> listRPC = resultsPerCardRepository.findByMeasurementPlanLineIdAndSectionId(m.getId(),s.getId());
-							if (!listRPC.isEmpty()) {
-								copyStudentList(m,s,listRPC.get(0));
+							//Verifica que sea nuevo horario
+							valido = false;
+							int code = s.getCode();
+							for (Section sec : mOri.getSections()) {
+								if (code == sec.getCode()) {
+									valido = true;
+									break;
+								}
+							}
+							//Para los nuevos horarios verifica curso y horario existente
+							if (!valido) {
+								List<ResultsPerCard> listRPC = resultsPerCardRepository.findByMeasurementPlanLineIdAndSectionCode(m.getId(),s.getCode());
+								if (!listRPC.isEmpty()) {
+									copyStudentList(m,s,listRPC.get(0));
+								}
 							}
 							//Busca profesores a cargo originalmente
 							List<Integer> teachersOld = new ArrayList<>();
@@ -342,7 +361,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			List<MeasurementPlanLine> listMpl = new ArrayList<MeasurementPlanLine>();	
 			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
 			for(MeasurementPlanLine mpl : list) {
-				mpl.setCourse(null);
+				
 				mpl.setSemester(null);
 
 				List<Section> ss=new ArrayList<Section>();
