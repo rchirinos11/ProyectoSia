@@ -109,10 +109,26 @@ public class StudentResultServiceImpl implements StudentResultService{
 
 	@Override
 	public ApiResponse deleteStudentResult(Integer id) {
-		ApiResponse response = null;
+		//Old version
+		/*ApiResponse response = null;
 		try {
 			studentResultRepository.deleteById(id);
 			response = new ApiResponse("Success",200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+		*/
+		ApiResponse response = null;
+		try {
+			Iterator<Indicator> i = indicatorRepository.findBystudentResultIdOrderByCode(id).iterator();
+			if(i.hasNext()) {
+				studentResultRepository.deleteStudentResult(id);					
+				response = new ApiResponse("Success",200);
+			} 
+			else {
+				response = new ApiResponse(409,"Cannot Delete due to dependency");
+			}
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}

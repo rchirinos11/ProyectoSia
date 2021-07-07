@@ -24,6 +24,7 @@ public interface StudentResultRepository extends CrudRepository<StudentResult,In
 	//sp implementd and functional. If method fails, delete
 	@Query(value = "call sp_list_student_result_by_semesters(:in_id_semester_start,:in_id_semester_end)", nativeQuery = true)
 	public List<StudentResult> findBySemesters(@Param("in_id_semester_start")Integer id_semester_start,@Param("in_id_semester_end")Integer id_semester_end);
+
 	@Query(value = "call sp_list_student_result_by_semester_course(:in_id_semester,:in_id_course)", nativeQuery = true)
 	public List<StudentResult> listStudentResultBySemesterCourse(@Param("in_id_semester") Integer idSemester, @Param("in_id_course") Integer idCourse);
 	
@@ -31,5 +32,6 @@ public interface StudentResultRepository extends CrudRepository<StudentResult,In
 	@Query(value = "call sp_list_student_result_by_semesters_specialty(:in_id_specialty,:in_id_semester_start,:in_id_semester_end)", nativeQuery = true)
 	public List<StudentResult> listStudentResultBySemestersSpecialty(@Param("in_id_specialty") Integer idSpecialty, @Param("in_id_semester_start") Integer idSemesterStart,@Param("in_id_semester_end") Integer idSemesterEnd);
 	
-
+	@Procedure("sp_delete_student_result")
+	public void deleteStudentResult(Integer id);
 }
