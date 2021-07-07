@@ -104,7 +104,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 				for (ResultsPerCard rpc : mOri.getResultsPerCards()) {
 					if (rpc.getTotalStudents()>0) {
 						valido = false;
-						response = new ApiResponse(500, "Course "+mOri.getCourse().getName()+" with section "+rpc.getSection().getCode()+" has meditions done.");
+						response = new ApiResponse(500, "El curso "+mOri.getCourse().getName()+" con horario "+rpc.getSection().getCode()+" tiene mediciones realizadas.");
 						break;
 					}
 				}
@@ -126,7 +126,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 						//Verifica si tenía mediciones
 						if	(rpc.getTotalStudents()>0) {
 							valido = false;
-							response = new ApiResponse(500, "Section "+sectionOri+" has meditions done.");
+							response = new ApiResponse(500, "El horario "+sectionOri+" tiene mediciones realizadas.");
 							break;
 						}
 						//Si no tiene mediciones y se va a cambiar, debe borrar measurements asociados
