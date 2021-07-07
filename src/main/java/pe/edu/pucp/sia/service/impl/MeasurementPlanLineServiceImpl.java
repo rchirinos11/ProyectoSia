@@ -361,7 +361,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			List<MeasurementPlanLine> listMpl = new ArrayList<MeasurementPlanLine>();	
 			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
 			for(MeasurementPlanLine mpl : list) {
-				mpl.setCourse(null);
+				
 				mpl.setSemester(null);
 
 				List<Section> ss=new ArrayList<Section>();
