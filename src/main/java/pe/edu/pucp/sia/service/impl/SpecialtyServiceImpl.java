@@ -95,6 +95,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 			//Agrega porcentaje del semestre actual
 			Semester semester = semesterRepository.findByCurrent(true);
 			SuccessPercentage sucPer = new SuccessPercentage();
+			s.setId(id);
 			sucPer.setSpecialty(s);
 			sucPer.setSemester(semester);
 			successPercentageRepository.save(sucPer);
