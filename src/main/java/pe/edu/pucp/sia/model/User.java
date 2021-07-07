@@ -22,7 +22,4 @@ public class User {
     private String password;
     @OneToOne @JoinColumn(name="id_person")
     private Person person;
-
-    //@ForeignKey(name="id_specialty);
-    //private Integer id_specialty;
 }
