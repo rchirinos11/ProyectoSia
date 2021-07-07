@@ -121,8 +121,8 @@ public class StudentResultServiceImpl implements StudentResultService{
 		*/
 		ApiResponse response = null;
 		try {
-			Iterator<Indicator> i = indicatorRepository.findBystudentResultIdOrderByCode(id).iterator();
-			if(i.hasNext()) {
+			List<Indicator> i = indicatorRepository.findBystudentResultIdOrderByCode(id);
+			if(i.size() == 0) {
 				studentResultRepository.deleteStudentResult(id);					
 				response = new ApiResponse("Success",200);
 			} 
