@@ -68,6 +68,13 @@ public class MeasurementController {
 		ApiResponse response = measurementService.deleteByResultsPerCard(id);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
+
+	@DeleteMapping("deleteByAlumnosAndResultsPerCard/{id}")
+	public ResponseEntity<ApiResponse> deleteByAlumnosAndResultsPerCard(@PathVariable Integer id){
+		logger.info("Entered method deleteByAlumnosAndResultsPerCard()");
+		ApiResponse response = measurementService.deleteByAlumnosAndResultsPerCard(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
 	
 	@PostMapping("deletemultiple")
 	public ResponseEntity<ApiResponse> deleteMultipleMeasurement(@RequestBody DeleteMultipleMeasurementRequest m){
