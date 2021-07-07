@@ -141,6 +141,8 @@ public class MeasurementServiceImpl implements MeasurementService {
 	public ApiResponse deleteMultipleMeasurement(DeleteMultipleMeasurementRequest m) {
 		ApiResponse response = null;
 		try {
+			String errors = "could not deactivate measurements from the following results per card: ( ";
+			Integer errorFlag = 0;
 			Iterable<ResultsPerCard> resultsPerCards;
 			Person person = new Person();
 			person = personRepository.findById(m.getIdTeacher()).get();
@@ -154,9 +156,18 @@ public class MeasurementServiceImpl implements MeasurementService {
 					if(measurementRepository.findDeleteMultipleMeasurement(rpc.getId()).isEmpty()) {
 						measurementRepository.deleteByResultsPerCardId(rpc.getId());
 					}
+					else {
+						errorFlag = 1;
+						errors = errors + rpc.getId() + " ";
+					}
 				}
 			}
-			response = new ApiResponse("Success",200);
+			if(errorFlag == 0) {
+				response = new ApiResponse("Success",200);
+			}
+			else {
+				response = new ApiResponse(500, errors+")");
+			}
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
