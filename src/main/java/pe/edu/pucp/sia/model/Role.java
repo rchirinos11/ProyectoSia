@@ -27,4 +27,11 @@ public class Role {
 		joinColumns = @JoinColumn(name = "id_role"), 
 		inverseJoinColumns = @JoinColumn(name = "id_person"))
     private List<Person> personList;
+    
+    public Role() {
+    }
+    
+    public Role(int id) {
+    	this.id = id;
+    }
 }
