@@ -28,6 +28,9 @@ public class UserServiceImpl implements UserService{
 		ApiResponse response = null;
 		try {
 			Iterable<User> list = userRepository.findAll();
+			for(User u : list)
+				u.setPassword(null);
+			
 			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
