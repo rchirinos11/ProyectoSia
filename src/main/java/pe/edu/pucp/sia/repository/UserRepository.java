@@ -1,5 +1,6 @@
 package pe.edu.pucp.sia.repository;
 
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 import pe.edu.pucp.sia.model.User;

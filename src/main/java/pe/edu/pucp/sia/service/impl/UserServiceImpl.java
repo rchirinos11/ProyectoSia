@@ -48,6 +48,10 @@ public class UserServiceImpl implements UserService{
 				u.setPerson(p);
 			}
 			Integer id = userRepository.registerUser(u.getPerson().getId(), u.getUsername(), u.getPassword());
+			if(id==-1) {
+				response = new ApiResponse(409, "This username already exists");
+				return response;
+			}
 			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
@@ -83,7 +87,11 @@ public class UserServiceImpl implements UserService{
 		ApiResponse response = null;
 		try {
 			Integer id = userRepository.authenticate(username, password);
-			response = new ApiResponse(id,200);
+			if(id>0) {
+				response = new ApiResponse(id,200);
+			} else {
+				response = new ApiResponse(401,"Invalid Credentials");
+			}
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
