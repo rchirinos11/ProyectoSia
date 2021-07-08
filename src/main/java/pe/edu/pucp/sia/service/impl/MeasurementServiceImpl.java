@@ -177,16 +177,4 @@ public class MeasurementServiceImpl implements MeasurementService {
 		return response;
 	}
 
-	@Override
-	public ApiResponse deleteByAlumnosAndResultsPerCard(Integer idResultsPerCard) {
-		ApiResponse response = null;
-		try {
-			measurementRepository.deleteByRolAndIdResultPerCard(6,idResultsPerCard);
-			response = new ApiResponse("Success",200);
-		} catch(Exception ex) {
-			response = new ApiResponse(500, ex.getMessage());
-		}
-		return response;
-	}
-
 }
