@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.requests.CreateImprovementPlanRequest;
+import pe.edu.pucp.sia.requests.ResultPCEvidenceRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.ResultsPerCardService;
 import pe.edu.pucp.sia.service.impl.ResultsPerCardServiceImpl;
@@ -72,6 +73,13 @@ public class ResultsPerCardController {
 	public ResponseEntity<ApiResponse> promPercentageByStudentResult(@PathVariable Integer id){
 		logger.info("Entered method promPercentageByStudentResult()");
 		ApiResponse response = resultsPerCardService.promPercentageByStudentResult(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/updateevidences")
+	public ResponseEntity<ApiResponse> updateEvidences(@RequestBody ResultPCEvidenceRequest rpcRequest){
+		logger.info("Entered method registerStudentMeditions()");
+		ApiResponse response = resultsPerCardService.updateEvidences(rpcRequest.getIdResultsPerCard(),rpcRequest.getEvidences());
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 

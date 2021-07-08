@@ -3,7 +3,7 @@ package pe.edu.pucp.sia.model;
 import java.util.List;
 
 import javax.persistence.Column;
-
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,7 +37,8 @@ public class ResultsPerCard {
 	
 	@ManyToOne @JoinColumn(name="id_section")
 	private Section section;
-	
+	@ElementCollection
+	private List<String> evidences;
 	private float average;
 	private float percentage;
 	private int totalStudents;

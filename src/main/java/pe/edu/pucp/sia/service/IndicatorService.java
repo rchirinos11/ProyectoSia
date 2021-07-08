@@ -7,7 +7,7 @@ import pe.edu.pucp.sia.response.ApiResponse;
 
 public interface IndicatorService {
     public ApiResponse listAll();
-	public ApiResponse listBySpecialty(Integer id);
+	public ApiResponse listBySpecialtySemester(Integer idSpecialty, Integer idSemester);
 	public ApiResponse listByStudentResult(Integer id);
 	public ApiResponse createIndicator(Indicator i);
 	public ApiResponse updateIndicator(Indicator i);
