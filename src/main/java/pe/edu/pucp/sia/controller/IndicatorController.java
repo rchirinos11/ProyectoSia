@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Indicator;
+import pe.edu.pucp.sia.requests.IndicatorListRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.IndicatorService;
 import pe.edu.pucp.sia.service.impl.IndicatorServiceImpl;
@@ -32,10 +33,10 @@ public class IndicatorController {
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 
-	@GetMapping("/listbyspecialty/{id}")
-	public ResponseEntity<ApiResponse> listBySpecialty(@PathVariable Integer id){
-		logger.info("Entered method listbyspecialty()");
-		ApiResponse response = indicatorService.listBySpecialty(id);
+    @PostMapping("/listbyspecialtysemester")
+	public ResponseEntity<ApiResponse> listBySpecialtySemester(@RequestBody IndicatorListRequest r){
+		logger.info("Entered method listbyspecialtysemester()");
+		ApiResponse response = indicatorService.listBySpecialtySemester(r.getIdSpecialty(),r.getIdSemester());
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 
