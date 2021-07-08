@@ -373,29 +373,32 @@ public class StudentResultServiceImpl implements StudentResultService{
 						Integer counter2=0;
 						if(rcs!=null) {
 							for(ResultsPerCard rc : rcs) {
-								counter1++;
+								/*counter1++;
 								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())==-1f) {
 									counter2++;
 								}
-								else {
-								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
+								
+								/*if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
 									evalua=0;
-									}				
+								}			*/	
+								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=-1f) {
+									evalua=0;
 								}
+						
 									
 							}
 						}
 						if(evalua==0) {
 							icp.setFlagg(1);
 						}
-						else {
+						/*else {
 							icp.setFlagg(1);
-						}
-						if(counter1!=0) {
+						}*/
+						/*if(counter1!=0) {
 							if(counter1==counter2) {
 								icp.setFlagg(0);
 							}
-						}		
+						}	*/	
 					}
 					listICP.add(icp);
 				}
@@ -446,14 +449,16 @@ public class StudentResultServiceImpl implements StudentResultService{
 							Integer counter2=0;
 							if(rcs!=null) {
 								for(ResultsPerCard rc : rcs) {
-									counter1++;
+									/*counter1++;
 									if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())==-1f) {
 										counter2++;
 									}
-									else {
+									
 									if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
 										evalua=0;
-									}				
+									}	*/			
+									if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=-1f) {
+										evalua=0;
 									}
 										
 										
@@ -461,7 +466,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 							}
 							if(evalua==0) {
 								icp.setFlagg(1);
-							}
+							/*}
 							else {
 								icp.setFlagg(1);
 							}
@@ -469,7 +474,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 								if(counter1==counter2) {
 									icp.setFlagg(0);
 								}
-							}		
+							}	*/	
 						}
 						listICP.add(icp);
 					}
