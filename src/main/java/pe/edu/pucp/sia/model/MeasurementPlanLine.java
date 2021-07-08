@@ -2,10 +2,8 @@ package pe.edu.pucp.sia.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +15,6 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Where;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Setter;
 import lombok.Getter;
@@ -37,6 +34,7 @@ public class MeasurementPlanLine {
 	@ManyToOne @JoinColumn(name="id_measurement_type")
 	private MeasurementType measurementType;
 	private int sampleStudents;
+	private String evidenceName;
 	private String evaluatoryActivity;
 	
 	@ManyToMany @JoinTable(name="measurementplanline_section_list",
