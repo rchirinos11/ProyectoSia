@@ -141,8 +141,9 @@ public class MeasurementServiceImpl implements MeasurementService {
 	public ApiResponse deleteMultipleMeasurement(DeleteMultipleMeasurementRequest m) {
 		ApiResponse response = null;
 		try {
-			String errors = "could not deactivate measurements from the following results per card: ( ";
+			String errors = "El horario " + m.getCode() + " tiene mediciones realizadas.";
 			Integer errorFlag = 0;
+			Integer existingMeasurement = 0;
 			Iterable<ResultsPerCard> resultsPerCards;
 			Person person = new Person();
 			person = personRepository.findById(m.getIdTeacher()).get();
@@ -153,20 +154,22 @@ public class MeasurementServiceImpl implements MeasurementService {
 			for(MeasurementPlanLine mpl : mpls) {
 				resultsPerCards = resultsPerCardRepository.findByMeasurementPlanLineCode(mpl.getId(),m.getCode());
 				for(ResultsPerCard rpc : resultsPerCards) {
-					if(measurementRepository.findDeleteMultipleMeasurement(rpc.getId()).isEmpty()) {
-						measurementRepository.deleteByResultsPerCardId(rpc.getId());
-					}
-					else {
+					if(!measurementRepository.findDeleteMultipleMeasurement(rpc.getId()).isEmpty()) {
 						errorFlag = 1;
-						errors = errors + rpc.getId() + " ";
 					}
 				}
 			}
 			if(errorFlag == 0) {
+				for(MeasurementPlanLine mpl : mpls) {
+					resultsPerCards = resultsPerCardRepository.findByMeasurementPlanLineCode(mpl.getId(),m.getCode());
+					for(ResultsPerCard rpc : resultsPerCards) {
+						measurementRepository.deleteByResultsPerCardId(rpc.getId());
+					}
+				}
 				response = new ApiResponse("Success",200);
 			}
 			else {
-				response = new ApiResponse(500, errors+")");
+				response = new ApiResponse(500, errors);
 			}
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
