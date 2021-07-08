@@ -88,10 +88,10 @@ public class IndicatorServiceImpl implements IndicatorService {
     }
     
 	@Override
-	public ApiResponse listBySpecialty(Integer id) {
+	public ApiResponse listBySpecialtySemester(Integer idSpecialty,Integer idSemester) {
 		ApiResponse response = null;
 		try {
-			Iterable<Indicator> list = indicatorRepository.findBystudentResultSpecialtyIdOrderByCodeAsc(id);
+			Iterable<Indicator> list = indicatorRepository.findBystudentResultSpecialtyIdAndStudentResultSemesterIdOrderByCodeAsc(idSpecialty,idSemester);
 			for (Indicator indicator: list) {
 				indicator.getStudentResult().setSpecialty(null);
 				indicator.getLevelDetails().sort(new LevelDetailComparator());
