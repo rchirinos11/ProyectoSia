@@ -373,32 +373,15 @@ public class StudentResultServiceImpl implements StudentResultService{
 						Integer counter2=0;
 						if(rcs!=null) {
 							for(ResultsPerCard rc : rcs) {
-								/*counter1++;
-								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())==-1f) {
-									counter2++;
-								}
-								
-								/*if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
-									evalua=0;
-								}			*/	
-								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=-1f) {
+								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())>0) {
 									evalua=0;
 								}
-						
 									
 							}
 						}
 						if(evalua==0) {
 							icp.setFlagg(1);
 						}
-						/*else {
-							icp.setFlagg(1);
-						}*/
-						/*if(counter1!=0) {
-							if(counter1==counter2) {
-								icp.setFlagg(0);
-							}
-						}	*/	
 					}
 					listICP.add(icp);
 				}
@@ -449,32 +432,14 @@ public class StudentResultServiceImpl implements StudentResultService{
 							Integer counter2=0;
 							if(rcs!=null) {
 								for(ResultsPerCard rc : rcs) {
-									/*counter1++;
-									if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())==-1f) {
-										counter2++;
-									}
-									
-									if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
+									if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())>0) {
 										evalua=0;
-									}	*/			
-									if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=-1f) {
-										evalua=0;
-									}
-										
-										
+									}				
 								}
 							}
 							if(evalua==0) {
 								icp.setFlagg(1);
-							/*}
-							else {
-								icp.setFlagg(1);
 							}
-							if(counter1!=0) {
-								if(counter1==counter2) {
-									icp.setFlagg(0);
-								}
-							}	*/	
 						}
 						listICP.add(icp);
 					}
@@ -484,8 +449,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 			}
 				sps.setPercentages(list);
 				listFinal.add(sps);	
-			}
-			}
+			}			
 			response = new ApiResponse(listFinal,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
