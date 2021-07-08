@@ -377,10 +377,11 @@ public class StudentResultServiceImpl implements StudentResultService{
 								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())==-1f) {
 									counter2++;
 								}
+								else {
 								if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
 									evalua=0;
-								}				
-									
+									}				
+								}
 									
 							}
 						}
@@ -388,7 +389,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 							icp.setFlagg(1);
 						}
 						else {
-							icp.setFlagg(2);
+							icp.setFlagg(1);
 						}
 						if(counter1!=0) {
 							if(counter1==counter2) {
@@ -449,9 +450,11 @@ public class StudentResultServiceImpl implements StudentResultService{
 									if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())==-1f) {
 										counter2++;
 									}
+									else {
 									if(resultsPerCardRepository.evaluaStudentResultTotalMeasured(rc.getId())!=1f) {
 										evalua=0;
 									}				
+									}
 										
 										
 								}
@@ -460,7 +463,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 								icp.setFlagg(1);
 							}
 							else {
-								icp.setFlagg(2);
+								icp.setFlagg(1);
 							}
 							if(counter1!=0) {
 								if(counter1==counter2) {
