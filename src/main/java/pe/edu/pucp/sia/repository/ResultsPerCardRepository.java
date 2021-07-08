@@ -17,7 +17,7 @@ public interface ResultsPerCardRepository extends CrudRepository <ResultsPerCard
 	public List<ResultsPerCard> findByMeasurementPlanLineIndicatorStudentResultId(Integer id);
 	public List<ResultsPerCard> findByMeasurementPlanLineIndicatorStudentResultSpecialtyIdAndMeasurementPlanLineSemesterId(
 			Integer idSpecialty, Integer idSemester);
-	public List<ResultsPerCard> findByMeasurementPlanLineIdAndSectionCode(Integer idMpl, int code);
+	public List<ResultsPerCard> findBySectionId(Integer idSection);
 
 	public List<ResultsPerCard> findByMeasurementPlanLineCourseIdAndSectionCode(
 			Integer idCourse, int sectionCode);
