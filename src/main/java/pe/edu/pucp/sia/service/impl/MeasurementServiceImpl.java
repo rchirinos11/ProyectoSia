@@ -150,7 +150,7 @@ public class MeasurementServiceImpl implements MeasurementService {
 			List<Person> persons = new ArrayList<Person>();
 			List<ResultsPerCard> rpcs = new ArrayList<ResultsPerCard>();
 			persons.add(person);
-			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCodeTeacherCourseSemester(m.getCode(),m.getIdTeacher(),m.getIdCourse(),m.getIdSemester());
+			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCodeCourseSemester(m.getCode(),m.getIdCourse(),m.getIdSemester());
 			for(MeasurementPlanLine mpl : mpls) {
 				resultsPerCards = resultsPerCardRepository.findByMeasurementPlanLineCode(mpl.getId(),m.getCode());
 				for(ResultsPerCard rpc : resultsPerCards) {
