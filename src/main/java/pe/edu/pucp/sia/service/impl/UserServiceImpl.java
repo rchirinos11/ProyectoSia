@@ -49,8 +49,12 @@ public class UserServiceImpl implements UserService{
 				p.setRoleList(list);
 				p.setId(personRepository.save(p).getId());
 				u.setPerson(p);
+				Integer id;
+				if(u.getFaculty()==null)
+					id = userRepository.registerUser(u.getPerson().getId(), u.getUsername(), u.getPassword(), 0);
+				else 
+					id = userRepository.registerUser(u.getPerson().getId(), u.getUsername(), u.getPassword(), u.getFaculty().getId());
 				
-				Integer id = userRepository.registerUser(u.getPerson().getId(), u.getUsername(), u.getPassword(), u.getFaculty().getId());
 				if(id==-1)
 					response = new ApiResponse(409, "This username already exists");
 				else if(id==-2)
@@ -80,7 +84,12 @@ public class UserServiceImpl implements UserService{
 	public ApiResponse updateUser(User u) {
 		ApiResponse response = null;
 		try {
-			Integer id = userRepository.updateUser(u.getId(),u.getUsername(), u.getPassword(), u.getFaculty().getId());
+			Integer id;
+			if(u.getFaculty()==null)
+				id = userRepository.updateUser(u.getId(),u.getUsername(), u.getPassword(), 0);
+			else
+				id = userRepository.updateUser(u.getId(),u.getUsername(), u.getPassword(), u.getFaculty().getId());
+			
 			if(id==-1)
 				response = new ApiResponse(409, "This username already exists");
 			else if(id==-2)
