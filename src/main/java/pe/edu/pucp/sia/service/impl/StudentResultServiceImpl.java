@@ -485,6 +485,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 				sps.setPercentages(list);
 				listFinal.add(sps);	
 			}
+			}
 			response = new ApiResponse(listFinal,200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
