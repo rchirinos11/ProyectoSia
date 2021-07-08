@@ -19,8 +19,8 @@ public interface ResultsPerCardRepository extends CrudRepository <ResultsPerCard
 			Integer idSpecialty, Integer idSemester);
 	public List<ResultsPerCard> findBySectionId(Integer idSection);
 
-	public List<ResultsPerCard> findByMeasurementPlanLineCourseIdAndSectionCode(
-			Integer idCourse, int sectionCode);
+	public List<ResultsPerCard> findByMeasurementPlanLineCourseIdAndSectionCodeAndMeasurementPlanLineSemesterId(
+			Integer idCourse, int sectionCode, Integer idSemester);
 	
 	@Procedure("sp_delete_results_per_card")
 	public void deleteResultsPerCard(Integer id);

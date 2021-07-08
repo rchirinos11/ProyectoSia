@@ -14,6 +14,7 @@ import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Section;
+import pe.edu.pucp.sia.model.Semester;
 import pe.edu.pucp.sia.model.comparators.LevelDetailComparator;
 import pe.edu.pucp.sia.model.comparators.MeasurementPlanLineComparator;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
@@ -21,6 +22,7 @@ import pe.edu.pucp.sia.repository.MeasurementRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.RoleRepository;
 import pe.edu.pucp.sia.repository.SectionRepository;
+import pe.edu.pucp.sia.repository.SemesterRepository;
 import pe.edu.pucp.sia.requests.MPlanLineBatchRegisterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.response.ResultsPerCardScheduleDataResponse;
@@ -40,7 +42,9 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	private RoleRepository roleRepository;
 	@Autowired
 	private MeasurementRepository measurementRepository;
-
+	@Autowired
+	private SemesterRepository semesterRepository;
+	
 	@Override
 	public ApiResponse listAll() {
 		ApiResponse response = null;
@@ -435,10 +439,12 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 
 	private boolean copyStudentList(MeasurementPlanLine mpl, Section s, ResultsPerCard r) {
 		boolean copio=false;
+		//Solo buscará del semestre actual
+		Semester semester = semesterRepository.findByCurrent(true);
 		//Verifica curso y horario existente
 		List<ResultsPerCard> listRPC =
-		resultsPerCardRepository.findByMeasurementPlanLineCourseIdAndSectionCode(
-				mpl.getCourse().getId(),s.getCode());
+		resultsPerCardRepository.findByMeasurementPlanLineCourseIdAndSectionCodeAndMeasurementPlanLineSemesterId(
+				mpl.getCourse().getId(),s.getCode(),semester.getId());
 		if (listRPC!=null) {
 			for (ResultsPerCard rpc : listRPC) {
 				//Busca que tenga mediciones con alumnos
