@@ -166,7 +166,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 							}
 							//Para los nuevos horarios verifica curso y horario existente
 							if (!valido) {
-								List<ResultsPerCard> listRPC = resultsPerCardRepository.findByMeasurementPlanLineIdAndSectionCode(m.getId(),s.getCode());
+								List<ResultsPerCard> listRPC = resultsPerCardRepository.findBySectionId(s.getId());
 								if (!listRPC.isEmpty()) {
 									copyStudentList(m,s,listRPC.get(0));
 								}
