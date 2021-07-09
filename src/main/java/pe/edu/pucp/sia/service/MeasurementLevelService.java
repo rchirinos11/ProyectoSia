@@ -13,4 +13,5 @@ public interface MeasurementLevelService {
 	public ApiResponse updateCurrentMeasurementLevel(Integer id);
 	public ApiResponse deleteMeasurementLevel(Integer id);
 	public ApiResponse copyBySpecialtySemester(Integer idSpecialtyFrom, Integer idSemesterFrom, Integer idSpecialtyTo, Integer idSemesterTo);
+	public ApiResponse deleteMeasurementLevelByStudentAndIdResultPerCard(Integer idResultPerCard);
 }

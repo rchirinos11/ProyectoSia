@@ -210,4 +210,23 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 		return response;
 	}
 
+	@Override
+	public ApiResponse updateEvidences(Integer id, List<String> evidences) {
+		ApiResponse response = null;
+		try {
+			var query = resultsPerCardRepository.findById(id);
+			if(query.isPresent()) {
+				ResultsPerCard resultPC = query.get();
+				resultPC.setEvidences(evidences);
+				resultsPerCardRepository.save(resultPC);
+				response = new ApiResponse("Added successfully", 200);
+			} else {
+				response = new ApiResponse(400, "ResultsPerCard not found");
+			}
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
 }

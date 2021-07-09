@@ -19,5 +19,7 @@ public class User {
     private String password;
     @OneToOne @JoinColumn(name="id_person")
     private Person person;
+    @OneToOne @JoinColumn(name="id_faculty")
+    private Faculty faculty;
     private boolean active;
 }

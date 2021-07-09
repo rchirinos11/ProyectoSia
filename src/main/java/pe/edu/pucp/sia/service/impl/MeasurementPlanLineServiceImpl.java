@@ -14,6 +14,7 @@ import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Section;
+import pe.edu.pucp.sia.model.Semester;
 import pe.edu.pucp.sia.model.comparators.LevelDetailComparator;
 import pe.edu.pucp.sia.model.comparators.MeasurementPlanLineComparator;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
@@ -21,6 +22,7 @@ import pe.edu.pucp.sia.repository.MeasurementRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.RoleRepository;
 import pe.edu.pucp.sia.repository.SectionRepository;
+import pe.edu.pucp.sia.repository.SemesterRepository;
 import pe.edu.pucp.sia.requests.MPlanLineBatchRegisterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.response.ResultsPerCardScheduleDataResponse;
@@ -40,7 +42,9 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	private RoleRepository roleRepository;
 	@Autowired
 	private MeasurementRepository measurementRepository;
-
+	@Autowired
+	private SemesterRepository semesterRepository;
+	
 	@Override
 	public ApiResponse listAll() {
 		ApiResponse response = null;
@@ -104,7 +108,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 				for (ResultsPerCard rpc : mOri.getResultsPerCards()) {
 					if (rpc.getTotalStudents()>0) {
 						valido = false;
-						response = new ApiResponse(500, "Course "+mOri.getCourse().getName()+" with section "+rpc.getSection().getCode()+" has meditions done.");
+						response = new ApiResponse(500, "El curso "+mOri.getCourse().getName()+" con horario "+rpc.getSection().getCode()+" tiene mediciones realizadas.");
 						break;
 					}
 				}
@@ -126,7 +130,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 						//Verifica si tenía mediciones
 						if	(rpc.getTotalStudents()>0) {
 							valido = false;
-							response = new ApiResponse(500, "Section "+sectionOri+" has meditions done.");
+							response = new ApiResponse(500, "El horario "+sectionOri+" tiene mediciones realizadas.");
 							break;
 						}
 						//Si no tiene mediciones y se va a cambiar, debe borrar measurements asociados
@@ -166,7 +170,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 							}
 							//Para los nuevos horarios verifica curso y horario existente
 							if (!valido) {
-								List<ResultsPerCard> listRPC = resultsPerCardRepository.findByMeasurementPlanLineIdAndSectionCode(m.getId(),s.getCode());
+								List<ResultsPerCard> listRPC = resultsPerCardRepository.findBySectionId(s.getId());
 								if (!listRPC.isEmpty()) {
 									copyStudentList(m,s,listRPC.get(0));
 								}
@@ -435,10 +439,12 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 
 	private boolean copyStudentList(MeasurementPlanLine mpl, Section s, ResultsPerCard r) {
 		boolean copio=false;
+		//Solo buscará del semestre actual
+		Semester semester = semesterRepository.findByCurrent(true);
 		//Verifica curso y horario existente
 		List<ResultsPerCard> listRPC =
-		resultsPerCardRepository.findByMeasurementPlanLineCourseIdAndSectionCode(
-				mpl.getCourse().getId(),s.getCode());
+		resultsPerCardRepository.findByMeasurementPlanLineCourseIdAndSectionCodeAndMeasurementPlanLineSemesterId(
+				mpl.getCourse().getId(),s.getCode(),semester.getId());
 		if (listRPC!=null) {
 			for (ResultsPerCard rpc : listRPC) {
 				//Busca que tenga mediciones con alumnos

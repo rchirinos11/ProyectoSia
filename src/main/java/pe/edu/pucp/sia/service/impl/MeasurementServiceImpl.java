@@ -97,12 +97,8 @@ public class MeasurementServiceImpl implements MeasurementService {
 		ApiResponse response = null;
 		try {
 			Iterable<ResultsPerCard> resultsPerCards;
-			Person person = new Person();
-			person = personRepository.findById(m.getIdTeacher()).get();
-			List<Person> persons = new ArrayList<Person>();
 			List<ResultsPerCard> rpcs = new ArrayList<ResultsPerCard>();
-			persons.add(person);
-			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCodeTeacherCourseSemester(m.getCode(),m.getIdTeacher(),m.getIdCourse(),m.getIdSemester());
+			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCodeCourseSemester(m.getCode(),m.getIdCourse(),m.getIdSemester());
 			for(MeasurementPlanLine mpl : mpls) {
 				resultsPerCards = resultsPerCardRepository.findByMeasurementPlanLineCode(mpl.getId(),m.getCode());
 				for(ResultsPerCard rpc : resultsPerCards) {
@@ -115,10 +111,10 @@ public class MeasurementServiceImpl implements MeasurementService {
 			}
 			else {
 				Integer id = null;
-				person = null;
+				Person person = null;
 				Measurement measurement;
 				for(Person p : m.getStudents()) {
-					person=personRepository.findByCode(p.getCode());
+					person = personRepository.findByCode(p.getCode());
 					if(person==null) {
 						person = personRepository.save(p);
 					}
@@ -141,34 +137,32 @@ public class MeasurementServiceImpl implements MeasurementService {
 	public ApiResponse deleteMultipleMeasurement(DeleteMultipleMeasurementRequest m) {
 		ApiResponse response = null;
 		try {
+			String errors = "El horario " + m.getCode() + " tiene mediciones realizadas.";
+			Integer errorFlag = 0;
+			Integer existingMeasurement = 0;
 			Iterable<ResultsPerCard> resultsPerCards;
-			Person person = new Person();
-			person = personRepository.findById(m.getIdTeacher()).get();
-			List<Person> persons = new ArrayList<Person>();
 			List<ResultsPerCard> rpcs = new ArrayList<ResultsPerCard>();
-			persons.add(person);
-			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCodeTeacherCourseSemester(m.getCode(),m.getIdTeacher(),m.getIdCourse(),m.getIdSemester());
+			Iterable<MeasurementPlanLine> mpls = measurementPlanLineRepository.findByCodeCourseSemester(m.getCode(),m.getIdCourse(),m.getIdSemester());
 			for(MeasurementPlanLine mpl : mpls) {
 				resultsPerCards = resultsPerCardRepository.findByMeasurementPlanLineCode(mpl.getId(),m.getCode());
 				for(ResultsPerCard rpc : resultsPerCards) {
-					if(measurementRepository.findDeleteMultipleMeasurement(rpc.getId()).isEmpty()) {
-						measurementRepository.deleteByResultsPerCardId(rpc.getId());
+					if(!measurementRepository.findDeleteMultipleMeasurement(rpc.getId()).isEmpty()) {
+						errorFlag = 1;
 					}
 				}
 			}
-			response = new ApiResponse("Success",200);
-		} catch(Exception ex) {
-			response = new ApiResponse(500, ex.getMessage());
-		}
-		return response;
-	}
-
-	@Override
-	public ApiResponse deleteByAlumnosAndResultsPerCard(Integer idResultsPerCard) {
-		ApiResponse response = null;
-		try {
-			measurementRepository.deleteByRolAndIdResultPerCard(6,idResultsPerCard);
-			response = new ApiResponse("Success",200);
+			if(errorFlag == 0) {
+				for(MeasurementPlanLine mpl : mpls) {
+					resultsPerCards = resultsPerCardRepository.findByMeasurementPlanLineCode(mpl.getId(),m.getCode());
+					for(ResultsPerCard rpc : resultsPerCards) {
+						measurementRepository.deleteByResultsPerCardId(rpc.getId());
+					}
+				}
+				response = new ApiResponse("Success",200);
+			}
+			else {
+				response = new ApiResponse(500, errors);
+			}
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}

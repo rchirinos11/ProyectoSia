@@ -201,4 +201,16 @@ public class MeasurementLevelServiceImpl implements MeasurementLevelService {
 		return response;
 	}
 
+	@Override
+	public ApiResponse deleteMeasurementLevelByStudentAndIdResultPerCard(Integer idResultPerCard) {
+		ApiResponse response = null;
+		try {
+			measurementLevelRepository.deleteByRolAndIdResultPerCard(6,idResultPerCard);
+			response = new ApiResponse(idResultPerCard,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
 }

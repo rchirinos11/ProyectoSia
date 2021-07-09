@@ -16,4 +16,6 @@ public interface MeasurementPlanLineRepository extends CrudRepository<Measuremen
 	public Iterable<MeasurementPlanLine> findByCourseIdAndSemesterIdAndSectionsTeachersInOrderByIndicatorCodeAsc(Integer idCourse, Integer idSemester, Iterable<Person> persons);
 	@Query(value = "call sp_find_by_code_teacher_course_semester(:in_code,:in_id_teacher,:in_id_course,:in_id_semester)", nativeQuery = true)
 	public Iterable<MeasurementPlanLine> findByCodeTeacherCourseSemester(@Param("in_code") Integer code, @Param("in_id_teacher") Integer idTeacher, @Param("in_id_course") Integer idCourse, @Param("in_id_semester") Integer idSemester);
+	@Query(value = "call sp_find_by_code_course_semester(:in_code,:in_id_course,:in_id_semester)", nativeQuery = true)
+	public Iterable<MeasurementPlanLine> findByCodeCourseSemester(@Param("in_code") Integer code, @Param("in_id_course") Integer idCourse, @Param("in_id_semester") Integer idSemester);
 }
