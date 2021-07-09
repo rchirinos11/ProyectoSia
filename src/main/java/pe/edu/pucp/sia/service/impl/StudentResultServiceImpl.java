@@ -117,7 +117,7 @@ public class StudentResultServiceImpl implements StudentResultService{
 				response = new ApiResponse("Success",200);
 			} 
 			else {
-				response = new ApiResponse(409,"Cannot Delete due to dependency");
+				response = new ApiResponse(409,"El Resultado de Estudiante tiene "+i.size()+" indicadores registrados.");
 			}
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
