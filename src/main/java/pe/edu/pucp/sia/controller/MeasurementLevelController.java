@@ -70,13 +70,6 @@ public class MeasurementLevelController {
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 
-	@DeleteMapping("/deleteMeasurementLevelByStudentAndIdResultPerCard/{id}")
-	public ResponseEntity<ApiResponse> deleteMeasurementLevelByStudentAndIdResultPerCard(@PathVariable Integer id){
-		logger.info("Entered method deleteMeasurementLevelByStudentAndIdResultPerCard()");
-		ApiResponse response = measurementLevelService.deleteMeasurementLevelByStudentAndIdResultPerCard(id);
-		return ResponseEntity.status(response.getStatus()).body(response);
-	}
-	
 	@PostMapping("/updateCurrent/{id}")
 	public ResponseEntity<ApiResponse> updateCurrentMeasurementLevel(@PathVariable Integer id){
 		logger.info("Entered method updateCurrentMeasurementLevel()");

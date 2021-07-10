@@ -13,4 +13,5 @@ public interface MeasurementService {
 	public ApiResponse deleteMeasurement(Integer id);
 	public ApiResponse deleteMultipleMeasurement(DeleteMultipleMeasurementRequest m);
 	public ApiResponse deleteByResultsPerCard(Integer idResultsPerCard);
+	public ApiResponse removeRelationByResultsPerCard(Integer idResultsPerCard);
 }

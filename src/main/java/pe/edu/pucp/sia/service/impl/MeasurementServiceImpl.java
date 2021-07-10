@@ -169,4 +169,16 @@ public class MeasurementServiceImpl implements MeasurementService {
 		return response;
 	}
 
+	@Override
+	public ApiResponse removeRelationByResultsPerCard(Integer idResultsPerCard) {
+		ApiResponse response = null;
+		try {
+			measurementRepository.removeByResultsPerCardId(idResultsPerCard);
+			response = new ApiResponse("Success",200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
 }

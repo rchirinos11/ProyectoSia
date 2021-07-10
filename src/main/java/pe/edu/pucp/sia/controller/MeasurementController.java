@@ -75,4 +75,11 @@ public class MeasurementController {
 		ApiResponse response = measurementService.deleteMultipleMeasurement(m);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
+
+	@DeleteMapping("/removeRelationWithResultPerCardId/{id}")
+	public ResponseEntity<ApiResponse> removeRelationWithResultPerCardId(@PathVariable Integer id){
+		logger.info("Entered method removeRelationWithResultPerCardId()");
+		ApiResponse response = measurementService.removeRelationByResultsPerCard(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
 }

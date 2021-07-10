@@ -15,7 +15,4 @@ public interface MeasurementLevelRepository extends CrudRepository <MeasurementL
 	//public MeasurementLevel findById(Integer id);
 	@Procedure("sp_delete_measurement_level")
 	public void deleteMeasurementLevel(Integer id);
-
-	@Procedure("sp_delete_measurementLevelByRolAndIdResultPerCard")
-	public void deleteByRolAndIdResultPerCard(Integer idRole,Integer idResultsPerCard);
 }
