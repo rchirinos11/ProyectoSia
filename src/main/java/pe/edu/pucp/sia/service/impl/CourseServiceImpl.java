@@ -54,7 +54,7 @@ public class CourseServiceImpl implements CourseService{
 	public ApiResponse deleteCourse(Integer id) {
 		ApiResponse response = null;
 		try {
-			courseRepository.deleteById(id);
+			courseRepository.deleteCourse(id);
 			response = new ApiResponse("Success",200);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
