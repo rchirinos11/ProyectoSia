@@ -1,7 +1,6 @@
 package pe.edu.pucp.sia.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,10 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.User;
+import pe.edu.pucp.sia.requests.AuthenticateRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.UserService;
 import pe.edu.pucp.sia.service.impl.UserServiceImpl;
@@ -48,8 +47,8 @@ public class UserController {
 	}
 	
 	@PostMapping("/authenticate")
-	public ResponseEntity<ApiResponse> authenticateUser(@RequestBody User u){
-		ApiResponse response = userService.authenticate(u);
+	public ResponseEntity<ApiResponse> authenticateUser(@RequestBody AuthenticateRequest user){
+		ApiResponse response = userService.authenticate(user.getUsername(), user.getPassword());
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

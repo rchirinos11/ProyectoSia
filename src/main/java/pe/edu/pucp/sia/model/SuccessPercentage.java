@@ -8,16 +8,22 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity @Getter @Setter
-public class EducationalObjective {
-	@Id @Column(name="id_educational_objective") @GeneratedValue(strategy=GenerationType.AUTO)
+public class SuccessPercentage {
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id_successPercentage")
 	private Integer id;
-	@ManyToOne
-	@JoinColumn(name="id_specialty")
+	@ManyToOne @JoinColumn(name="id_specialty")
 	private Specialty specialty;
-	private String description;
-	private boolean active;
+	@ManyToOne @JoinColumn(name="id_semester")
+	private Semester semester;
+	private int percentage=70;
+	public Specialty getSpecialty() {
+		return null;
+	}
 }

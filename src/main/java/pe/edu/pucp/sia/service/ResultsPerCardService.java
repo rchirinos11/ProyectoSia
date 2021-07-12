@@ -1,5 +1,7 @@
 package pe.edu.pucp.sia.service;
 
+import java.util.List;
+
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.response.ApiResponse;
 
@@ -11,4 +13,5 @@ public interface ResultsPerCardService {
 	public ApiResponse deleteResultsPerCard(Integer id);
 	public ApiResponse registerStudentMeditions(ResultsPerCard r);
 	public ApiResponse promPercentageByStudentResult(Integer id);
+	public ApiResponse updateEvidences(Integer id, List<String> evidences);
 }

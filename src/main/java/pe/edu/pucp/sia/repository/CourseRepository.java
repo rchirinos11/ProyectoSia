@@ -15,6 +15,6 @@ public interface CourseRepository extends CrudRepository<Course, Integer>{
 	public List<Course> listCoursesByTeacherSpecialty(@Param("in_id_teacher") Integer idPerson, @Param("in_id_specialty")Integer idSpeciality);
 
 	public List<Course> findBySpecialtyId(Integer id);
-
-	
+	@Procedure("sp_delete_course")
+	public void deleteCourse(Integer id);
 }

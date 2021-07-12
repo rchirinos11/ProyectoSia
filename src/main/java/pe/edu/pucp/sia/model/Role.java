@@ -20,11 +20,16 @@ public class Role {
     @Id @Column(name="id_role") @GeneratedValue(strategy =GenerationType.AUTO)
     private Integer id;
     private String description;
-    
-    @JsonIgnore
-    @ManyToMany
+    @JsonIgnore @ManyToMany
     @JoinTable(name = "role_person_list", 
 		joinColumns = @JoinColumn(name = "id_role"), 
 		inverseJoinColumns = @JoinColumn(name = "id_person"))
     private List<Person> personList;
+    
+    public Role() {
+    }
+    
+    public Role(int id) {
+    	this.id = id;
+    }
 }

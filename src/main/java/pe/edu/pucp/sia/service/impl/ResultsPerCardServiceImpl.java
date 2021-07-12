@@ -107,7 +107,7 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 		ApiResponse response = null;
 		try {
 			Integer nota,notaMin=0;
-			Integer total=0,total34=0,cantidad=0;
+			Integer total=0,total34=0,cantidad=0,evaluados=0;
 			MeasurementLevel ml=null;
 			float media, porcentaje;
 			Integer idResult = r.getId();
@@ -166,20 +166,23 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 					}
 					if (nota>=notaMin && notaMin>0)
 						total34++;
+					evaluados++;
 				}
 				total+=nota;
 				cantidad++;
-			}
+			}//end for
+			
 			//Calcula resultados totales
 			if (cantidad == 0)
 				media = 0;
 			else
 				media = (float)total/cantidad;
 			
-			if (total==0)
+			if (evaluados == 0 )
 				porcentaje = 0;
 			else
-				porcentaje = (float)total34/total;
+				porcentaje = (float)total34/evaluados;
+				
 			resultsPerCardRepository.registerResultsPerCard(idResult,cantidad,total34,media,porcentaje);
 			response = new ApiResponse("Success",200);
 		}catch(Exception ex) {
@@ -201,6 +204,25 @@ public class ResultsPerCardServiceImpl implements ResultsPerCardService{
 			}
 			if(cant!=0)prom = prom/cant;
 			response = new ApiResponse(prom,200);
+		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	@Override
+	public ApiResponse updateEvidences(Integer id, List<String> evidences) {
+		ApiResponse response = null;
+		try {
+			var query = resultsPerCardRepository.findById(id);
+			if(query.isPresent()) {
+				ResultsPerCard resultPC = query.get();
+				resultPC.setEvidences(evidences);
+				resultsPerCardRepository.save(resultPC);
+				response = new ApiResponse("Added successfully", 200);
+			} else {
+				response = new ApiResponse(400, "ResultsPerCard not found");
+			}
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}

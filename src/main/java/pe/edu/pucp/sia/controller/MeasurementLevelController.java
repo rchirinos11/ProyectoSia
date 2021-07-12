@@ -69,7 +69,7 @@ public class MeasurementLevelController {
 		ApiResponse response = measurementLevelService.deleteMeasurementLevel(id);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
-	
+
 	@PostMapping("/updateCurrent/{id}")
 	public ResponseEntity<ApiResponse> updateCurrentMeasurementLevel(@PathVariable Integer id){
 		logger.info("Entered method updateCurrentMeasurementLevel()");

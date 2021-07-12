@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Measurement;
+import pe.edu.pucp.sia.requests.DeleteMultipleMeasurementRequest;
+import pe.edu.pucp.sia.requests.MultipleMeasurementRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.MeasurementService;
 import pe.edu.pucp.sia.service.impl.MeasurementServiceImpl;
@@ -39,6 +41,13 @@ public class MeasurementController {
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
+	@PostMapping("/createmultiple")
+	public ResponseEntity<ApiResponse> createMultipleMeasurement(@RequestBody MultipleMeasurementRequest m){
+		logger.info("Entered method createMultipleMeasurement()");
+		ApiResponse response = measurementService.createMultipleMeasurement(m);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
 	@PostMapping("/update")
 	public ResponseEntity<ApiResponse> updateMeasurement(@RequestBody Measurement m){
 		logger.info("Entered method updateMeasurement()");
@@ -57,6 +66,20 @@ public class MeasurementController {
 	public ResponseEntity<ApiResponse> deleteByResultsPerCard(@PathVariable Integer id){
 		logger.info("Entered method deleteByResultsPerCard()");
 		ApiResponse response = measurementService.deleteByResultsPerCard(id);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("deletemultiple")
+	public ResponseEntity<ApiResponse> deleteMultipleMeasurement(@RequestBody DeleteMultipleMeasurementRequest m){
+		logger.info("Entered method deleteMultipleMeasurement()");
+		ApiResponse response = measurementService.deleteMultipleMeasurement(m);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+
+	@DeleteMapping("/removeRelationWithResultPerCardId/{id}")
+	public ResponseEntity<ApiResponse> removeRelationWithResultPerCardId(@PathVariable Integer id){
+		logger.info("Entered method removeRelationWithResultPerCardId()");
+		ApiResponse response = measurementService.removeRelationByResultsPerCard(id);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

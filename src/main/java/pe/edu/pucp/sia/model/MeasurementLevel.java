@@ -19,18 +19,11 @@ public class MeasurementLevel {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_measurement_level")
 	private Integer id;
-	
-	@JoinColumn(name="id_specialty", referencedColumnName = "id_specialty")
-	@ManyToOne
+	@ManyToOne @JoinColumn(name="id_specialty")
 	private Specialty specialty;
-	@ManyToOne
-	@JoinColumn(name="id_semester")
+	@ManyToOne @JoinColumn(name="id_semester")
 	private Semester semester;
 	private Integer orden;
 	private String name;	
 	private Integer isMinimum=0;
-	
-	//@Column(name="success_rate")
-	//private Float successRate;	
-	//private boolean active=true;
 }

@@ -21,13 +21,8 @@ public class StudentResult {
 	@ManyToOne
 	@JoinColumn(name="id_specialty")
 	private Specialty specialty;
-	@ManyToOne
-	@JoinColumn(name="id_educational_objective")
-	private EducationalObjective educationalObjective;
-	@ManyToOne
-	@JoinColumn(name="id_semester")
+	@ManyToOne @JoinColumn(name="id_semester")
 	private Semester semester;
-	private int orderNumber;
+	private String code;
 	private String description;
-	//private boolean active=true;
 }

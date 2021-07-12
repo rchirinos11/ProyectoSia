@@ -19,9 +19,7 @@ public class Faculty {
 	@Id @Column(name="id_faculty") @GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	private String name;
-	@ManyToOne
-	@JoinColumn(name="id_coordinator")
+	@ManyToOne @JoinColumn(name="id_coordinator")
 	private Person coordinator;
 	private boolean archived;
-	//private boolean active=true;
 }

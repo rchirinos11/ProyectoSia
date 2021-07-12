@@ -24,15 +24,9 @@ public class Indicator {
     private Integer id;
     private String description;
     private String code;
-
-    @ManyToOne
-	@JoinColumn(name="id_student_result")
+    @ManyToOne @JoinColumn(name="id_student_result")
 	private StudentResult studentResult;
-
-    @OneToMany()
-    @JoinColumn(name="id_indicator") 
+    @OneToMany @JoinColumn(name="id_indicator") 
     private List<LevelDetail> levelDetails;
-
-
 }
 

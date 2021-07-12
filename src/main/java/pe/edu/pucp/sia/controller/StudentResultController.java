@@ -13,11 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.StudentResult;
+import pe.edu.pucp.sia.requests.MPlanLineCourseSemesterRequest;
 import pe.edu.pucp.sia.requests.MPlanLineSpecialtySemesterRequest;
 import pe.edu.pucp.sia.requests.StudentResultCopyRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.StudentResultService;
 import pe.edu.pucp.sia.service.impl.StudentResultServiceImpl;
+
+import pe.edu.pucp.sia.requests.StudentResultSemestersRequest;
+import pe.edu.pucp.sia.requests.StudentResultSpecialtySemestersRequest;
 
 @RestController
 @RequestMapping("/studentresult")
@@ -54,7 +58,28 @@ public class StudentResultController {
 		ApiResponse response = studentResultService.listBySpecialtySemesterPlusAchievementPercentage(lss);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
+	
+	@PostMapping("/listbyspecialtysemesterplusindicatorscoursespercentages")
+	public ResponseEntity<ApiResponse> listBySpecialtySemesterPlusIndicatorsCoursesPercentage(@RequestBody MPlanLineSpecialtySemesterRequest lss){
+		logger.info("Entered method listBySpecialtySemesterPlusIndicatorsCoursesPercentage()");
+		ApiResponse response = studentResultService.listBySpecialtySemesterPlusIndicatorsCoursesPercentage(lss);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
+	@PostMapping("/listbyspecialtysemesterstartsemesterendplusindicatorscoursespercentages")
+	public ResponseEntity<ApiResponse> listBySpecialtySemestersPlusIndicatorsCoursesPercentage(@RequestBody StudentResultSpecialtySemestersRequest lss){
+		logger.info("Entered method listBySpecialtySemestersPlusIndicatorsCoursesPercentage()");
+		ApiResponse response = studentResultService.listBySpecialtySemestersPlusIndicatorsCoursesPercentage(lss);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
 
+	@PostMapping("/listbycoursesemesterplussuccess")
+	public ResponseEntity<ApiResponse> listByCourseSemesterPlusSuccess(@RequestBody MPlanLineCourseSemesterRequest lss){
+		logger.info("Entered method listByCourseSemesterPlusSuccess()");
+		ApiResponse response = studentResultService.listByCourseSemesterPlusSuccess(lss);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
 	@PostMapping("/listbyspecialtysemesterplusindicator")
 	public ResponseEntity<ApiResponse> listBySpecialtySemesterPlusIndicator(@RequestBody MPlanLineSpecialtySemesterRequest lss){
 		logger.info("Entered method listBySpecialtyPlusIndicator()");
@@ -87,6 +112,14 @@ public class StudentResultController {
 	public ResponseEntity<ApiResponse> copyBySpecialtySemester(@RequestBody StudentResultCopyRequest srRequest){
 		logger.info("Entered method copyBySpecialtySemester()");
 		ApiResponse response = studentResultService.copyBySpecialtySemester(srRequest.getIdSpecialtyFrom(),srRequest.getIdSemesterFrom(),srRequest.getIdSpecialtyTo(),srRequest.getIdSemesterTo());
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+
+	//Method inserted. If fails, delete this
+	@PostMapping("/listbysemesterspluspercentage")
+	public ResponseEntity<ApiResponse> listBySemestersPlusAchievementPercentage(@RequestBody StudentResultSemestersRequest srRequest){
+		logger.info("Entered method listBySemestersPlusAchievementPercentage()");
+		ApiResponse response = studentResultService.listBySemestersPlusAchievementPercentage(srRequest.getIdSemesterStart(),srRequest.getIdSemesterEnd());
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 }

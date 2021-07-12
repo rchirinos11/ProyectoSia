@@ -71,7 +71,6 @@ public class IndicatorServiceImpl implements IndicatorService {
     	ApiResponse response = null;
 		try {
 			Iterator<MeasurementPlanLine> i = mplRepository.findByIndicatorId(id).iterator();
-			//Iterator<LevelDetail> l = levelDetailRepository.findByIndicatorId(id).iterator();
 			if(!i.hasNext()) {
 				for(LevelDetail l: levelDetailRepository.listLevelDetailByIndicator(id) ) {
 						levelDetailRepository.deleteLevelDetail(l.getId());					
@@ -79,7 +78,7 @@ public class IndicatorServiceImpl implements IndicatorService {
 				indicatorRepository.deleteIndicator(id);					
 				response = new ApiResponse("Success",200);
 			} else {
-				response = new ApiResponse(409,"Cannot Delete due to dependency");
+				response = new ApiResponse(409,"Existen Planes de Medición asociados al Indicador");
 			}
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
@@ -88,10 +87,10 @@ public class IndicatorServiceImpl implements IndicatorService {
     }
     
 	@Override
-	public ApiResponse listBySpecialty(Integer id) {
+	public ApiResponse listBySpecialtySemester(Integer idSpecialty,Integer idSemester) {
 		ApiResponse response = null;
 		try {
-			Iterable<Indicator> list = indicatorRepository.findBystudentResultSpecialtyIdOrderByCodeAsc(id);
+			Iterable<Indicator> list = indicatorRepository.findBystudentResultSpecialtyIdAndStudentResultSemesterIdOrderByCodeAsc(idSpecialty,idSemester);
 			for (Indicator indicator: list) {
 				indicator.getStudentResult().setSpecialty(null);
 				indicator.getLevelDetails().sort(new LevelDetailComparator());

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.pucp.sia.model.Person;
+import pe.edu.pucp.sia.requests.MultiplePersonRequest;
 import pe.edu.pucp.sia.requests.UnfinishedTeachersRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.service.PersonService;
@@ -55,6 +56,13 @@ public class PersonController {
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
 	
+	@PostMapping("/createmultiple")
+	public ResponseEntity<ApiResponse> createMultiplePerson(@RequestBody MultiplePersonRequest m){
+		logger.info("Entered method createMultiplePerson()");
+		ApiResponse response = personService.createMultiplePerson(m);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
 	@PostMapping("/update")
 	public ResponseEntity<ApiResponse> updatePerson(@RequestBody Person p){
 		logger.info("Entered method updatePerson()");
@@ -89,4 +97,12 @@ public class PersonController {
 		ApiResponse response = personService.listUnfinishedTeachers(u);
 		return ResponseEntity.status(response.getStatus()).body(response);
 	}
+	
+	@PostMapping("/listassignedteachers")
+	public ResponseEntity<ApiResponse> listassignedteachers(@RequestBody UnfinishedTeachersRequest u){
+		logger.info("Entered method listAssignedTeachers()");
+		ApiResponse response = personService.listAssignedTeachers(u);
+		return ResponseEntity.status(response.getStatus()).body(response);
+	}
+	
 }

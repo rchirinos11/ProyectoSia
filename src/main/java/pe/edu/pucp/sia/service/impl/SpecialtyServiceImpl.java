@@ -8,12 +8,19 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.pucp.sia.model.Faculty;
 import pe.edu.pucp.sia.model.Person;
+import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Role;
+import pe.edu.pucp.sia.model.Semester;
 import pe.edu.pucp.sia.model.Specialty;
+import pe.edu.pucp.sia.model.SuccessPercentage;
 import pe.edu.pucp.sia.repository.PersonRepository;
+import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.RoleRepository;
+import pe.edu.pucp.sia.repository.SemesterRepository;
 import pe.edu.pucp.sia.repository.SpecialtyRepository;
+import pe.edu.pucp.sia.repository.SuccessPercentageRepository;
 import pe.edu.pucp.sia.response.ApiResponse;
+import pe.edu.pucp.sia.response.PercentageResponse;
 import pe.edu.pucp.sia.service.SpecialtyService;
 
 @Service
@@ -26,6 +33,12 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private SemesterRepository semesterRepository;
+	
+	@Autowired
+	private SuccessPercentageRepository successPercentageRepository;
 	
 	@Override
 	public ApiResponse listAll(){
@@ -76,7 +89,17 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 					personRepository.save(person2);
 				}
 			}			
+			//Registra specialty
 			Integer id = specialtyRepository.save(s).getId();
+			
+			//Agrega porcentaje del semestre actual
+			Semester semester = semesterRepository.findByCurrent(true);
+			SuccessPercentage sucPer = new SuccessPercentage();
+			s.setId(id);
+			sucPer.setSpecialty(s);
+			sucPer.setSemester(semester);
+			successPercentageRepository.save(sucPer);
+			
 			response = new ApiResponse(id,201);
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
@@ -286,9 +309,18 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 	@Override
 	public ApiResponse updatePercentage(Integer idSpecialty, Integer percentage){
 		ApiResponse response = null;
+		PercentageResponse contentResponse = new PercentageResponse();
 		try {
-			specialtyRepository.setPercentage(idSpecialty,percentage);
-			response = new ApiResponse("Success",200);
+			Semester semester = semesterRepository.findByCurrent(true);
+			if (semester!=null) {
+				specialtyRepository.setPercentage(idSpecialty,semester.getId(),percentage);
+				contentResponse.setPercentage(percentage);
+				contentResponse.setIdSemester(semester.getId());
+				response = new ApiResponse(contentResponse,200);
+			}
+			else
+				response = new ApiResponse(500, "Don't exist a current semester.");
+			
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}

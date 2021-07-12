@@ -8,5 +8,5 @@ public interface UserService {
 	public ApiResponse createUser(User u);
 	public ApiResponse updateUser(User u);
 	public ApiResponse deleteUser(Integer id);
-	public ApiResponse authenticate(User u);
+	public ApiResponse authenticate(String username, String password);
 }

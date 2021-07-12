@@ -16,13 +16,10 @@ import lombok.Setter;
 @Where(clause = "active=true")
 @Entity @Getter @Setter
 public class ImprovementProposal {
-	
 	@Id @Column(name="id_improvement_proposal") 
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
-	@ManyToOne
-	@JoinColumn(name="id_improvement_plan")
+	@ManyToOne	@JoinColumn(name="id_improvement_plan")
 	private ImprovementPlan improvementPlan;
 	private String description;
-	//private boolean active;
 }

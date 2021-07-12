@@ -21,17 +21,10 @@ public class LevelDetail {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_level_detail")
 	private Integer id;
-	
-	@JoinColumn(name="id_measurement_level", referencedColumnName = "id_measurement_level")
-	@ManyToOne
+	@ManyToOne @JoinColumn(name="id_measurement_level")
 	private MeasurementLevel measurementLevel;
-	
-	@JoinColumn(name="id_indicator", referencedColumnName = "id_indicator")
-	@ManyToOne
-	@JsonIgnore()
-	private Indicator indicator;
-	
-	
+	@JsonIgnore
+	@ManyToOne @JoinColumn(name="id_indicator")	
+	private Indicator indicator;	
 	private String description;	
-	private boolean active=true;
 }

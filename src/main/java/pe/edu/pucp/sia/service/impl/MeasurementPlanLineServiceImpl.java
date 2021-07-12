@@ -9,16 +9,21 @@ import org.springframework.stereotype.Service;
 
 import lombok.var;
 import pe.edu.pucp.sia.model.Indicator;
+import pe.edu.pucp.sia.model.Measurement;
 import pe.edu.pucp.sia.model.MeasurementPlanLine;
 import pe.edu.pucp.sia.model.ResultsPerCard;
 import pe.edu.pucp.sia.model.Person;
 import pe.edu.pucp.sia.model.Section;
+import pe.edu.pucp.sia.model.Semester;
 import pe.edu.pucp.sia.model.comparators.LevelDetailComparator;
 import pe.edu.pucp.sia.model.comparators.MeasurementPlanLineComparator;
 import pe.edu.pucp.sia.repository.MeasurementPlanLineRepository;
+import pe.edu.pucp.sia.repository.MeasurementRepository;
 import pe.edu.pucp.sia.repository.ResultsPerCardRepository;
 import pe.edu.pucp.sia.repository.RoleRepository;
 import pe.edu.pucp.sia.repository.SectionRepository;
+import pe.edu.pucp.sia.repository.SemesterRepository;
+import pe.edu.pucp.sia.requests.MPlanLineBatchRegisterRequest;
 import pe.edu.pucp.sia.response.ApiResponse;
 import pe.edu.pucp.sia.response.ResultsPerCardScheduleDataResponse;
 import pe.edu.pucp.sia.response.ResultsPerCardScheduleListDataResponse;
@@ -35,8 +40,11 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	private ResultsPerCardRepository resultsPerCardRepository;
 	@Autowired
 	private RoleRepository roleRepository;
+	@Autowired
+	private MeasurementRepository measurementRepository;
+	@Autowired
+	private SemesterRepository semesterRepository;
 	
-
 	@Override
 	public ApiResponse listAll() {
 		ApiResponse response = null;
@@ -88,59 +96,121 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 	@Override
 	public ApiResponse updateMeasurementPlanLine(MeasurementPlanLine m) {
 		ApiResponse response = null;
+		MeasurementPlanLine mOri = null;
+		boolean valido=true;
 		try {
-			//Obtiene rol profesor
-			Integer idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
-			List<ResultsPerCard> rPerCardList = m.getResultsPerCards();
-			if(m.getSections()!=null) {
-				for(Section s : m.getSections()) {
-					if(s.getId()==null) {
-						s.setId(sectionRepository.save(s).getId());
-						
-						ResultsPerCard r= new ResultsPerCard();
-						r.setSection(s);
-						r.setId(resultsPerCardRepository.save(r).getId());
-						rPerCardList.add(r);
-					} else {
-						//Busca profesores a cargo originalmente
-						List<Integer> teachersOld = new ArrayList<>();
-						var val = sectionRepository.findById(s.getId());
-						if (val.isPresent() && val.get().getTeachers()!=null) {
-							for (Person p : val.get().getTeachers())
-								teachersOld.add(p.getId());
-						}
-						
-						//Verifica si fueron removidos los originales
-						if (!teachersOld.isEmpty()) {
-							List<Integer> teachersRemove = new ArrayList<>();
-							boolean find=false;
-							for(Integer idTeacher : teachersOld){
-								for(Person t : s.getTeachers()) {
-									if (idTeacher.equals(t.getId())) {
-										find=true;
-										break;
-									}
-								}
-								if (find==false)
-									teachersRemove.add(idTeacher);
-							}
-							//Busca si no es profesor de otro curso para quitarle el rol
-							for(Integer idT : teachersRemove){
-								roleRepository.unassignTeacher(idT);
-							}
-						}
-						sectionRepository.save(s);
-					}
-					//Asigna rol a profesores agregados
-					if(s.getTeachers()!=null) {
-						for(Person p : s.getTeachers())
-							roleRepository.assignRole(idRoleProfesor, p.getId());
+			//Obtiene measurement plan line original
+			var valMpl = mPlanLineRepository.findById(m.getId());
+			if (valMpl.isPresent())
+				mOri = valMpl.get();
+			//Verifica si antiguo curso se cambio y tenían mediciones
+			if (!mOri.getCourse().getId().equals(m.getCourse().getId())) {
+				for (ResultsPerCard rpc : mOri.getResultsPerCards()) {
+					if (rpc.getTotalStudents()>0) {
+						valido = false;
+						response = new ApiResponse(500, "El curso "+mOri.getCourse().getName()+" con horario "+rpc.getSection().getCode()+" tiene mediciones realizadas.");
+						break;
 					}
 				}
-				m.setResultsPerCards(rPerCardList);
-			}			
-			Integer id = mPlanLineRepository.save(m).getId();
-			response = new ApiResponse(id,201);
+			}
+			//Verifica si antiguos horarios se cambiaron y tenían mediciones
+			if (valido)
+				for (ResultsPerCard rpc : mOri.getResultsPerCards()) {
+					int sectionOri = rpc.getSection().getCode();
+					valido = false;
+					for (Section section : m.getSections()) {
+						//Si aún está, es válido
+						if (sectionOri == section.getCode()) {
+							valido = true;
+							break;
+						}
+					}
+					//Si ya no está en la modificatoria 
+					if (!valido) {
+						//Verifica si tenía mediciones
+						if	(rpc.getTotalStudents()>0) {
+							valido = false;
+							response = new ApiResponse(500, "El horario "+sectionOri+" tiene mediciones realizadas.");
+							break;
+						}
+						//Si no tiene mediciones y se va a cambiar, debe borrar measurements asociados
+						if (rpc.getMeasurements()!=null)
+							for (Measurement mea : rpc.getMeasurements()) {
+								measurementRepository.delete(mea);
+							}
+					}
+					valido = true;
+				}
+			
+			if (valido) {
+				//Obtiene rol profesor
+				Integer idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
+				List<ResultsPerCard> rPerCardList = m.getResultsPerCards();
+				if(m.getSections()!=null) {
+					for(Section s : m.getSections()) {
+						if(s.getId()==null) {
+							s.setId(sectionRepository.save(s).getId());
+							
+							ResultsPerCard r= new ResultsPerCard();
+							r.setSection(s);
+							r.setId(resultsPerCardRepository.save(r).getId());
+							rPerCardList.add(r);
+							//Verifica curso y horario existente
+							copyStudentList(m,s,r);
+							
+						} else {
+							//Verifica que sea nuevo horario
+							valido = false;
+							int code = s.getCode();
+							for (Section sec : mOri.getSections()) {
+								if (code == sec.getCode()) {
+									valido = true;
+									break;
+								}
+							}
+							//Para los nuevos horarios verifica curso y horario existente
+							if (!valido) {
+								List<ResultsPerCard> listRPC = resultsPerCardRepository.findBySectionId(s.getId());
+								if (!listRPC.isEmpty()) {
+									copyStudentList(m,s,listRPC.get(0));
+								}
+							}
+							//Busca profesores a cargo originalmente
+							List<Integer> teachersOld = new ArrayList<>();
+							var val = sectionRepository.findById(s.getId());
+							if (val.isPresent() && val.get().getTeachers()!=null) {
+								for (Person p : val.get().getTeachers())
+									teachersOld.add(p.getId());
+							}
+							
+							//Verifica si fueron removidos los originales
+							if (!teachersOld.isEmpty()) {
+								boolean find=false;
+								for(Integer idTeacher : teachersOld){
+									for(Person t : s.getTeachers()) {
+										if (idTeacher.equals(t.getId())) {
+											find=true;
+											break;
+										}
+									}
+									//Busca si no es profesor de otro curso para quitarle el rol
+									if (find==false)
+										roleRepository.unassignTeacher(idTeacher);
+								}
+							}
+							sectionRepository.save(s);
+						}
+						//Asigna rol a profesores agregados
+						if(s.getTeachers()!=null) {
+							for(Person p : s.getTeachers())
+								roleRepository.assignRole(idRoleProfesor, p.getId());
+						}
+					}
+					m.setResultsPerCards(rPerCardList);
+				}			
+				Integer id = mPlanLineRepository.save(m).getId();
+				response = new ApiResponse(id,201);
+			}
 		} catch(Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
@@ -295,7 +365,7 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			List<MeasurementPlanLine> listMpl = new ArrayList<MeasurementPlanLine>();	
 			Iterable<MeasurementPlanLine> list = mPlanLineRepository.findByCourseIdAndSemesterId(idCourse, idSemester);
 			for(MeasurementPlanLine mpl : list) {
-				mpl.setCourse(null);
+				
 				mpl.setSemester(null);
 
 				List<Section> ss=new ArrayList<Section>();
@@ -362,6 +432,94 @@ public class MeasurementPlanLineServiceImpl implements MeasurementPlanLineServic
 			}
 			response = new ApiResponse(list,200);
 		} catch(Exception ex) {
+			response = new ApiResponse(500, ex.getMessage());
+		}
+		return response;
+	}
+
+	private boolean copyStudentList(MeasurementPlanLine mpl, Section s, ResultsPerCard r) {
+		boolean copio=false;
+		//Solo buscará del semestre actual
+		Semester semester = semesterRepository.findByCurrent(true);
+		//Verifica curso y horario existente
+		List<ResultsPerCard> listRPC =
+		resultsPerCardRepository.findByMeasurementPlanLineCourseIdAndSectionCodeAndMeasurementPlanLineSemesterId(
+				mpl.getCourse().getId(),s.getCode(),semester.getId());
+		if (listRPC!=null) {
+			for (ResultsPerCard rpc : listRPC) {
+				//Busca que tenga mediciones con alumnos
+				List<Measurement> listMea = rpc.getMeasurements();
+				if (listMea != null) {
+					for (Measurement m : listMea) {
+						Measurement newMea = new Measurement();
+						newMea.setResultsPerCard(r);
+						newMea.setPerson(m.getPerson());
+						measurementRepository.save(newMea);
+					}
+					copio = true;
+					break; //terminó de copiar lista
+				}
+			}
+		}
+		return copio;
+	}
+	
+	@Override
+	public ApiResponse registerMeasurementPlanLineBatch(MPlanLineBatchRegisterRequest mplRequest) {
+		ApiResponse response = null;
+		Indicator indicator = new Indicator();
+		try {
+			MeasurementPlanLine mpl = mplRequest.getMeasurementPlanLine();
+			//Lista indicadores
+			for (Integer idIndicator : mplRequest.getIndicators()) {
+				indicator.setId(idIndicator);
+				mpl.setIndicator(indicator);
+				//Debe crear secciones nuevas, porque no permite poner id null una vez registrado
+				List<Section> listSection = new ArrayList<Section>();
+				for(Section s : mpl.getSections()) {
+					Section newSection = new Section();
+					newSection.setCode(s.getCode());
+					//Al igual que los profesores de las secciones
+					List<Person> listTeacher = new ArrayList<Person>();
+					for (Person t : s.getTeachers()) {
+						Person newTeacher = new Person();
+						newTeacher.setId(t.getId());
+						listTeacher.add(newTeacher);
+					}
+					newSection.setTeachers(listTeacher);
+					listSection.add(newSection);
+				}
+				mpl.setSections(listSection);
+				
+				//Obtiene rol profesor
+				Integer idRoleProfesor = roleRepository.findByDescription("Profesor").getId();
+				
+				if(mpl.getSections()!=null) {
+					List<ResultsPerCard> list= new ArrayList<ResultsPerCard>();
+					for(Section s : mpl.getSections()) {
+						s.setId(sectionRepository.save(s).getId());
+
+						//Genera ResultPerCard
+						ResultsPerCard r= new ResultsPerCard();
+						r.setSection(s);
+						r.setId(resultsPerCardRepository.save(r).getId());
+						list.add(r);
+
+						//Asigna rol profesor
+						if(s.getTeachers()!=null) {
+							for(Person p : s.getTeachers()) 
+								roleRepository.assignRole(idRoleProfesor, p.getId());
+						}
+						
+						//Verifica curso y horario existente
+						copyStudentList(mpl,s,r);
+					}
+					mpl.setResultsPerCards(list);
+				}		
+				mPlanLineRepository.save(mpl).getId();	
+			}
+			response = new ApiResponse(mplRequest.getIndicators().size(),201);
+		} catch (Exception ex) {
 			response = new ApiResponse(500, ex.getMessage());
 		}
 		return response;

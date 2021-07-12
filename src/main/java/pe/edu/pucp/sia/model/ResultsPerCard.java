@@ -3,7 +3,7 @@ package pe.edu.pucp.sia.model;
 import java.util.List;
 
 import javax.persistence.Column;
-
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,33 +26,18 @@ public class ResultsPerCard {
 	@Column(name="id_results_per_card")
 	private Integer id;
 	
-	/*@JoinColumn(name="id_indicator", referencedColumnName = "id_indicator")
-	@ManyToOne
-	private Indicator indicator;*/
-	
-	/*@JoinColumn(name="id_measurement_card", referencedColumnName = "id_measurement_card")
-	@ManyToOne
-	private MeasurementCard measurementCard;*/
-	
-	/*@JoinColumn(name="id_measurement_level", referencedColumnName = "id_measurement_level")
-	@ManyToOne
-	private MeasurementLevel measurementLevel;*/
-	
 	@JsonIgnore
-	@JoinColumn(name="id_measurement_plan_line", referencedColumnName = "id_measurement_plan_line")
-	@ManyToOne
+	@ManyToOne @JoinColumn(name="id_measurement_plan_line")	
 	private MeasurementPlanLine measurementPlanLine;	
-	
 	@OneToMany()
     @JoinColumn(name="id_results_per_card") 
 	private List<Measurement> measurements;
-	
 	@ManyToOne @JoinColumn(name="id_section")
 	private Section section;
-	
+	@ElementCollection
+	private List<String> evidences;
 	private float average;
 	private float percentage;
 	private int totalStudents;
 	private int totalSuccessful;
-	private boolean active=true;
 }
