@@ -23,28 +23,14 @@ public class Measurement {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_measurement")
 	private Integer id;
-	
-	//@JsonIgnore
-	@JoinColumn(name="id_results_per_card", referencedColumnName = "id_results_per_card")
-	@ManyToOne
+	@ManyToOne @JoinColumn(name="id_results_per_card")
 	private ResultsPerCard resultsPerCard;
-	
-	@JoinColumn(name="id_person")
-	@ManyToOne
+	@ManyToOne @JoinColumn(name="id_person")
 	private Person person;
-	
-	@JoinColumn(name="id_measurement_level", referencedColumnName = "id_measurement_level")
-	@ManyToOne
+	@ManyToOne @JoinColumn(name="id_measurement_level")
 	private MeasurementLevel measurementLevel;
-	
-	//private Integer orden;
-	//private String name;	
 	private boolean active=true;
-
 	public ResultsPerCard getResultsPerCard() {
 		return null;
 	}	
-	
-	
-	
 }

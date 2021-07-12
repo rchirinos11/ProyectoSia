@@ -1,7 +1,5 @@
 package pe.edu.pucp.sia.model;
 
-import java.sql.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +14,4 @@ public class MeasurementType {
     @Id @Column(name="id_measurement_type") @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;   
     private String description;    
-    private boolean active;    
-
-    //@ForeignKey(name="id_specialty);
-    //private Integer id_specialty;
 }

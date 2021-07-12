@@ -18,17 +18,12 @@ public class SuccessPercentage {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_successPercentage")
 	private Integer id;
-	@JoinColumn(name="id_specialty",referencedColumnName = "id_specialty")
-	@ManyToOne
-	//@JsonIgnore()
+	@ManyToOne @JoinColumn(name="id_specialty")
 	private Specialty specialty;
-	@JoinColumn(name="id_semester",referencedColumnName = "id_semester")
-	@ManyToOne
+	@ManyToOne @JoinColumn(name="id_semester")
 	private Semester semester;
 	private int percentage=70;
 	public Specialty getSpecialty() {
 		return null;
 	}
-	
-	
 }

@@ -27,14 +27,11 @@ public class ResultsPerCard {
 	private Integer id;
 	
 	@JsonIgnore
-	@JoinColumn(name="id_measurement_plan_line", referencedColumnName = "id_measurement_plan_line")
-	@ManyToOne
+	@ManyToOne @JoinColumn(name="id_measurement_plan_line")	
 	private MeasurementPlanLine measurementPlanLine;	
-	
 	@OneToMany()
     @JoinColumn(name="id_results_per_card") 
 	private List<Measurement> measurements;
-	
 	@ManyToOne @JoinColumn(name="id_section")
 	private Section section;
 	@ElementCollection
@@ -43,5 +40,4 @@ public class ResultsPerCard {
 	private float percentage;
 	private int totalStudents;
 	private int totalSuccessful;
-	private boolean active=true;
 }

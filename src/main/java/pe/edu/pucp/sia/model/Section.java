@@ -30,8 +30,6 @@ public class Section {
 			joinColumns = @JoinColumn(name = "id_section"), 
 			inverseJoinColumns = @JoinColumn(name = "id_measurement_plan_line"))
     private List<MeasurementPlanLine> mplanlines;
-    
-
 	@ManyToMany @JoinTable(name="section_person_list",
 			joinColumns = @JoinColumn(name = "id_section"), 
 			inverseJoinColumns = @JoinColumn(name = "id_teacher"))
